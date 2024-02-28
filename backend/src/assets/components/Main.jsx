@@ -1,10 +1,10 @@
 export default function Main() {
   return (
     <>
-      <h3>Main</h3>
+      <h1>Welcome!</h1>
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
-        architecto, perspiciatis error nulla accusantium in.
+        Welcome to the Recipe sharing platform. Here you can share and looks for
+        favorite recipes
       </p>
     </>
   );
