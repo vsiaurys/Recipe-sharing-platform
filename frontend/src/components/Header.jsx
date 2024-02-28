@@ -29,7 +29,7 @@ function Header() {
                 className="nav-link"
                 href="#"
               >
-                Recipes
+                Register
               </a>
             </li>
             <li className="nav-item">
@@ -37,15 +37,7 @@ function Header() {
                 className="nav-link"
                 href="#"
               >
-                Categories
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#"
-              >
-                Profile
+                Login
               </a>
             </li>
           </ul>
