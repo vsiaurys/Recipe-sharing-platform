@@ -2,14 +2,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function Header() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="container navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
-        <p className="navbar-brand collapse navbar-collapse justify-content-end">
+        <p className="navbar-brand justify-content-end">
           Recipe Sharing Platform
         </p>
 
         <div
-          className="collapse navbar-collapse justify-content-end"
+          className="justify-content-end"
           id="navbarNav"
         >
           <ul className="navbar-nav">
