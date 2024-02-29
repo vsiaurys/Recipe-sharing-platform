@@ -1,18 +1,31 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from "react";
 
 function Header() {
+  const [collapsed, setCollapsed] = useState(true);
+
+  const toggleNavbar = () => {
+    setCollapsed(!collapsed);
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container">
-        <p className="navbar-brand collapse navbar-collapse justify-content-end">
-          Recipe Sharing Platform
-        </p>
+    <div className="bg-dark">
+      <nav className="container navbar navbar-expand-lg navbar-dark bg-dark">
+        <div className="container d-flex justify-content-between">
+          <p className="my-auto navbar-brand">Recipe Sharing Platform</p>
+          <button
+            className="navbar-toggler"
+            type="button"
+            onClick={toggleNavbar}
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+        </div>
 
         <div
-          className="collapse navbar-collapse justify-content-end"
+          className={`collapse navbar-collapse ${collapsed ? "" : "show"}`}
           id="navbarNav"
         >
-          <ul className="navbar-nav">
+          <ul className="navbar-nav ml-auto">
             <li className="nav-item">
               <a
                 className="nav-link"
@@ -39,8 +52,9 @@ function Header() {
             </li>
           </ul>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }
+
 export default Header;
