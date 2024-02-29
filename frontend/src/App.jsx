@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import Main from "./assets/components/Main";
+import Main from "./components/Main";
 
 function App() {
   return (
