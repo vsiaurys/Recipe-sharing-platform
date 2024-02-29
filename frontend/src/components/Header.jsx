@@ -15,7 +15,7 @@ function Header() {
           <p className="logo my-auto navbar-brand">
             <img
               src="./images/logo_2.png"
-              alt="Logo"
+              alt="Logo with words: Recipe Sharing Platform stacked on each other with pot with steam on top. "
             />
           </p>
           <button
