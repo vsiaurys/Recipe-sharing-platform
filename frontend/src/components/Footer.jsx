@@ -14,10 +14,10 @@ export default function Footer() {
         <div className="row">
           <div className="col-sm-12 col-md-8 col-lg-9">
             <p>&#169; {getCurrentYear()} RECIPE SHARING PLATFORM</p>
-            <p className="text-decoration-underline">Contact email:</p>
+            <p className="fw-semibold">Contact email:</p>
             <p>
               <a
-                className="text-decoration-none contact-email"
+                className="contact-email"
                 href="mailto:vardas.pavarde@gmail.com"
               >
                 vardas.pavarde@gmail.com
@@ -26,9 +26,9 @@ export default function Footer() {
           </div>
 
           <div className="col-sm-12 col-md-4 col-lg-3">
-            <p className="text-decoration-underline">Our address: </p>
+            <p className="fw-semibold">Our address: </p>
             <p>Trinapolio g. 2, Vilnius</p>
-            <p className="text-decoration-underline">Call us: </p>
+            <p className="fw-semibold">Call us: </p>
             <p>+370 5 269 7455</p>
           </div>
         </div>
