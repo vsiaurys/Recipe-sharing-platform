@@ -1,0 +1,12 @@
+.footer {
+  background: #55bbbf;
+  color: #262547;
+}
+
+.contact-email {
+  color: #262547;
+}
+
+.contact-email:hover {
+  color: #257cda;
+}
