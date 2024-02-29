@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import "./Header.css";
 function Header() {
   const [collapsed, setCollapsed] = useState(true);
 
@@ -8,10 +8,15 @@ function Header() {
   };
 
   return (
-    <div className="bg-dark">
-      <nav className="container navbar navbar-expand-lg navbar-dark bg-dark">
+    <div className="header-container">
+      <nav className="container navbar navbar-expand-lg navbar-dark header-container">
         <div className="container d-flex justify-content-between">
-          <p className="my-auto navbar-brand">Recipe Sharing Platform</p>
+          <p className="logo my-auto navbar-brand">
+            <img
+              src="./images/logo.png"
+              alt="Logo"
+            />
+          </p>
           <button
             className="navbar-toggler"
             type="button"
@@ -22,10 +27,12 @@ function Header() {
         </div>
 
         <div
-          className={`collapse navbar-collapse ${collapsed ? "" : "show"}`}
+          className={`collapse navbar-collapse ${
+            collapsed ? "" : "show"
+          } ml-lg-2`}
           id="navbarNav"
         >
-          <ul className="navbar-nav ml-auto">
+          <ul className="navbar-nav px-4">
             <li className="nav-item">
               <a
                 className="nav-link"

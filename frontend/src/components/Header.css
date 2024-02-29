@@ -1,0 +1,12 @@
+.header-container {
+  background-color: #429bb9;
+}
+
+.logo img {
+  width: 400px;
+  height: auto;
+}
+
+.navbar-nav .nav-link {
+  color: #fafdea;
+}
