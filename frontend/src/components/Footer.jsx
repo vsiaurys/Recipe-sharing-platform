@@ -20,11 +20,11 @@ export default function Footer() {
         </div>
         <div>
           <p>
-            <span className="text-secondary">Our address: </span>Trinapolio g.
-            2, Vilnius
+            <div className="text-secondary">Our address: </div>Trinapolio g. 2,
+            Vilnius
           </p>
           <p>
-            <span className="text-secondary">Call us: </span>+370 5 269 7455
+            <div className="text-secondary">Call us: </div>+370 5 269 7455
           </p>
         </div>
       </div>
