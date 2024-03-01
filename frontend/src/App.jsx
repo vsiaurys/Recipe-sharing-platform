@@ -10,17 +10,20 @@ function App() {
     <>
       <div>
         <Header />
-        <Main />
         <Footer />
       </div>
-      <p>
+      <div>
         <Routes>
+          <Route
+            path="/"
+            element={<Main />}
+          />
           <Route
             path="/register"
             element={<Register />}
           />
         </Routes>
-      </p>
+      </div>
     </>
   );
 }
