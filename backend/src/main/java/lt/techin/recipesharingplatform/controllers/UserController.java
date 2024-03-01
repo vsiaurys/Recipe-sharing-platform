@@ -1,6 +1,7 @@
 package lt.techin.recipesharingplatform.controllers;
 
 import lt.techin.recipesharingplatform.models.User;
+import lt.techin.recipesharingplatform.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
