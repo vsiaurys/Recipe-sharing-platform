@@ -1,6 +1,7 @@
 package lt.techin.recipesharingplatform.services;
 
 import lt.techin.recipesharingplatform.models.User;
+import lt.techin.recipesharingplatform.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
