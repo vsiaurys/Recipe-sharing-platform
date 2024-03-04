@@ -14,17 +14,6 @@ import java.util.List;
 @Entity
 @Table(name = "Users")
 public class User implements UserDetails {
-    private static final String PASSWORD_REGEX = "^(?=.*[0-9])" + // At least one digit
-            "(?=.*[a-z])"
-            + // At least one lowercase letter
-            "(?=.*[A-Z])"
-            + // At least one uppercase letter
-            "(?=.*[@#$%^&+=])"
-            + // At least one special character
-            "(?=\\S+$)"
-            + // No whitespace allowed
-            ".{6,20}$"; // From 6 to 20 characters long
-
     private static final String NAME_REGEX = "^(?!\\w*(\\w)\\1{5})"
             + // Negative lookahead to ensure no character is repeated more than 5 times consecutively
             "(?=\\p{Lu}\\p{L}+$)"
@@ -46,7 +35,7 @@ public class User implements UserDetails {
     //                    "Password must contain at least one digit, one lowercase letter, one uppercase letter, one
     // special character, and no whitespace.")
     //    @Size(min = 6, max = 20, message = "Password must be in range between 6 and 20 characters")
-    @NotEmpty(message = "Password cannot be empty")
+    // @NotEmpty(message = "Password cannot be empty")
     private String password;
 
     @Column(unique = true)
