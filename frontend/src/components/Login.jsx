@@ -65,6 +65,10 @@ function Login() {
                     placeholder="Enter email"
                     {...register("email", {
                       required: "Email is required",
+                      pattern: {
+                        value: /^\S+@\S+\.\S+$/,
+                        message: "Invalid email address",
+                      },
                     })}
                   />
                   {errors.email && (
@@ -93,6 +97,7 @@ function Login() {
                         value: 6,
                         message: "Password must be at least 6 characters long",
                       },
+
                       maxLength: {
                         value: 20,
                         message: "Password must be at most 20 characters long",
