@@ -32,6 +32,8 @@ public class User implements UserDetails {
             // letters
             "[A-Za-z]+$"; // Character class to match any uppercase or lowercase letter
 
+    // private String username;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -140,7 +142,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     public String getDisplayName() {

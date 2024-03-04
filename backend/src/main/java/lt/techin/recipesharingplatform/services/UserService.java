@@ -14,7 +14,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    //    public User findUser(String email) {
+    //        User user = userRepository.findUserByEmail(email);
+    //
+    //        return user;
+    //    }
+
     public User saveUser(User user) {
-        return this.userRepository.save(user);
+        System.out.println("Service");
+        // return this.userRepository.save(user);
+        return user;
     }
 }
