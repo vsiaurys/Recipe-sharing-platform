@@ -32,8 +32,6 @@ public class User implements UserDetails {
             // letters
             "[A-Za-z]+$"; // Character class to match any uppercase or lowercase letter
 
-    // private String username;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -42,11 +40,12 @@ public class User implements UserDetails {
     @NotEmpty(message = "Email cannot be empty")
     private String email;
 
-    @Pattern(
-            regexp = PASSWORD_REGEX,
-            message =
-                    "Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and no whitespace.")
-    @Size(min = 6, max = 20, message = "Password must be in range between 6 and 20 characters")
+    //    @Pattern(
+    //            regexp = PASSWORD_REGEX,
+    //            message =
+    //                    "Password must contain at least one digit, one lowercase letter, one uppercase letter, one
+    // special character, and no whitespace.")
+    //    @Size(min = 6, max = 20, message = "Password must be in range between 6 and 20 characters")
     @NotEmpty(message = "Password cannot be empty")
     private String password;
 
@@ -72,8 +71,8 @@ public class User implements UserDetails {
     private String lastName;
 
     @NotEmpty(message = "Gender cannot be empty")
+    @Pattern(regexp = "^(Male|Female|Other)$", message = "Gender must be Male, Female, or Other")
     private String gender;
-    // Must be words Male, Female, or Other
 
     @NotEmpty(message = "Role cannot be empty")
     @Pattern(

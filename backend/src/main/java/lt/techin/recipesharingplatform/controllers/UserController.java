@@ -21,13 +21,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> createUser(@RequestBody User user) {
-
-        System.out.println(user.getDisplayName());
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        System.out.println(user.getDisplayName());
-
         user.setRole("ROLE_USER");
         User savedUser = this.userService.saveUser(user);
 
