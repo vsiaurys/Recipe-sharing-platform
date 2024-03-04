@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Header.css";
+import { Link } from "react-router-dom";
 
 function Header() {
   const [collapsed, setCollapsed] = useState(true);
@@ -38,7 +39,7 @@ function Header() {
                   className="nav-link"
                   href="#"
                 >
-                  Home
+                  <Link to="/">Home</Link>
                 </a>
               </li>
               <li className="nav-item">
@@ -46,7 +47,7 @@ function Header() {
                   className="nav-link"
                   href="#"
                 >
-                  Register
+                  <Link to="/register">Register</Link>
                 </a>
               </li>
               <li className="nav-item">
@@ -54,7 +55,7 @@ function Header() {
                   className="nav-link"
                   href="#"
                 >
-                  Login
+                  <Link to="/login">Login</Link>
                 </a>
               </li>
             </ul>
