@@ -29,13 +29,6 @@ public class User implements UserDetails {
     @NotEmpty(message = "Email cannot be empty")
     private String email;
 
-    //    @Pattern(
-    //            regexp = PASSWORD_REGEX,
-    //            message =
-    //                    "Password must contain at least one digit, one lowercase letter, one uppercase letter, one
-    // special character, and no whitespace.")
-    //    @Size(min = 6, max = 20, message = "Password must be in range between 6 and 20 characters")
-    // @NotEmpty(message = "Password cannot be empty")
     private String password;
 
     @Column(unique = true)

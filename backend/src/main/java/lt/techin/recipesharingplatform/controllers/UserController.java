@@ -12,17 +12,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 public class UserController {
-    private static final String PASSWORD_REGEX = "^(?=.*[0-9])" + // At least one digit
-            "(?=.*[a-z])"
-            + // At least one lowercase letter
-            "(?=.*[A-Z])"
-            + // At least one uppercase letter
-            "(?=.*[@#$%^&+=])"
-            + // At least one special character
-            "(?=\\S+$)"
-            + // No whitespace allowed
-            ".{6,20}$"; // From 6 to 20 characters long
-
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
@@ -33,20 +22,39 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> createUser(@RequestBody User user) {
-        if (user.getPassword().matches(PASSWORD_REGEX)) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setRole("ROLE_USER");
-            User savedUser = this.userService.saveUser(user);
+        String password = user.getPassword();
 
-            return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
-                            .path("/{id}")
-                            .buildAndExpand(savedUser.getId())
-                            .toUri())
-                    .body(savedUser);
+        if (!password.matches(".*\\d.*")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password must contain at least one digit");
         }
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                .body(
-                        "Password must contain at least one digit, one lowercase letter, one uppercase letter,"
-                                + " one special character, and no whitespace. Password must be in range between 6 and 20 characters");
+        if (!password.matches(".*[a-z].*")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Password must contain at least one lowercase letter");
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Password must contain at least one uppercase letter");
+        }
+        if (!password.matches(".*[@#$%^&+=].*")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Password must contain at least one special character");
+        }
+        if (!password.matches("[^\\s]+")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No whitespace allowed");
+        }
+        if (!password.matches(".{6,20}")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Password must be in range between 6 and 20 characters");
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole("ROLE_USER");
+        User savedUser = this.userService.saveUser(user);
+
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
+                        .path("/{id}")
+                        .buildAndExpand(savedUser.getId())
+                        .toUri())
+                .body(savedUser);
     }
 }
