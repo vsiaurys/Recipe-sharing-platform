@@ -10,7 +10,6 @@ function App() {
     <>
       <div>
         <Header />
-        <Footer />
       </div>
       <div>
         <Routes>
@@ -23,6 +22,7 @@ function App() {
             element={<Register />}
           />
         </Routes>
+        <Footer />
       </div>
     </>
   );
