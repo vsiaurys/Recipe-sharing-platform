@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import "./Login.css";
 
 function Login() {
   const {
@@ -96,6 +97,11 @@ function Login() {
                         value: 6,
                         message: "Password must be at least 6 characters long",
                       },
+
+                      maxLength: {
+                        value: 20,
+                        message: "Password must be at most 20 characters long",
+                      },
                     })}
                   />
                   {errors.password && (
@@ -114,7 +120,13 @@ function Login() {
               <div className="mt-3">
                 <p>{loginMessage}</p>
                 <p>
-                  Don't have an account? <Link to="/register">Register</Link>
+                  Don't have an account?{" "}
+                  <Link
+                    to="/register"
+                    className="special-link"
+                  >
+                    Register
+                  </Link>
                 </p>
               </div>
             </div>
