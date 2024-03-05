@@ -3,6 +3,7 @@ package lt.techin.recipesharingplatform.controllers;
 import jakarta.validation.Valid;
 import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.services.UserService;
+import lt.techin.recipesharingplatform.validation.PasswordValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,29 +40,11 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
-        String password = user.getPassword();
+        PasswordValidator password = new PasswordValidator(user);
 
-        if (!password.matches(".*\\d.*")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password must contain at least one digit");
-        }
-        if (!password.matches(".*[a-z].*")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Password must contain at least one lowercase letter");
-        }
-        if (!password.matches(".*[A-Z].*")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Password must contain at least one uppercase letter");
-        }
-        if (!password.matches(".*[@#$%^&+=].*")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Password must contain at least one special character");
-        }
-        if (!password.matches("[^\\s]+")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No whitespace allowed");
-        }
-        if (!password.matches(".{6,20}")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Password must be in range between 6 and 20 characters");
+        String message = password.validatePassword();
+        if (!message.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));

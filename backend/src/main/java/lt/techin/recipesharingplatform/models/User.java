@@ -28,7 +28,8 @@ public class User implements UserDetails {
     @Column(unique = true)
     @NotEmpty(message = "Display name cannot be empty")
     @Size(min = 3, max = 15, message = "Display name must be in range between 3 and 15 characters")
-    @Pattern(regexp = "^(?:[A-Z]|[a-z]|[0-9]){3,15}$", message = "Display name may contain only letters and digits")
+    @Pattern(regexp = "[A-Za-z].*", message = "Display name must start out of a letter")
+    @Pattern(regexp = "[a-zA-Z0-9]+", message = "Display name may contain only letters and digits")
     @NoOffensiveWords(message = "Display name cannot contain offensive words")
     private String displayName;
 
@@ -48,10 +49,10 @@ public class User implements UserDetails {
     @Pattern(regexp = "^(Male|Female|Other)$", message = "Gender must be Male, Female, or Other")
     private String gender;
 
-    @NotEmpty(message = "Role cannot be empty")
-    @Pattern(
-            regexp = "^ROLE_[A-Z]{1,25}$",
-            message = "Role must start with ROLE_ and contain only uppercase characters (maximum 30)")
+    //    @NotEmpty(message = "Role cannot be empty")
+    //    @Pattern(
+    //            regexp = "^ROLE_[A-Z]{1,25}$",
+    //            message = "Role must start with ROLE_ and contain only uppercase characters (maximum 30)")
     private String role;
 
     public User(
