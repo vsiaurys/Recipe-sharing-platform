@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lt.techin.recipesharingplatform.validation.NoOffensiveWords;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,25 +15,12 @@ import java.util.List;
 @Entity
 @Table(name = "Users")
 public class User implements UserDetails {
-    private static final String PASSWORD_REGEX = "^(?=.*[0-9])" + // At least one digit
-            "(?=.*[a-z])"
-            + // At least one lowercase letter
-            "(?=.*[A-Z])"
-            + // At least one uppercase letter
-            "(?=.*[@#$%^&+=])"
-            + // At least one special character
-            "(?=\\S+$)"
-            + // No whitespace allowed
-            ".{6,20}$"; // From 6 to 20 characters long
-
     private static final String NAME_REGEX = "^(?!\\w*(\\w)\\1{5})"
             + // Negative lookahead to ensure no character is repeated more than 5 times consecutively
             "(?=\\p{Lu}\\p{L}+$)"
             + // Positive lookahead to ensure the string starts with an uppercase letter followed by one or more
             // letters
             "[A-Za-z]+$"; // Character class to match any uppercase or lowercase letter
-
-    // private String username;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,20 +30,14 @@ public class User implements UserDetails {
     @NotEmpty(message = "Email cannot be empty")
     private String email;
 
-    @Pattern(
-            regexp = PASSWORD_REGEX,
-            message =
-                    "Password must contain at least one digit, one lowercase letter, one uppercase letter, one special character, and no whitespace.")
-    @Size(min = 6, max = 20, message = "Password must be in range between 6 and 20 characters")
-    @NotEmpty(message = "Password cannot be empty")
     private String password;
 
     @Column(unique = true)
     @NotEmpty(message = "Display name cannot be empty")
     @Size(min = 3, max = 15, message = "Display name must be in range between 3 and 15 characters")
-    @Pattern(regexp = "^[a-zA-Z]{3,15}$", message = "Display name may contain only lowercase or uppercase letters")
+    @Pattern(regexp = "^(?:[A-Z]|[a-z]|[0-9]){3,15}$", message = "Display name may contain only letters and digits")
+    @NoOffensiveWords(message = "Display name cannot contain offensive words")
     private String displayName;
-    // Cannot have offensive words.
 
     @NotEmpty(message = "First name cannot be empty")
     @Pattern(
@@ -72,8 +54,8 @@ public class User implements UserDetails {
     private String lastName;
 
     @NotEmpty(message = "Gender cannot be empty")
+    @Pattern(regexp = "^(Male|Female|Other)$", message = "Gender must be Male, Female, or Other")
     private String gender;
-    // Must be words Male, Female, or Other
 
     @NotEmpty(message = "Role cannot be empty")
     @Pattern(

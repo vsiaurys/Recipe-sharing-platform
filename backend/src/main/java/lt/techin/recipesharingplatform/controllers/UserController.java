@@ -2,6 +2,7 @@ package lt.techin.recipesharingplatform.controllers;
 
 import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,14 +21,33 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<Object> createUser(@RequestBody User user) {
+        String password = user.getPassword();
 
-        System.out.println(user.getDisplayName());
+        if (!password.matches(".*\\d.*")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password must contain at least one digit");
+        }
+        if (!password.matches(".*[a-z].*")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Password must contain at least one lowercase letter");
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Password must contain at least one uppercase letter");
+        }
+        if (!password.matches(".*[@#$%^&+=].*")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Password must contain at least one special character");
+        }
+        if (!password.matches("[^\\s]+")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No whitespace allowed");
+        }
+        if (!password.matches(".{6,20}")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Password must be in range between 6 and 20 characters");
+        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        System.out.println(user.getDisplayName());
-
         user.setRole("ROLE_USER");
         User savedUser = this.userService.saveUser(user);
 
