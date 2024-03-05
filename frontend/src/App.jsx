@@ -7,24 +7,22 @@ import { Route, Routes, NavLink } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <div>
-        <Header />
-      </div>
-      <div>
-        <Routes>
-          <Route
-            path="/"
-            element={<Main />}
-          />
-          <Route
-            path="/register"
-            element={<Register />}
-          />
-        </Routes>
+    <body className="d-flex flex-column min-vh-100">
+      <Header />
+      <Routes>
+        <Route
+          path="/"
+          element={<Main />}
+        />
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+      </Routes>
+      <footer class="mt-auto footer">
         <Footer />
-      </div>
-    </>
+      </footer>
+    </body>
   );
 }
 
