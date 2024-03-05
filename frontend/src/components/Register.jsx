@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import BadWords from "./BadWords";
 
 export default function Register() {
   const {
@@ -7,7 +8,7 @@ export default function Register() {
     formState: { errors },
     watch,
   } = useForm();
-  const password = watch("password", "");
+  const password = watch("password");
 
   const onSubmit = (data) => {
     console.log(data);
@@ -29,17 +30,17 @@ export default function Register() {
                     Email address
                   </label>
                   <input
-                    type="email"
+                    type="text"
                     className={`form-control ${
                       errors.email ? "is-invalid" : ""
                     }`}
                     id="email"
                     placeholder="Enter Your e-mail"
                     {...register("email", {
-                      required: "Email is required",
+                      required: "Email is required!",
                       pattern: {
                         value: /^\S+@\S+\.\S+$/,
-                        message: "Invalid email address",
+                        message: "Invalid email address!",
                       },
                     })}
                   />
@@ -64,20 +65,20 @@ export default function Register() {
                     id="password"
                     placeholder="Enter Your password"
                     {...register("password", {
-                      required: "Password is required",
+                      required: "Password is required!",
                       pattern: {
-                        value: /^(?=.*[A-Z])(?=.*\d).+$/,
+                        value: /^(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.* ).+$/,
                         message:
-                          "Password must contain at least one uppercase letter and one number",
+                          "Password must contain at least one uppercase letter, one number and one special symbol. Cannot have empty spaces.",
                       },
                       minLength: {
                         value: 6,
                         message: "Password must be at least 6 characters long",
                       },
-
                       maxLength: {
                         value: 20,
-                        message: "Password must be at most 20 characters long",
+                        message:
+                          "Password must be not longer than 20 characters!",
                       },
                     })}
                   />
@@ -89,7 +90,8 @@ export default function Register() {
                   {!errors.password && (
                     <div className="form-text">
                       Password must contain at least one uppercase letter, one
-                      number, and be between 6 and 20 characters long.
+                      number, one special symbol and be between 6 and 20
+                      characters long. Cannot have empty spaces.
                     </div>
                   )}
                 </div>
@@ -109,8 +111,7 @@ export default function Register() {
                     placeholder="Repeat Your password"
                     {...register("confirmPassword", {
                       validate: (value) =>
-                        value === password.current ||
-                        "The passwords do not match",
+                        value === password || "The passwords do not match!",
                     })}
                   />
                   {errors.confirmPassword && (
@@ -134,12 +135,26 @@ export default function Register() {
                     id="displayName"
                     placeholder="Your display name"
                     {...register("displayName", {
-                      required: "Display name field is required",
-                      minLength: {
-                        value: 1,
+                      required: "Display name is required!",
+                      pattern: {
+                        value: /^(?!=.*\W)(?!.* ).+$/,
                         message:
-                          "Display name must be at least 1 character long",
+                          "Display name cannot have spaces and special symbols!",
                       },
+                      minLength: {
+                        value: 3,
+                        message:
+                          "Display name must be at least 3 characters long!",
+                      },
+                      maxLength: {
+                        value: 15,
+                        message:
+                          "Display name must be not longer than 15 characters!",
+                      },
+                      validate: (value) =>
+                        !BadWords.some((word) =>
+                          new RegExp(word, "i").test(value)
+                        ) || "Display name contains offensive words!",
                     })}
                   />
                   {errors.displayName && (
@@ -163,10 +178,11 @@ export default function Register() {
                     id="firstName"
                     placeholder="Your first name"
                     {...register("firstName", {
-                      required: "First name field is required",
+                      required: "First name is required!",
                       minLength: {
                         value: 2,
-                        message: "First name must be at least 2 character long",
+                        message:
+                          "First name must be at least 2 characters long!",
                       },
                     })}
                   />
@@ -191,10 +207,11 @@ export default function Register() {
                     id="lastName"
                     placeholder="Your last name"
                     {...register("lastName", {
-                      required: "Last name field is required",
+                      required: "Last name is required!",
                       minLength: {
                         value: 2,
-                        message: "Last name must be at least 2 character long",
+                        message:
+                          "Last name must be at least 2 characters long!",
                       },
                     })}
                   />
@@ -227,7 +244,7 @@ export default function Register() {
                   </select>
                   {errors.gender && errors.gender.type === "required" && (
                     <div className="invalid-feedback">
-                      Gender field is required
+                      Gender field is required!
                     </div>
                   )}
                 </div>
