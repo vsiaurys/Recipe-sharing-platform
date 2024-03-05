@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lt.techin.recipesharingplatform.validation.NoOffensiveWords;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -34,9 +35,9 @@ public class User implements UserDetails {
     @Column(unique = true)
     @NotEmpty(message = "Display name cannot be empty")
     @Size(min = 3, max = 15, message = "Display name must be in range between 3 and 15 characters")
-    @Pattern(regexp = "^[a-zA-Z]{3,15}$", message = "Display name may contain only lowercase or uppercase letters")
+    @Pattern(regexp = "^(?:[A-Z]|[a-z]|[0-9]){3,15}$", message = "Display name may contain only letters and digits")
+    @NoOffensiveWords(message = "Display name cannot contain offensive words")
     private String displayName;
-    // Cannot have offensive words.
 
     @NotEmpty(message = "First name cannot be empty")
     @Pattern(
