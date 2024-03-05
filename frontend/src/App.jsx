@@ -24,7 +24,7 @@ function App() {
           element={<Register />}
         />
       </Routes>
-      <footer class="mt-auto footer">
+      <footer className="mt-auto footer">
         <Footer />
       </footer>
     </div>
