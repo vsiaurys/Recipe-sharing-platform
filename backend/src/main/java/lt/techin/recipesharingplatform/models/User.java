@@ -15,13 +15,6 @@ import java.util.List;
 @Entity
 @Table(name = "Users")
 public class User implements UserDetails {
-    private static final String NAME_REGEX = "^(?!\\w*(\\w)\\1{5})"
-            + // Negative lookahead to ensure no character is repeated more than 5 times consecutively
-            "(?=\\p{Lu}\\p{L}+$)"
-            + // Positive lookahead to ensure the string starts with an uppercase letter followed by one or more
-            // letters
-            "[A-Za-z]+$"; // Character class to match any uppercase or lowercase letter
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -40,17 +33,15 @@ public class User implements UserDetails {
     private String displayName;
 
     @NotEmpty(message = "First name cannot be empty")
-    @Pattern(
-            regexp = NAME_REGEX,
-            message =
-                    "First name must start out of a letter in uppercase and may contain only lowercase or uppercase letters (minimum 2 characters)")
+    @Size(min = 2, message = "First name must be at least 2 characters")
+    @Pattern(regexp = "[A-Z].*", message = "First name must start out of a letter in uppercase")
+    @Pattern(regexp = "[A-Za-z]+", message = "First name may contain only letters")
     private String firstName;
 
     @NotEmpty(message = "Last name cannot be empty")
-    @Pattern(
-            regexp = NAME_REGEX,
-            message =
-                    "Last name must start out of a letter in uppercase and may contain only lowercase or uppercase letters (minimum 2 characters)")
+    @Size(min = 2, message = "Last name must be at least 2 characters")
+    @Pattern(regexp = "[A-Z].*", message = "Last name must start out of a letter in uppercase")
+    @Pattern(regexp = "[A-Za-z]+", message = "Last name may contain only letters")
     private String lastName;
 
     @NotEmpty(message = "Gender cannot be empty")
