@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./Header.css";
-import { Route, Routes, NavLink } from "react-router-dom";
-import Register from "./Register.jsx";
+import { Link } from "react-router-dom";
+
 function Header() {
   const [collapsed, setCollapsed] = useState(true);
 
@@ -32,32 +32,34 @@ function Header() {
           className={`collapse navbar-collapse ${collapsed ? "" : "show"}`}
           id="navbarNav"
         >
-          <ul className="navbar-nav px-4">
-            <li className="nav-item">
-              <NavLink
-                to="/"
-                className="nav-link"
-              >
-                Home
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                to="/register"
-                className="nav-link"
-              >
-                Register
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#"
-              >
-                Login
-              </a>
-            </li>
-          </ul>
+          <div className="container d-flex justify-content-end">
+            <ul className="navbar-nav px-4">
+              <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href="#"
+                >
+                  <Link to="/">Home</Link>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href="#"
+                >
+                  <Link to="/register">Register</Link>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href="#"
+                >
+                  <Link to="/login">Login</Link>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
     </div>
