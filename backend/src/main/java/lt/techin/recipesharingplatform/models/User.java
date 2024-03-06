@@ -19,37 +19,45 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Email(message = "Please provide a valid email address")
     @NotEmpty(message = "Email cannot be empty")
+    @Email(message = "Please provide a valid email address")
     private String email;
 
     @NotEmpty(message = "Password cannot be empty")
     @Size(min = 6, message = "Password must be at least 6 characters long")
-    @Pattern(regexp = ".*\\d.*", message = "Password must contain at least one digit")
-    @Pattern(regexp = ".*[a-z].*", message = "Password must contain at least one lowercase letter")
-    @Pattern(regexp = ".*[A-Z].*", message = "Password must contain at least one uppercase letter")
-    @Pattern(regexp = ".*[@#$%^&+=].*", message = "Password must contain at least one special character")
-    @Pattern(regexp = "[^\\s]+", message = "No whitespace allowed")
+    @Pattern.List({
+        @Pattern(regexp = ".*\\d.*", message = "Password must contain at least one digit"),
+        @Pattern(regexp = ".*[a-z].*", message = "Password must contain at least one lowercase letter"),
+        @Pattern(regexp = ".*[A-Z].*", message = "Password must contain at least one uppercase letter"),
+        @Pattern(regexp = ".*[@#$%^&+=].*", message = "Password must contain at least one special character"),
+        @Pattern(regexp = "[^\\s]+", message = "No whitespace allowed")
+    })
     private String password;
 
     @Column(unique = true)
     @NotEmpty(message = "Display name cannot be empty")
     @Size(min = 3, max = 15, message = "Display name must be in range between 3 and 15 characters")
-    @Pattern(regexp = "[A-Za-z].*", message = "Display name must start out of a letter")
-    @Pattern(regexp = "[a-zA-Z0-9]+", message = "Display name may contain only letters and digits")
+    @Pattern.List({
+        @Pattern(regexp = "[A-Za-z].*", message = "Display name must start out of a letter"),
+        @Pattern(regexp = "[a-zA-Z0-9]+", message = "Display name may contain only letters and digits")
+    })
     @NoOffensiveWords(message = "Display name cannot contain offensive words")
     private String displayName;
 
     @NotEmpty(message = "First name cannot be empty")
     @Size(min = 2, message = "First name must be at least 2 characters")
-    @Pattern(regexp = "[A-Z].*", message = "First name must start out of a letter in uppercase")
-    @Pattern(regexp = "[A-Za-z]+", message = "First name may contain only letters")
+    @Pattern.List({
+        @Pattern(regexp = "[A-Z].*", message = "First name must start out of a letter in uppercase"),
+        @Pattern(regexp = "[A-Za-z]+", message = "First name may contain only letters")
+    })
     private String firstName;
 
     @NotEmpty(message = "Last name cannot be empty")
     @Size(min = 2, message = "Last name must be at least 2 characters")
-    @Pattern(regexp = "[A-Z].*", message = "Last name must start out of a letter in uppercase")
-    @Pattern(regexp = "[A-Za-z]+", message = "Last name may contain only letters")
+    @Pattern.List({
+        @Pattern(regexp = "[A-Z].*", message = "Last name must start out of a letter in uppercase"),
+        @Pattern(regexp = "[A-Za-z]+", message = "Last name may contain only letters")
+    })
     private String lastName;
 
     @NotEmpty(message = "Gender cannot be empty")
