@@ -40,8 +40,8 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
-        PasswordValidator password = new PasswordValidator(user);
 
+        PasswordValidator password = new PasswordValidator(user);
         String message = password.validatePassword();
         if (!message.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);

@@ -26,7 +26,7 @@ public class PasswordValidator {
             return "Password must contain at least one special character";
         }
         if (!password.matches("[^\\s]+")) {
-            return "No whitespace allowed";
+            return "No whitespace allowed in password";
         }
         if (!password.matches(".{6,20}")) {
             return "Password must be in range between 6 and 20 characters";
