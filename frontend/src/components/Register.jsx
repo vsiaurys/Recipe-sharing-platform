@@ -15,7 +15,7 @@ export default function Register() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 mb-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
@@ -31,6 +31,7 @@ export default function Register() {
                   </label>
                   <input
                     type="text"
+                    autoComplete="on"
                     className={`form-control ${
                       errors.email ? "is-invalid" : ""
                     }`}
@@ -68,10 +69,7 @@ export default function Register() {
                     {...register("password", {
                       required: "Password is required!",
                       pattern: {
-                        // value: /^(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.* ).+$/,
                         value: /^(?!.* ).+$/,
-                        //message:
-                        //  "Password must contain at least one uppercase letter, one number and one special symbol. Cannot have empty spaces.",
                         message: "Password cannot have empty spaces.",
                       },
                       validate: {
@@ -186,6 +184,7 @@ export default function Register() {
                   </label>
                   <input
                     type="text"
+                    autoComplete="on"
                     className={`form-control ${
                       errors.firstName ? "is-invalid" : ""
                     }`}
@@ -227,6 +226,7 @@ export default function Register() {
                     Last Name
                   </label>
                   <input
+                    autoComplete="on"
                     type="text"
                     className={`form-control ${
                       errors.lastName ? "is-invalid" : ""
@@ -296,7 +296,6 @@ export default function Register() {
                     Submit
                   </button>
                 </div>
-                {/* <input type="submit" /> */}
               </form>
             </div>
           </div>
