@@ -12,9 +12,17 @@ function Login() {
 
   const [loginMessage, setLoginMessage] = useState("");
 
+  const handleLoginResponse = (status, message) => {
+    if (status === "success") {
+      setLoginMessage(message);
+    } else {
+      setLoginMessage("Error: " + message);
+    }
+  };
+
   const onSubmit = async (data) => {
     try {
-      const response = await fetch("https://musu_serveris", {
+      const response = await fetch("http://localhost:8080/login", {
         method: "POST",
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" },
@@ -30,14 +38,6 @@ function Login() {
     } catch (error) {
       console.error("Error:", error);
       setLoginMessage("An unexpected error occurred.");
-    }
-  };
-
-  const handleLoginResponse = (status, message) => {
-    if (status === "success") {
-      setLoginMessage(message);
-    } else {
-      setLoginMessage("Error: " + message);
     }
   };
 
@@ -118,7 +118,7 @@ function Login() {
                 </button>
               </form>
               <div className="mt-3">
-                <p>{loginMessage}</p>
+                <p className="login">{loginMessage}</p>
                 <p>
                   Don't have an account?{" "}
                   <Link
