@@ -1,6 +1,7 @@
 package lt.techin.recipesharingplatform.controllers;
 
 import lt.techin.recipesharingplatform.models.User;
+import lt.techin.recipesharingplatform.repositories.UserRepository;
 import lt.techin.recipesharingplatform.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,14 +11,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.Optional;
+
 @RestController
 public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+    private final UserRepository userRepository;
+
+    public UserController(UserService userService, PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/register")
@@ -56,5 +62,23 @@ public class UserController {
                         .buildAndExpand(savedUser.getId())
                         .toUri())
                 .body(savedUser);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User user) {
+
+        Optional<User> userOptional = userRepository.findUserByEmail(user.getEmail());
+
+        if (userOptional.isPresent()) {
+            User userDb = userOptional.get();
+
+            if (passwordEncoder.matches(user.getPassword(), userDb.getPassword())) {
+                // Authentication successful
+                return ResponseEntity.ok().body("{\"message\": \"Login successful\"}");
+            }
+        }
+
+        // Authentication failed
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Incorrect username or password\"}");
     }
 }
