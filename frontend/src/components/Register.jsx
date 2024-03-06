@@ -235,6 +235,19 @@ export default function Register() {
                     placeholder="Your last name"
                     {...register("lastName", {
                       required: "Last name is required!",
+                      pattern: {
+                        value: /^[A-Za-z]{1,}$/,
+                        message:
+                          "Last name cannot have special symbols or spaces!",
+                      },
+                      validate: {
+                        hasNoRepeatedCharacters: (value) =>
+                          !/(.)\1{4,}/.test(value) ||
+                          "Last name cannot have the same character repeated 5 times in a row!",
+                        startsWithUppercase: (value) =>
+                          /^[A-Z]/.test(value) ||
+                          "Last name must start with an uppercase letter!",
+                      },
                       minLength: {
                         value: 2,
                         message:
@@ -256,7 +269,7 @@ export default function Register() {
                     Gender
                   </label>
                   <select
-                    name="gender"
+                    id="gender"
                     className={`form-select ${
                       errors.gender && errors.gender.type === "required"
                         ? "is-invalid"
