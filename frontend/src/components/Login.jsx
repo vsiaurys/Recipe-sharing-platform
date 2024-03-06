@@ -32,6 +32,7 @@ function Login() {
 
       if (response.ok) {
         handleLoginResponse("success", responseData.message);
+        window.location.href = "/LoginSuccessful";
       } else {
         handleLoginResponse("error", responseData.message);
       }
