@@ -1,6 +1,5 @@
 package lt.techin.recipesharingplatform.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.security.SecurityConfig;
 import lt.techin.recipesharingplatform.services.UserService;
@@ -9,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -43,14 +42,14 @@ public class UserControllerTest {
                 "ROLE_USER");
         given(this.userService.saveUser(any(User.class))).willReturn(user);
 
-        ObjectMapper om = new ObjectMapper();
-        om.findAndRegisterModules();
+        // ObjectMapper om = new ObjectMapper();
+        // om.findAndRegisterModules();
 
         //  when
         mockMvc.perform(
                         post("/register")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON)
+                        //       .contentType(MediaType.APPLICATION_JSON)
+                        //       .accept(MediaType.APPLICATION_JSON)
                         // .content(om.writeValueAsString(user)))
                         )
                 //  then
@@ -69,25 +68,33 @@ public class UserControllerTest {
     // public PasswordEncoder passwordEncoder() {
     //        return new BCryptPasswordEncoder();
 
-    //    @Test
-    //    @WithMockUser
-    //    void insertMovie_whenNotAllowed_return403() throws Exception {
-    //        //  given
-    //        Movie movie = new Movie("Delivery Man", LocalDate.of(2000, 11, 19), (short) 105);
-    //        given(this.movieService.saveMovie(any(Movie.class))).willReturn(movie);
-    //
-    //        ObjectMapper om = new ObjectMapper();
-    //        om.findAndRegisterModules();
-    //
-    //        //  when
-    //        mockMvc.perform(post("/movies")
-    //                        .contentType(MediaType.APPLICATION_JSON)
-    //                        .accept(MediaType.APPLICATION_JSON)
-    //                        .content(om.writeValueAsString(movie)))
-    //
-    //                //  then
-    //                .andExpect(status().isForbidden());
-    //
-    //        verify(this.movieService, times(0)).saveMovie(any(Movie.class));
-    //    }
+    @Test
+    @WithMockUser
+    void createUser_whenNotAllowed_returnBadRequest() throws Exception {
+        //  given
+        User user = new User(
+                "abcdefghi.klmno49@efghijk.com",
+                "Password123&=",
+                "Smauglys87",
+                "Vardas",
+                "Pavarde",
+                "Male",
+                "ROLE_USER");
+        given(this.userService.saveUser(any(User.class))).willReturn(user);
+
+        //        ObjectMapper om = new ObjectMapper();
+        //        om.findAndRegisterModules();
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                        //                        .contentType(MediaType.APPLICATION_JSON)
+                        //                        .accept(MediaType.APPLICATION_JSON)
+                        //                        .content(om.writeValueAsString(user)))
+                        )
+                //  then
+                .andExpect(status().isBadRequest());
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+    }
 }
