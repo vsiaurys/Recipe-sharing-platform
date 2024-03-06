@@ -39,7 +39,8 @@ export default function Register() {
                     {...register("email", {
                       required: "Email is required!",
                       pattern: {
-                        value: /^\S+@\S+\.\S+$/,
+                        value:
+                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                         message: "Invalid email address!",
                       },
                     })}
@@ -137,7 +138,7 @@ export default function Register() {
                     {...register("displayName", {
                       required: "Display name is required!",
                       pattern: {
-                        value: /^(?!=.*\W)(?!.* ).+$/,
+                        value: /^[^\W_]+$/,
                         message:
                           "Display name cannot have spaces and special symbols!",
                       },
@@ -179,6 +180,11 @@ export default function Register() {
                     placeholder="Your first name"
                     {...register("firstName", {
                       required: "First name is required!",
+                      pattern: {
+                        value: /^[A-Z](?!.*(\w)\1{5,})[A-Za-z]{2,}$/,
+                        message:
+                          "First name cannot have spaces or special symbols and must start in uppercase and same symbol cannot reapeat 5 times in a row!",
+                      },
                       minLength: {
                         value: 2,
                         message:
