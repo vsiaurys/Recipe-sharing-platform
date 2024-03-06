@@ -68,13 +68,26 @@ export default function Register() {
                     {...register("password", {
                       required: "Password is required!",
                       pattern: {
-                        value: /^(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.* ).+$/,
-                        message:
-                          "Password must contain at least one uppercase letter, one number and one special symbol. Cannot have empty spaces.",
+                        // value: /^(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.* ).+$/,
+                        value: /^(?!.* ).+$/,
+                        //message:
+                        //  "Password must contain at least one uppercase letter, one number and one special symbol. Cannot have empty spaces.",
+                        message: "Password cannot have empty spaces.",
+                      },
+                      validate: {
+                        mustContainUppercaseLetter: (value) =>
+                          /^(?=.*[A-Z])/.test(value) ||
+                          "Password must contain at least one uppercase letter!",
+                        mustContainNumber: (value) =>
+                          /^(?=.*\d)/.test(value) ||
+                          "Password must contain at least one number!",
+                        mustContainSpecialSymbol: (value) =>
+                          /^(?=.*\W)/.test(value) ||
+                          "Password must contain at least one special symbol!",
                       },
                       minLength: {
                         value: 6,
-                        message: "Password must be at least 6 characters long",
+                        message: "Password must be at least 6 characters long!",
                       },
                       maxLength: {
                         value: 20,
@@ -181,9 +194,17 @@ export default function Register() {
                     {...register("firstName", {
                       required: "First name is required!",
                       pattern: {
-                        value: /^[A-Z](?!.*(\w)\1{4,})[A-Za-z]{2,}$/,
+                        value: /^[A-Za-z]{1,}$/,
                         message:
-                          "First name cannot have spaces or special symbols and must start in uppercase and same symbol cannot reapeat 5 times in a row!",
+                          "First name cannot have special symbols or spaces!",
+                      },
+                      validate: {
+                        hasNoRepeatedCharacters: (value) =>
+                          !/(.)\1{4,}/.test(value) ||
+                          "First name cannot have the same character repeated 5 times in a row!",
+                        startsWithUppercase: (value) =>
+                          /^[A-Z]/.test(value) ||
+                          "First name must start with an uppercase letter!",
                       },
                       minLength: {
                         value: 2,
