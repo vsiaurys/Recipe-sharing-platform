@@ -3,8 +3,6 @@ package lt.techin.recipesharingplatform.controllers;
 import jakarta.validation.Valid;
 import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.services.UserService;
-import lt.techin.recipesharingplatform.validation.PasswordValidator;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,13 +22,6 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
-
-        PasswordValidator password = new PasswordValidator(user);
-        String message = password.validatePassword();
-
-        if (!message.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
-        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("ROLE_USER");
