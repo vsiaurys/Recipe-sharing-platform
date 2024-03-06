@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import BadWords from "./BadWords";
+import badWords from "./BadWords";
 
 export default function Register() {
   const {
@@ -164,7 +164,7 @@ export default function Register() {
                           "Display name must be not longer than 15 characters!",
                       },
                       validate: (value) =>
-                        !BadWords.some((word) =>
+                        !badWords.some((word) =>
                           new RegExp(word, "i").test(value)
                         ) || "Display name contains offensive words!",
                     })}

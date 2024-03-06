@@ -1,4 +1,4 @@
-const BadWords = [
+const badWords = [
   "^[a@][s$][s$]$",
   "[a@][s$][s$]h[o0][l1][e3][s$]?",
   "b[a@][s$][t+][a@]rd",
@@ -73,4 +73,4 @@ const BadWords = [
   "[t+]w[a@][t+][s$]?",
 ];
 
-export default BadWords;
+export default badWords;
