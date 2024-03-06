@@ -9,7 +9,7 @@ import LoginSuccessful from "./components/LoginSuccessful";
 
 function App() {
   return (
-    <div>
+    <div className="d-flex flex-column min-vh-100">
       <Header />
       <Routes>
         <Route
@@ -29,7 +29,9 @@ function App() {
           element={<LoginSuccessful />}
         />
       </Routes>
-      <Footer />
+      <footer className="mt-auto footer">
+        <Footer />
+      </footer>
     </div>
   );
 }

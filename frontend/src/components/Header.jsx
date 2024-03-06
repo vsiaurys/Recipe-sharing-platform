@@ -35,28 +35,28 @@ function Header() {
           <div className="container d-flex justify-content-end">
             <ul className="navbar-nav px-4">
               <li className="nav-item">
-                <a
+                <Link
+                  to="/"
                   className="nav-link"
-                  href="#"
                 >
-                  <Link to="/">Home</Link>
-                </a>
+                  Home
+                </Link>
               </li>
               <li className="nav-item">
-                <a
+                <Link
+                  to="/register"
                   className="nav-link"
-                  href="#"
                 >
-                  <Link to="/register">Register</Link>
-                </a>
+                  Register
+                </Link>
               </li>
               <li className="nav-item">
-                <a
+                <Link
+                  to="/login"
                   className="nav-link"
-                  href="#"
                 >
-                  <Link to="/login">Login</Link>
-                </a>
+                  Login
+                </Link>
               </li>
             </ul>
           </div>
