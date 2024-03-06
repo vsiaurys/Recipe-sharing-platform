@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -29,7 +28,6 @@ public class UserControllerTest {
     private UserService userService;
 
     @Test
-    @WithMockUser(roles = {"USER"})
     void createUser_whenCreateUser_thenReturnIt() throws Exception {
         //  given
         User user = new User(
@@ -42,20 +40,11 @@ public class UserControllerTest {
                 "ROLE_USER");
         given(this.userService.saveUser(any(User.class))).willReturn(user);
 
-        // ObjectMapper om = new ObjectMapper();
-        // om.findAndRegisterModules();
-
         //  when
-        mockMvc.perform(
-                        post("/register")
-                        //       .contentType(MediaType.APPLICATION_JSON)
-                        //       .accept(MediaType.APPLICATION_JSON)
-                        // .content(om.writeValueAsString(user)))
-                        )
+        mockMvc.perform(post("/register"))
                 //  then
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.email").value("abcdefghi.klmno49@efghijk.com"))
-                // .andExpect(jsonPath("$.password").value("Password123&="))
                 .andExpect(jsonPath("$.displayName").value("Smauglys87"))
                 .andExpect(jsonPath("$.firstName").value("Vardas"))
                 .andExpect(jsonPath("$.lastName").value("Pavarde"))
@@ -65,11 +54,7 @@ public class UserControllerTest {
         verify(this.userService).saveUser(any(User.class));
     }
 
-    // public PasswordEncoder passwordEncoder() {
-    //        return new BCryptPasswordEncoder();
-
     @Test
-    @WithMockUser
     void createUser_whenNotAllowed_returnBadRequest() throws Exception {
         //  given
         User user = new User(
@@ -82,16 +67,9 @@ public class UserControllerTest {
                 "ROLE_USER");
         given(this.userService.saveUser(any(User.class))).willReturn(user);
 
-        //        ObjectMapper om = new ObjectMapper();
-        //        om.findAndRegisterModules();
-
         //  when
-        mockMvc.perform(
-                        post("/register")
-                        //                        .contentType(MediaType.APPLICATION_JSON)
-                        //                        .accept(MediaType.APPLICATION_JSON)
-                        //                        .content(om.writeValueAsString(user)))
-                        )
+        mockMvc.perform(post("/register"))
+
                 //  then
                 .andExpect(status().isBadRequest());
 

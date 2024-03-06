@@ -23,13 +23,13 @@ public class User implements UserDetails {
     @NotEmpty(message = "Email cannot be empty")
     private String email;
 
-    @NotEmpty(message = "Password cannot be empty")
-    @Size(min = 6, max = 20, message = "Password must be in range from 6 to 20 characters")
-    @Pattern(regexp = ".*\\d.*", message = "Password must contain at least one digit")
-    @Pattern(regexp = ".*[a-z].*", message = "Password must contain at least one lowercase letter")
-    @Pattern(regexp = ".*[A-Z].*", message = "Password must contain at least one uppercase letter")
-    @Pattern(regexp = ".*[@#$%^&+=].*", message = "Password must contain at least one special character")
-    @Pattern(regexp = "[^\\s]+", message = "No whitespace allowed")
+    //    @NotEmpty(message = "Password cannot be empty")
+    //    @Size(min = 6, max = 20, message = "Password must be in range from 6 to 20 characters")
+    //    @Pattern(regexp = ".*\\d.*", message = "Password must contain at least one digit")
+    //    @Pattern(regexp = ".*[a-z].*", message = "Password must contain at least one lowercase letter")
+    //    @Pattern(regexp = ".*[A-Z].*", message = "Password must contain at least one uppercase letter")
+    //    @Pattern(regexp = ".*[@#$%^&+=].*", message = "Password must contain at least one special character")
+    //    @Pattern(regexp = "[^\\s]+", message = "No whitespace allowed")
     private String password;
 
     @Column(unique = true)
