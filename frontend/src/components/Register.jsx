@@ -181,7 +181,7 @@ export default function Register() {
                     {...register("firstName", {
                       required: "First name is required!",
                       pattern: {
-                        value: /^[A-Z](?!.*(\w)\1{5,})[A-Za-z]{2,}$/,
+                        value: /^[A-Z](?!.*(\w)\1{4,})[A-Za-z]{2,}$/,
                         message:
                           "First name cannot have spaces or special symbols and must start in uppercase and same symbol cannot reapeat 5 times in a row!",
                       },
