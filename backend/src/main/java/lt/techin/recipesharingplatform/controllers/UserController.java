@@ -1,5 +1,6 @@
 package lt.techin.recipesharingplatform.controllers;
 
+import jakarta.validation.Valid;
 import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +21,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-
-        System.out.println(user.getDisplayName());
+    public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
+        if (userService.existsUser(user)) {
+            return ResponseEntity.badRequest().body("User already registered");
+        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        System.out.println(user.getDisplayName());
-
         user.setRole("ROLE_USER");
         User savedUser = this.userService.saveUser(user);
 
