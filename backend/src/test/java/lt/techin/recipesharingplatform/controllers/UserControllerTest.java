@@ -1,6 +1,5 @@
 package lt.techin.recipesharingplatform.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.security.SecurityConfig;
 import lt.techin.recipesharingplatform.services.UserService;
@@ -30,21 +29,28 @@ public class UserControllerTest {
     private UserService userService;
 
     @Test
-    // @WithMockUser
     void createUser_whenCreateUser_thenReturnIt() throws Exception {
         //  given
-        User user = new User(
-                "abcdefghi.klmno49@efghijk.com", /*"Password123&=",*/ "Smauglys87", "Vardas", "Pavarde", "Male");
+        User user = new User("abcdefghi.klmno49@efghijk.com", "Smauglys87", "Vardas", "Pavarde", "Male");
         given(this.userService.saveUser(any(User.class))).willReturn(user);
 
-        ObjectMapper om = new ObjectMapper();
-        // om.findAndRegisterModules();
-
         //  when
-        mockMvc.perform(post("/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(user)))
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                         {
+                                             "displayName": "Smauglys87",
+                                             "email": "abcdefghi.klmno49@efghijk.com",
+                                             "password": "Password=1",
+                                             "firstName": "Vardas",
+                                             "lastName": "Pavarde",
+                                             "gender": "Male"
+                                         }
+                                         """))
+
                 //  then
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.email").value("abcdefghi.klmno49@efghijk.com"))
@@ -57,16 +63,13 @@ public class UserControllerTest {
     }
 
     @Test
-    // @WithMockUser
     void createUser_whenNotAllowed_returnBadRequest() throws Exception {
         //  given
-        User user = new User(
-                "abcdefghi.klmno49@efghijk.com", /*"Password123&=",*/ "Smauglys87", "Vardas", "Pavarde", "Male");
+        User user = new User("abcdefghi.klmno49@efghijk.com", "Smauglys87", "Vardas", "Pavarde", "Male");
         given(this.userService.saveUser(any(User.class))).willReturn(user);
 
         //  when
         mockMvc.perform(post("/register"))
-
                 //  then
                 .andExpect(status().isBadRequest());
 
