@@ -3,12 +3,16 @@ package lt.techin.recipesharingplatform.controllers;
 import jakarta.validation.Valid;
 import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -22,20 +26,16 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
+        Map<String, String> errors = new HashMap<>();
 
         if (userService.existsUserByDisplayName(user) || userService.existsUserByEmail(user)) {
-            // MultiValueMap<String, String> json = new LinkedMultiValueMap<>();
-            String json = "{\n";
-
             if (userService.existsUserByDisplayName(user)) {
-                json = json + "\"displayName\": " + "\"User with display name " + user.getDisplayName()
-                        + " already exists\",\n";
+                errors.put("displayName", "User with display name " + user.getDisplayName() + " already exists");
             }
             if (userService.existsUserByEmail(user)) {
-                json = json + "\"email\": " + "\"User with email " + user.getEmail() + " already exists\"\n";
+                errors.put("email", "User with email " + user.getEmail() + " already exists");
             }
-            json = json + "}";
-            return ResponseEntity.badRequest().body(json);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));

@@ -25,28 +25,4 @@ public class UserService {
     public boolean existsUserByEmail(User user) {
         return userRepository.existsByEmail(user.getEmail());
     }
-    //    public boolean existsUser(User user) {
-    //
-    //        ExampleMatcher matchDisplayName = ExampleMatcher.matching()
-    //                .withIgnorePaths("id")
-    //                .withIgnorePaths("email")
-    //                .withIgnorePaths("password")
-    //                .withIgnorePaths("firstName")
-    //                .withIgnorePaths("lastName")
-    //                .withIgnorePaths("gender")
-    //                .withIgnorePaths("role");
-    //        Example<User> exampleForDisplayName = Example.of(user, matchDisplayName);
-    //
-    //        ExampleMatcher matchEmail = ExampleMatcher.matching()
-    //                .withIgnorePaths("id")
-    //                .withIgnorePaths("displayName")
-    //                .withIgnorePaths("password")
-    //                .withIgnorePaths("firstName")
-    //                .withIgnorePaths("lastName")
-    //                .withIgnorePaths("gender")
-    //                .withIgnorePaths("role");
-    //        Example<User> exampleForEmail = Example.of(user, matchEmail);
-    //
-    //        return userRepository.exists(exampleForDisplayName) || userRepository.exists(exampleForEmail);
-    //    }
 }
