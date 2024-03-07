@@ -61,10 +61,6 @@
             <version>3.0.2</version>
         </dependency>
     </dependencies>
-<<<<<<< HEAD
-
-=======
->>>>>>> 42c8b5f4804ac343413bc437dcb62c54ac143528
     <build>
         <plugins>
             <plugin>
