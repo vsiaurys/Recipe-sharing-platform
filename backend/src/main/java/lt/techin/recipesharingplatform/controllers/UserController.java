@@ -22,6 +22,9 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
+        if (userService.existsUser(user)) {
+            return ResponseEntity.badRequest().body("User already registered");
+        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("ROLE_USER");

@@ -71,20 +71,13 @@ public class User implements UserDetails {
     private String role;
 
     public User(
-            String email,
-            String password,
-            String displayName,
-            String firstName,
-            String lastName,
-            String gender,
-            String role) {
+            String email, /*String password,*/ String displayName, String firstName, String lastName, String gender) {
         this.email = email;
-        this.password = password;
+        // this.password = password;
         this.displayName = displayName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
-        this.role = role;
     }
 
     public User() {}
