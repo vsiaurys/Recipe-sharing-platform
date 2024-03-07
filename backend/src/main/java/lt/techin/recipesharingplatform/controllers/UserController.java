@@ -22,8 +22,20 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
-        if (userService.existsUser(user)) {
-            return ResponseEntity.badRequest().body("User already registered");
+
+        if (userService.existsUserByDisplayName(user) || userService.existsUserByEmail(user)) {
+            // MultiValueMap<String, String> json = new LinkedMultiValueMap<>();
+            String json = "{\n";
+
+            if (userService.existsUserByDisplayName(user)) {
+                json = json + "\"displayName\": " + "\"User with display name " + user.getDisplayName()
+                        + " already exists\",\n";
+            }
+            if (userService.existsUserByEmail(user)) {
+                json = json + "\"email\": " + "\"User with email " + user.getEmail() + " already exists\"\n";
+            }
+            json = json + "}";
+            return ResponseEntity.badRequest().body(json);
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
