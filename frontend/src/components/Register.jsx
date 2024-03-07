@@ -36,7 +36,7 @@ export default function Register() {
                       errors.email ? "is-invalid" : ""
                     }`}
                     id="email"
-                    placeholder="Enter Your e-mail"
+                    placeholder="Enter your e-mail"
                     {...register("email", {
                       required: "Email is required!",
                       pattern: {
@@ -65,7 +65,7 @@ export default function Register() {
                       errors.password ? "is-invalid" : ""
                     }`}
                     id="password"
-                    placeholder="Enter Your password"
+                    placeholder="Enter your password"
                     {...register("password", {
                       required: "Password is required!",
                       pattern: {
@@ -120,7 +120,7 @@ export default function Register() {
                       errors.confirmPassword ? "is-invalid" : ""
                     }`}
                     id="confirmPassword"
-                    placeholder="Repeat Your password"
+                    placeholder="Repeat your password"
                     {...register("confirmPassword", {
                       validate: (value) =>
                         value === password || "The passwords do not match!",
