@@ -38,7 +38,7 @@ function Login() {
         localStorage.setItem("displayName", responseData.displayName);
         localStorage.setItem("role", responseData.role);
         localStorage.setItem("email", responseData.email);
-        navigate("/LoginSuccessful");
+        navigate("/login-successful");
       } else {
         handleLoginResponse("error", responseData.message);
       }

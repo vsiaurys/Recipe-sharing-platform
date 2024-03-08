@@ -25,7 +25,7 @@ function App() {
           element={<Register />}
         />
         <Route
-          path="/LoginSuccessful"
+          path="/login-successful"
           element={<LoginSuccessful />}
         />
       </Routes>
