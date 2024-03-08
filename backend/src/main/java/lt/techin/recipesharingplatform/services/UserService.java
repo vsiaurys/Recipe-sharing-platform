@@ -18,11 +18,11 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
-    public boolean existsUserByDisplayName(User user) {
-        return userRepository.existsByDisplayName(user.getDisplayName());
+    public boolean existsUserByDisplayName(String displayName) {
+        return userRepository.existsByDisplayName(displayName);
     }
 
-    public boolean existsUserByEmail(User user) {
-        return userRepository.existsByEmail(user.getEmail());
+    public boolean existsUserByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

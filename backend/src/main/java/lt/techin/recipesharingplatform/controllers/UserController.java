@@ -28,8 +28,8 @@ public class UserController {
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
         Map<String, String> errors = new HashMap<>();
 
-        boolean existsByDisplayName = userService.existsUserByDisplayName(user);
-        boolean existsByEmail = userService.existsUserByEmail(user);
+        boolean existsByDisplayName = userService.existsUserByDisplayName(user.getDisplayName());
+        boolean existsByEmail = userService.existsUserByEmail(user.getEmail());
 
         if (existsByDisplayName) {
             errors.put("displayName", "User with display name " + user.getDisplayName() + " already exists");
