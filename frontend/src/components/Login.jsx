@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 function Login() {
@@ -11,6 +12,8 @@ function Login() {
   } = useForm();
 
   const [loginMessage, setLoginMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleLoginResponse = (status, message) => {
     if (status === "success") {
@@ -32,7 +35,8 @@ function Login() {
 
       if (response.ok) {
         handleLoginResponse("success", responseData.message);
-        window.location.href = "/LoginSuccessful";
+        localStorage.setItem("role", responseData.role);
+        navigate("/LoginSuccessful");
       } else {
         handleLoginResponse("error", responseData.message);
       }

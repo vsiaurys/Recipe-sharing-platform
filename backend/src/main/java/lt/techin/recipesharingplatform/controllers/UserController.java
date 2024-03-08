@@ -2,7 +2,6 @@ package lt.techin.recipesharingplatform.controllers;
 
 import jakarta.validation.Valid;
 import lt.techin.recipesharingplatform.models.User;
-import lt.techin.recipesharingplatform.repositories.UserRepository;
 import lt.techin.recipesharingplatform.services.UserService;
 import lt.techin.recipesharingplatform.validation.PasswordValidator;
 import org.springframework.http.HttpStatus;
@@ -22,12 +21,9 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    private final UserRepository userRepository;
-
-    public UserController(UserService userService, PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -73,7 +69,7 @@ public class UserController {
 
             if (passwordEncoder.matches(user.getPassword(), userDb.getPassword())) {
                 // Authentication successful
-                return ResponseEntity.ok().body("{\"message\": \"Login successful\"}");
+                return ResponseEntity.ok().body(userOptional);
             }
         }
 
