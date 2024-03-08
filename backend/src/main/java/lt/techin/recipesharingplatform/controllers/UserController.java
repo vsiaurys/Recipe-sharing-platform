@@ -1,6 +1,7 @@
 package lt.techin.recipesharingplatform.controllers;
 
 import jakarta.validation.Valid;
+import lt.techin.recipesharingplatform.dto.UserDto;
 import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -25,23 +26,29 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto userDto) {
         Map<String, String> errors = new HashMap<>();
 
-        boolean existsByDisplayName = userService.existsUserByDisplayName(user.getDisplayName());
-        boolean existsByEmail = userService.existsUserByEmail(user.getEmail());
+        boolean existsByDisplayName = userService.existsUserByDisplayName(userDto.getDisplayName());
+        boolean existsByEmail = userService.existsUserByEmail(userDto.getEmail());
 
         if (existsByDisplayName) {
-            errors.put("displayName", "User with display name " + user.getDisplayName() + " already exists");
+            errors.put("displayName", "User with display name " + userDto.getDisplayName() + " already exists");
         }
         if (existsByEmail) {
-            errors.put("email", "User with email " + user.getEmail() + " already exists");
+            errors.put("email", "User with email " + userDto.getEmail() + " already exists");
         }
         if (existsByDisplayName || existsByEmail) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User user = new User();
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setDisplayName(userDto.getDisplayName());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setGender(userDto.getGender());
         user.setRole("ROLE_USER");
         User savedUser = this.userService.saveUser(user);
 

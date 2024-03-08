@@ -1,5 +1,6 @@
 package lt.techin.recipesharingplatform.controllers;
 
+import lt.techin.recipesharingplatform.dto.UserDto;
 import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.security.SecurityConfig;
 import lt.techin.recipesharingplatform.services.UserService;
@@ -94,7 +95,7 @@ public class UserControllerTest {
         Map<String, String> errors = new HashMap<>();
         errors.put("displayName", "User with display name Display1 already exists");
 
-        given(this.userController.createUser(any(User.class)))
+        given(this.userController.createUser(any(UserDto.class)))
                 .willReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors));
 
         //  when
