@@ -28,13 +28,16 @@ public class UserController {
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
         Map<String, String> errors = new HashMap<>();
 
-        if (userService.existsUserByDisplayName(user) || userService.existsUserByEmail(user)) {
-            if (userService.existsUserByDisplayName(user)) {
-                errors.put("displayName", "User with display name " + user.getDisplayName() + " already exists");
-            }
-            if (userService.existsUserByEmail(user)) {
-                errors.put("email", "User with email " + user.getEmail() + " already exists");
-            }
+        boolean existsByDisplayName = userService.existsUserByDisplayName(user);
+        boolean existsByEmail = userService.existsUserByEmail(user);
+
+        if (existsByDisplayName) {
+            errors.put("displayName", "User with display name " + user.getDisplayName() + " already exists");
+        }
+        if (existsByEmail) {
+            errors.put("email", "User with email " + user.getEmail() + " already exists");
+        }
+        if (existsByDisplayName || existsByEmail) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
         }
 
