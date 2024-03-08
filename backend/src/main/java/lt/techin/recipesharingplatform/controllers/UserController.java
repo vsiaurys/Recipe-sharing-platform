@@ -76,10 +76,7 @@ public class UserController {
 
         // Authentication failed
         Map<String, Object> errorMap = new HashMap<>();
-        errorMap.put("code", 401);
-        errorMap.put("message", "Unauthorized");
-        errorMap.put("details", "The email or password provided is incorrect.");
-
+        errorMap.put("message", "The email or password provided is incorrect.");
         String messageJson = new ObjectMapper().writeValueAsString(errorMap);
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(messageJson);

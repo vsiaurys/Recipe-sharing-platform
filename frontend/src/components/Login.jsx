@@ -40,7 +40,7 @@ function Login() {
         localStorage.setItem("email", responseData.email);
         navigate("/login-successful");
       } else {
-        handleLoginResponse("error", responseData.details);
+        handleLoginResponse("error", responseData.message);
       }
     } catch (error) {
       console.error("Error:", error);
