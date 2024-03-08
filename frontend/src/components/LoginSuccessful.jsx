@@ -1,5 +1,3 @@
-import React from "react";
-
 function LoginSuccessful() {
   const role = localStorage.getItem("role");
   const email = localStorage.getItem("email");
