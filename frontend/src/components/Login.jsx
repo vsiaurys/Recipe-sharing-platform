@@ -35,7 +35,9 @@ function Login() {
 
       if (response.ok) {
         handleLoginResponse("success", responseData.message);
+        localStorage.setItem("displayName", responseData.displayName);
         localStorage.setItem("role", responseData.role);
+        localStorage.setItem("email", responseData.email);
         navigate("/LoginSuccessful");
       } else {
         handleLoginResponse("error", responseData.message);
