@@ -39,7 +39,8 @@ public class UserControllerTest {
     @Test
     void createUser_whenCreateUser_thenReturnIt() throws Exception {
         //  given
-        User user = new User("abcdefghi.klmno49@efghijk.com", "Smauglys87", "Vardas", "Pavarde", "Male");
+        User user =
+                new User("abcdefghi.klmno49@efghijk.com", "Password=123", "Smauglys87", "Vardas", "Pavarde", "Male");
         given(this.userService.saveUser(any(User.class))).willReturn(user);
 
         //  when
@@ -73,7 +74,8 @@ public class UserControllerTest {
     @Test
     void createUser_whenNotAllowed_returnBadRequest() throws Exception {
         //  given
-        User user = new User("abcdefghi.klmno49@efghijk.com", "Smauglys87", "Vardas", "Pavarde", "Male");
+        User user =
+                new User("abcdefghi.klmno49@efghijk.com", "Password=123", "Smauglys87", "Vardas", "Pavarde", "Male");
         given(this.userService.saveUser(any(User.class))).willReturn(user);
 
         //  when
@@ -87,7 +89,7 @@ public class UserControllerTest {
     @Test
     void createUser_whenDisplayNameExists_thenReturnBadRequest() throws Exception {
         //  given
-        User user = new User("email@email.com", "Display1", "Name", "Lastname", "Other");
+        User user = new User("email@email.com", "Password=123", "Display1", "Name", "Lastname", "Other");
 
         Map<String, String> errors = new HashMap<>();
         errors.put("displayName", "User with display name Display1 already exists");
