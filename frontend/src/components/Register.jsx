@@ -10,8 +10,22 @@ export default function Register() {
   } = useForm();
   const password = watch("password");
 
+  //const [resgisterMessage, setRegisterMessage] = useState("");
+
   const onSubmit = (data) => {
     console.log(data);
+
+    const postData = async () => {
+      const send = await fetch("http://localhost:8080/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          //Authorization: "Basic " + btoa("login:password"),
+        },
+        body: JSON.stringify(data),
+      });
+    };
+    postData();
   };
 
   return (
@@ -278,9 +292,9 @@ export default function Register() {
                     {...register("gender", { required: true })}
                   >
                     <option value="">Select...</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
                   </select>
                   {errors.gender && errors.gender.type === "required" && (
                     <div className="invalid-feedback">
