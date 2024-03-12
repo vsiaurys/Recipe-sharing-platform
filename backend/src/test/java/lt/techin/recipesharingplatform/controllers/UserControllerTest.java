@@ -82,7 +82,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void existsUserByDisplayName_whenDisplayNameExists_thenReturnBadRequest() throws Exception {
+    void createUser_whenDisplayNameExists_thenReturnBadRequest() throws Exception {
         //  given
         given(this.userService.existsUserByDisplayName("Display1")).willReturn(true);
 
