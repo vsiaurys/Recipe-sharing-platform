@@ -41,7 +41,6 @@ public class UserControllerTest {
                         post("/register")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
-                                //             .content(om.writeValueAsString(userDto)))
                                 .content(
                                         """
                                                          {
@@ -136,6 +135,35 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest());
 
         verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService).existsUserByEmail("email@email.com");
+    }
+
+    @Test
+    void createUser_whenEmailNotExists_thenReturnIsCreated() throws Exception {
+        //  given
+        given(this.userService.existsUserByEmail("email@email.com")).willReturn(false);
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "Display1",
+                                                                             "email": "email@email.com",
+                                                                             "password": "Password=1",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarde",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isCreated());
+
+        verify(this.userService).saveUser(any(User.class));
         verify(this.userService).existsUserByEmail("email@email.com");
     }
 }
