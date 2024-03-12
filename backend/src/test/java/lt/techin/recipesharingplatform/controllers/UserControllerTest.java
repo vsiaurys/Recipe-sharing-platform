@@ -3,20 +3,13 @@ package lt.techin.recipesharingplatform.controllers;
 import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.security.SecurityConfig;
 import lt.techin.recipesharingplatform.services.UserService;
-import lt.techin.recipesharingplatform.validation.UserValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -35,8 +28,8 @@ public class UserControllerTest {
     @MockBean
     private UserService userService;
 
-    @MockBean
-    private UserValidator userValidator;
+    //    @MockBean
+    //    private UserValidator userValidator;
 
     @Test
     void createUser_whenCreateUser_thenReturnIt() throws Exception {
@@ -208,11 +201,6 @@ public class UserControllerTest {
     void createUser_whenEmptyEmail_thenReturnBadRequest() throws Exception {
         //  given
 
-        Map<String, String> errors = new HashMap<>();
-        errors.put("email", "Email cannot be empty");
-        given(this.userValidator.handleValidationExceptions(any(MethodArgumentNotValidException.class)))
-                .willReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors));
-
         //  when
         mockMvc.perform(
                         post("/register")
@@ -233,7 +221,5 @@ public class UserControllerTest {
                 //  then
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.email").value("Email cannot be empty"));
-
-        verify(this.userValidator).handleValidationExceptions(any(MethodArgumentNotValidException.class));
     }
 }
