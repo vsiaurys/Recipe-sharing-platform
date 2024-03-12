@@ -253,8 +253,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.email").value("Please provide a valid email address"));
 
         verify(this.userService, times(0)).saveUser(any(User.class));
-        verify(this.userService, times(0)).existsUserByEmail("");
-        verify(this.userService, times(0)).existsUserByDisplayName("");
+        verify(this.userService, times(0)).existsUserByEmail("BadEmail");
+        verify(this.userService, times(0)).existsUserByDisplayName("Display1");
     }
 
     @Test
