@@ -221,6 +221,10 @@ public class UserControllerTest {
                 //  then
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.email").value("Email cannot be empty"));
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService, times(0)).existsUserByEmail("");
+        verify(this.userService, times(0)).existsUserByDisplayName("");
     }
 
     @Test
@@ -298,5 +302,31 @@ public class UserControllerTest {
                 //  then
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.password").value("Password must contain at least one digit"));
+    }
+
+    @Test
+    void createUser_whenPasswordHasNoLowercaseLetter_thenReturnBadRequest() throws Exception {
+        //  given
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "Display1",
+                                                                             "email": "email@email.com",
+                                                                             "password": "BADPASSWORD=1",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarde",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.password").value("Password must contain at least one lowercase letter"));
     }
 }
