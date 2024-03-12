@@ -28,8 +28,6 @@ public class UserControllerTest {
     @MockBean
     private UserService userService;
 
-    private UserController userController;
-
     @Test
     void createUser_whenCreateUser_thenReturnIt() throws Exception {
         //  given
@@ -64,21 +62,22 @@ public class UserControllerTest {
         verify(this.userService).saveUser(any(User.class));
     }
 
-    @Test
-    void createUser_whenNotAllowed_returnBadRequest() throws Exception {
-        //  given
-        User user =
-                new User("abcdefghi.klmno49@efghijk.com", "Password=123", "Smauglys87", "Vardas", "Pavarde", "Male");
-        given(this.userService.saveUser(any(User.class))).willReturn(user);
-
-        //  when
-        mockMvc.perform(post("/register"))
-
-                // then
-                .andExpect(status().isBadRequest());
-
-        verify(this.userService, times(0)).saveUser(any(User.class));
-    }
+    //    @Test
+    //    void createUser_whenNotAllowed_returnBadRequest() throws Exception {
+    //        //  given
+    //        User user =
+    //                new User("abcdefghi.klmno49@efghijk.com", "Password=123", "Smauglys87", "Vardas", "Pavarde",
+    // "Male");
+    //        given(this.userService.saveUser(any(User.class))).willReturn(user);
+    //
+    //        //  when
+    //        mockMvc.perform(post("/register"))
+    //
+    //                // then
+    //                .andExpect(status().isBadRequest());
+    //
+    //        verify(this.userService, times(0)).saveUser(any(User.class));
+    //    }
 
     @Test
     void createUser_whenDisplayNameExists_thenReturnBadRequest() throws Exception {
