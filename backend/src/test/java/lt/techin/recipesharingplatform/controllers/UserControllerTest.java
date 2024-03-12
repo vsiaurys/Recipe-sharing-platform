@@ -102,7 +102,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void login_withIncorrectCredentials_returnUnauthorized() throws Exception {
+    public void login_withIncorrectEmail_returnUnauthorized() throws Exception {
         // Given
         User user =
                 new User("test@example.com", "wrongpassword", "Smauglys87", "Vardas", "Pavarde", "Male", "ROLE_USER");
