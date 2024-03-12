@@ -110,6 +110,35 @@ public class UserControllerTest {
     }
 
     @Test
+    void createUser_whenDisplayNameNotExists_thenReturnIsCreated() throws Exception {
+        //  given
+        given(this.userService.existsUserByDisplayName("Display1")).willReturn(false);
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "Display1",
+                                                                             "email": "email@email.com",
+                                                                             "password": "Password=1",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarde",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isCreated());
+
+        verify(this.userService).saveUser(any(User.class));
+        verify(this.userService).existsUserByDisplayName("Display1");
+    }
+
+    @Test
     void createUser_whenEmailExists_thenReturnBadRequest() throws Exception {
         //  given
         given(this.userService.existsUserByEmail("email@email.com")).willReturn(true);
