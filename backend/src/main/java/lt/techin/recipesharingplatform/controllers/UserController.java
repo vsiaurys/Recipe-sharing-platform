@@ -50,12 +50,14 @@ public class UserController {
         user.setLastName(userDto.getLastName());
         user.setGender(userDto.getGender());
         user.setRole("ROLE_USER");
-        User savedUser = this.userService.saveUser(user);
+        //   User savedUser = this.userService.saveUser(user);
 
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("/{id}")
-                        .buildAndExpand(savedUser.getId())
+                        //           .buildAndExpand(savedUser.getId())
+                        .buildAndExpand(user.getId())
                         .toUri())
-                .body(savedUser);
+                //        .body(savedUser);
+                .body(this.userService.saveUser(user));
     }
 }
