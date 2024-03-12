@@ -248,4 +248,29 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.email").value("Please provide a valid email address"));
     }
+
+    @Test
+    void createUser_whenEmptyPassword_thenReturnBadRequest() throws Exception {
+        //  given
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "Display1",
+                                                                             "email": "email@email.com",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarde",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.password").value("Password cannot be empty"));
+    }
 }
