@@ -109,74 +109,33 @@ public class UserControllerTest {
         verify(this.userService, times(0)).saveUser(any(User.class));
         verify(this.userService).existsUserByDisplayName("Display1");
     }
-    //    //
-    //    //    @Test
-    //    //    void createUser_whenEmailExists_thenReturnBadRequest() throws Exception {
-    //    //        //  given
-    //    //        Map<String, String> errors = new HashMap<>();
-    //    //        errors.put("email", "User with email abcdefghi.klmno49@efghijk.com already exists");
-    //    //
-    //    //        given(this.userController.createUser(any(UserDto.class)))
-    //    //                .willReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors));
-    //    //
-    //    //        //  when
-    //    //        mockMvc.perform(
-    //    //                        post("/register")
-    //    //                                .contentType(MediaType.APPLICATION_JSON)
-    //    //                                .accept(MediaType.APPLICATION_JSON)
-    //    //                                .content(
-    //    //                                        """
-    //    //                                                                 {
-    //    //                                                                     "displayName": "Display1",
-    //    //                                                                     "email":
-    // "abcdefghi.klmno49@efghijk.com",
-    //    //                                                                     "password": "Password=1",
-    //    //                                                                     "firstName": "Vardas",
-    //    //                                                                     "lastName": "Pavarde",
-    //    //                                                                     "gender": "Female"
-    //    //                                                                 }
-    //    //                                                                 """))
-    //    //
-    //    //                //  then
-    //    //                .andExpect(status().isBadRequest())
-    //    //                .andExpect(jsonPath("$.email").value("User with email abcdefghi.klmno49@efghijk.com already
-    //    // exists"));
-    //    //
-    //    //        verify(this.userService, times(0)).saveUser(any(User.class));
-    //    //    }
-    //    @Test
-    //    void createUser_whenEmailExists_thenReturnBadRequest() throws Exception {
-    //        //  given
-    //        //  User user =
-    //        //       new User("abcdefghi.klmno49@efghijk.com", "Password=123", "Smauglys87", "Vardas", "Pavarde",
-    // "Male");
-    //        //        Map<String, String> errors = new HashMap<>();
-    //        //        errors.put("email", "User with email email@email.com already exists");
-    //
-    //        given(this.userService.existsUserByEmail(any(String.class))).willReturn(true);
-    //
-    //        //  when
-    //        //        mockMvc.perform(
-    //        //                        post("/register")
-    //        //                                .contentType(MediaType.APPLICATION_JSON)
-    //        //                                .accept(MediaType.APPLICATION_JSON)
-    //        //                                .content(
-    //        //                                        """
-    //        //                                                             {
-    //        //                                                                 "displayName": "Display1",
-    //        //                                                                 "email": "email@email.com",
-    //        //                                                                 "password": "Password=1",
-    //        //                                                                 "firstName": "Vardas",
-    //        //                                                                 "lastName": "Pavarde",
-    //        //                                                                 "gender": "Female"
-    //        //                                                             }
-    //        //                                                             """))
-    //        //
-    //        //                //  then
-    //        //                .andExpect(status().isBadRequest());
-    //        //        .andExpect(jsonPath("$.email").value("User with email email@email.com already exists"));
-    //
-    //        verify(this.userService, times(0)).saveUser(any(User.class));
-    //    }
-    // }
+
+    @Test
+    void createUser_whenEmailExists_thenReturnBadRequest() throws Exception {
+        //  given
+        given(this.userService.existsUserByEmail("email@email.com")).willReturn(true);
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "Display1",
+                                                                             "email": "email@email.com",
+                                                                             "password": "Password=1",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarde",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isBadRequest());
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService).existsUserByEmail("email@email.com");
+    }
 }
