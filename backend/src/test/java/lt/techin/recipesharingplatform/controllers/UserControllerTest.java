@@ -85,7 +85,8 @@ public class UserControllerTest {
                                                                          """))
 
                 //  then
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.displayName").value("User with display name Display1 already exists"));
 
         verify(this.userService, times(0)).saveUser(any(User.class));
         verify(this.userService).existsUserByDisplayName("Display1");
