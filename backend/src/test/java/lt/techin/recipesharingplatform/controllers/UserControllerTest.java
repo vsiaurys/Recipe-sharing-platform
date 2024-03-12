@@ -144,7 +144,8 @@ public class UserControllerTest {
                                                                          """))
 
                 //  then
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.email").value("User with email email@email.com already exists"));
 
         verify(this.userService, times(0)).saveUser(any(User.class));
         verify(this.userService).existsUserByEmail("email@email.com");
