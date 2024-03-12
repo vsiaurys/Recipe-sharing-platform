@@ -282,8 +282,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.password").value("Password cannot be empty"));
 
         verify(this.userService, times(0)).saveUser(any(User.class));
-        verify(this.userService, times(0)).existsUserByEmail("");
-        verify(this.userService, times(0)).existsUserByDisplayName("");
+        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+        verify(this.userService, times(0)).existsUserByDisplayName("Display1");
     }
 
     @Test
