@@ -81,38 +81,34 @@ public class UserControllerTest {
         verify(this.userService, times(0)).saveUser(any(User.class));
     }
 
-    //    @Test
-    //    void createUser_whenDisplayNameExists_thenReturnBadRequest() throws Exception {
-    //        //  given
-    //        Map<String, String> errors = new HashMap<>();
-    //        errors.put("displayName", "User with display name Display1 already exists");
-    //
-    //        given(this.userController.createUser(any(UserDto.class)))
-    //                .willReturn(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors));
-    //
-    //        //  when
-    //        mockMvc.perform(
-    //                        post("/register")
-    //                                .contentType(MediaType.APPLICATION_JSON)
-    //                                .accept(MediaType.APPLICATION_JSON)
-    //                                .content(
-    //                                        """
-    //                                                                     {
-    //                                                                         "displayName": "Display1",
-    //                                                                         "email": "abcdefghi.klmno49@efghijk.com",
-    //                                                                         "password": "Password=1",
-    //                                                                         "firstName": "Vardas",
-    //                                                                         "lastName": "Pavarde",
-    //                                                                         "gender": "Female"
-    //                                                                     }
-    //                                                                     """))
-    //
-    //                //  then
-    //                .andExpect(status().isBadRequest())
-    //                .andExpect(jsonPath("$.displayName").value("User with display name Display1 already exists"));
-    //
-    //        verify(this.userService, times(0)).saveUser(any(User.class));
-    //    }
+    @Test
+    void existsUserByDisplayName_whenDisplayNameExists_thenReturnBadRequest() throws Exception {
+        //  given
+        given(this.userService.existsUserByDisplayName("Display1")).willReturn(true);
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "Display1",
+                                                                             "email": "abcdefghi.klmno49@efghijk.com",
+                                                                             "password": "Password=1",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarde",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isBadRequest());
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService).existsUserByDisplayName("Display1");
+    }
     //    //
     //    //    @Test
     //    //    void createUser_whenEmailExists_thenReturnBadRequest() throws Exception {
