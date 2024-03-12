@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import badWords from "./BadWords";
 
@@ -7,8 +8,10 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm();
   const password = watch("password");
+  const [showModal, setShowModal] = useState(false);
 
   //const [resgisterMessage, setRegisterMessage] = useState("");
 
@@ -24,6 +27,8 @@ export default function Register() {
         },
         body: JSON.stringify(data),
       });
+      reset();
+      setShowModal(true);
     };
     postData();
   };
@@ -311,6 +316,50 @@ export default function Register() {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className={`modal fade ${showModal ? "show" : ""}`}
+        style={{ display: showModal ? "block" : "none" }}
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div
+          className="modal-dialog modal-dialog-centered"
+          role="document"
+        >
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5
+                className="modal-title text-success"
+                id="exampleModalCenterTitle"
+              >
+                Registration Successful!
+              </h5>
+              {/* <button
+                type="button"
+                className="close"
+                onClick={() => setShowModal(false)}
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button> */}
+            </div>
+            <div className="modal-body">
+              Your registration was successful. Now you can login.
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => setShowModal(false)}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
