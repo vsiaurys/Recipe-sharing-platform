@@ -96,6 +96,8 @@ public class UserControllerTest {
     void createUser_whenDisplayNameNotExists_thenReturnIsCreated() throws Exception {
         //  given
         given(this.userService.existsUserByDisplayName("Display1")).willReturn(false);
+        User user = new User("email@email.com", "Password=1", "Display1", "Vardas", "Pavarde", "Female");
+        given(this.userService.saveUser(any(User.class))).willReturn(user);
 
         //  when
         mockMvc.perform(
@@ -115,7 +117,12 @@ public class UserControllerTest {
                                                                          """))
 
                 //  then
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.email").value("email@email.com"))
+                .andExpect(jsonPath("$.displayName").value("Display1"))
+                .andExpect(jsonPath("$.firstName").value("Vardas"))
+                .andExpect(jsonPath("$.lastName").value("Pavarde"))
+                .andExpect(jsonPath("$.gender").value("Female"));
 
         verify(this.userService).saveUser(any(User.class));
         verify(this.userService).existsUserByDisplayName("Display1");
