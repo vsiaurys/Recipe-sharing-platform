@@ -273,4 +273,30 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.password").value("Password cannot be empty"));
     }
+
+    @Test
+    void createUser_whenPasswordHasNoDigit_thenReturnBadRequest() throws Exception {
+        //  given
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "Display1",
+                                                                             "email": "email@email.com",
+                                                                             "password": "BadPassword=",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarde",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.password").value("Password must contain at least one digit"));
+    }
 }
