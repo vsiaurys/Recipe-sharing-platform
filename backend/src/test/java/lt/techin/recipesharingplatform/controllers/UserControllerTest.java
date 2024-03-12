@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -96,5 +99,34 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest());
 
         verify(this.userService, times(0)).saveUser(any(User.class));
+    }
+
+    @Test
+    public void testWrongEmailWrongPasswordReturnsError() throws Exception {
+        // Given
+        User user =
+                new User("test@example.com", "wrongpassword", "Smauglys87", "Vardas", "Pavarde", "Male", "ROLE_USER");
+        given(userService.findUserByEmail(user.getEmail())).willReturn(Optional.empty());
+
+        // When
+        mockMvc.perform(
+                        post("/login")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                        {
+                            "email": "test@example.com",
+                            "password": "wrongpassword",
+                            "username": "Smauglys87",
+                            "firstName": "Vardas",
+                            "lastName": "Pavarde",
+                            "gender": "Male",
+                            "role": "ROLE_USER"
+                        }
+                        """))
+
+                // Then
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value("The email or password provided is incorrect."));
     }
 }
