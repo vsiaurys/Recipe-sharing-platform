@@ -128,5 +128,8 @@ public class UserControllerTest {
                 // Then
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.message").value("The email or password provided is incorrect."));
+
+        // Verify
+        verify(userService).findUserByEmail("test@example.com");
     }
 }
