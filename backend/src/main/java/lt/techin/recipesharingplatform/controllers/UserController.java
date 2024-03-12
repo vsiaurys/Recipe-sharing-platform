@@ -1,7 +1,6 @@
 package lt.techin.recipesharingplatform.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.services.UserService;
@@ -75,10 +74,9 @@ public class UserController {
         }
 
         // Authentication failed
-        Map<String, Object> errorMap = new HashMap<>();
+        Map<String, String> errorMap = new HashMap<>();
         errorMap.put("message", "The email or password provided is incorrect.");
-        String messageJson = new ObjectMapper().writeValueAsString(errorMap);
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(messageJson);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorMap);
     }
 }
