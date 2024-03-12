@@ -310,6 +310,10 @@ public class UserControllerTest {
                 //  then
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.password").value("Password must contain at least one digit"));
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService, times(0)).existsUserByEmail("");
+        verify(this.userService, times(0)).existsUserByDisplayName("");
     }
 
     @Test
