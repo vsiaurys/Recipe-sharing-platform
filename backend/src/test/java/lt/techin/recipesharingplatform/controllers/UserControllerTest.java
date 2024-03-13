@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -18,6 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,6 +31,9 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
 
     @Test
     @WithMockUser(roles = {"USER"})
@@ -111,7 +115,7 @@ public class UserControllerTest {
         // When
         mockMvc.perform(
                         post("/login")
-                                .contentType(MediaType.APPLICATION_JSON)
+                                .contentType(APPLICATION_JSON)
                                 .content(
                                         """
                         {
@@ -126,6 +130,32 @@ public class UserControllerTest {
                         """))
 
                 // Then
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value("The email or password provided is incorrect."));
+
+        // Verify
+        verify(userService).findUserByEmail("test@example.com");
+    }
+
+    @Test
+    public void login_withIncorrectPassword_returnUnauthorized() throws Exception {
+        // Given
+        User user =
+                new User("test@example.com", "correctpassword", "Smauglys87", "Vardas", "Pavarde", "Male", "ROLE_USER");
+        given(userService.findUserByEmail(user.getEmail())).willReturn(Optional.of(user));
+        given(passwordEncoder.matches("wrongpassword", user.getPassword())).willReturn(false);
+
+        // When & Then
+        mockMvc.perform(
+                        post("/login")
+                                .contentType(APPLICATION_JSON)
+                                .content(
+                                        """
+                        {
+                            "email": "test@example.com",
+                            "password": "wrongpassword"
+                        }
+                        """))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.message").value("The email or password provided is incorrect."));
 
