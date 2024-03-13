@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lt.techin.recipesharingplatform.validation.NoOffensiveWords;
+import lt.techin.recipesharingplatform.validation.OffensiveWords;
 
 public class UserDto {
     @NotEmpty(message = "Email cannot be empty")
@@ -28,9 +28,11 @@ public class UserDto {
     @Size(min = 3, max = 15, message = "Display name must be in range between 3 and 15 characters")
     @Pattern.List({
         @Pattern(regexp = "[A-Za-z].*", message = "Display name must start out of a letter"),
-        @Pattern(regexp = "[a-zA-Z0-9]+", message = "Display name may contain only letters and digits")
+        @Pattern(regexp = "[a-zA-Z0-9]+", message = "Display name may contain only letters and digits"),
+        @Pattern(
+                regexp = OffensiveWords.OFFENSIVE_WORDS_PATTERN,
+                message = "Display name cannot contain offensive words")
     })
-    @NoOffensiveWords(message = "Display name cannot contain offensive words")
     private String displayName;
 
     @NotEmpty(message = "First name cannot be empty")
