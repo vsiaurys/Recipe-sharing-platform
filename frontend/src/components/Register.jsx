@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import badWords from "./BadWords";
+import { useNavigate } from "react-router-dom";
+//import { useNavigate, useParams } from "react-router-dom";
 
 export default function Register() {
   const {
@@ -13,23 +15,36 @@ export default function Register() {
   const password = watch("password");
   const [showModal, setShowModal] = useState(false);
 
+  const navigate = useNavigate();
+  //const { displayName } = useParams();
+
   //const [resgisterMessage, setRegisterMessage] = useState("");
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    setShowModal(true);
 
     const postData = async () => {
-      const send = await fetch("http://localhost:8080/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          //Authorization: "Basic " + btoa("login:password"),
-        },
-        body: JSON.stringify(data),
-      });
-      reset();
-      setShowModal(true);
+      try {
+        const response = await fetch("http://localhost:8080/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          reset();
+          setTimeout(() => {
+            navigate("/");
+          }, 4000);
+        } else {
+        }
+      } catch (error) {
+        console.error("Error registering user:", error);
+      }
     };
+
     postData();
   };
 
