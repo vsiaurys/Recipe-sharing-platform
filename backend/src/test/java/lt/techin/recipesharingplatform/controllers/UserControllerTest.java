@@ -853,4 +853,64 @@ public class UserControllerTest {
         verify(this.userService, times(0)).existsUserByEmail("email@email.com");
         verify(this.userService, times(0)).existsUserByDisplayName("Display1");
     }
+
+    ////
+    @Test
+    void createUser_whenEmptyGender_thenReturnBadRequest() throws Exception {
+        //  given
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "Display1",
+                                                                             "email": "email@email.com",
+                                                                             "password": "Password=1",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarde"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.gender").value("Gender cannot be empty"));
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+        verify(this.userService, times(0)).existsUserByDisplayName("Display1");
+    }
+
+    //    @Test
+    //    void createUser_whenLastNameTooShort_thenReturnBadRequest() throws Exception {
+    //        //  given
+    //
+    //        //  when
+    //        mockMvc.perform(
+    //                        post("/register")
+    //                                .contentType(MediaType.APPLICATION_JSON)
+    //                                .accept(MediaType.APPLICATION_JSON)
+    //                                .content(
+    //                                        """
+    //                                                                             {
+    //                                                                                 "displayName": "Display1",
+    //                                                                                 "email": "email@email.com",
+    //                                                                                 "password": "Password=1",
+    //                                                                                 "firstName": "Vardas",
+    //                                                                                 "lastName": "L",
+    //                                                                                 "gender": "Female"
+    //                                                                             }
+    //                                                                             """))
+    //
+    //                //  then
+    //                .andExpect(status().isBadRequest())
+    //                .andExpect(jsonPath("$.lastName").value("Last name must be at least 2 characters"));
+    //
+    //        verify(this.userService, times(0)).saveUser(any(User.class));
+    //        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+    //        verify(this.userService, times(0)).existsUserByDisplayName("Display1");
+    //    }
 }
