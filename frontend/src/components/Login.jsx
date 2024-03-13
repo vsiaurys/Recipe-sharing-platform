@@ -54,7 +54,7 @@ function Login() {
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
-              <h3 className="card-title">Login</h3>
+              <h1 className="card-title display-6">Login</h1>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-3">
                   <label
