@@ -285,7 +285,37 @@ public class UserControllerTest {
         verify(this.userService, times(0)).existsUserByEmail("email@email.com");
         verify(this.userService, times(0)).existsUserByDisplayName("Display1");
     }
+    //////////////
+    @Test
+    void createUser_whenShortPassword_thenReturnBadRequest() throws Exception {
+        //  given
 
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                     {
+                                                                         "displayName": "Display1",
+                                                                         "email": "email@email.com",
+                                                                         "password": "Bad=1",
+                                                                         "firstName": "Vardas",
+                                                                         "lastName": "Pavarde",
+                                                                         "gender": "Female"
+                                                                     }
+                                                                     """))
+
+                //  then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.password").value("Password must be at least 6 characters long"));
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+        verify(this.userService, times(0)).existsUserByDisplayName("Display1");
+    }
+    ///////////
     @Test
     void createUser_whenPasswordHasNoDigit_thenReturnBadRequest() throws Exception {
         //  given
