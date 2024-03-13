@@ -162,4 +162,25 @@ public class UserControllerTest {
         // Verify
         verify(userService).findUserByEmail("test@example.com");
     }
+
+    @Test
+    public void login_withCorrectCredentials_returnOk() throws Exception {
+        // Given
+        User user =
+                new User("test@example.com", "correctpassword", "Smauglys87", "Vardas", "Pavarde", "Male", "ROLE_USER");
+        given(userService.findUserByEmail(user.getEmail())).willReturn(Optional.of(user));
+        given(passwordEncoder.matches("correctpassword", user.getPassword())).willReturn(true);
+
+        mockMvc.perform(
+                        post("/login")
+                                .contentType(APPLICATION_JSON)
+                                .content(
+                                        """
+                                {
+                                    "email": "test@example.com",
+                                    "password": "correctpassword"
+                                }
+                                """))
+                .andExpect(status().isOk());
+    }
 }
