@@ -181,6 +181,11 @@ public class UserControllerTest {
                                     "password": "correctpassword"
                                 }
                                 """))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value(user.getEmail()))
+                .andExpect(jsonPath("$.role").value(user.getRole()));
+
+        // Verify
+        verify(userService).findUserByEmail("test@example.com");
     }
 }
