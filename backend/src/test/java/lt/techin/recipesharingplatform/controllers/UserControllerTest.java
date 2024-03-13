@@ -527,7 +527,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void createUser_whenDisplayNotStartsFromLetter_thenReturnBadRequest() throws Exception {
+    void createUser_whenDisplayNameNotStartsFromLetter_thenReturnBadRequest() throws Exception {
         //  given
 
         //  when
@@ -554,5 +554,35 @@ public class UserControllerTest {
         verify(this.userService, times(0)).saveUser(any(User.class));
         verify(this.userService, times(0)).existsUserByEmail("email@email.com");
         verify(this.userService, times(0)).existsUserByDisplayName("1DisplayName");
+    }
+
+    @Test
+    void createUser_whenDisplayNameContainsBadCharacters_thenReturnBadRequest() throws Exception {
+        //  given
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "Display1@",
+                                                                             "email": "email@email.com",
+                                                                             "password": "Password=1",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarde",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.displayName").value("Display name may contain only letters and digits"));
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+        verify(this.userService, times(0)).existsUserByDisplayName("Display1@");
     }
 }
