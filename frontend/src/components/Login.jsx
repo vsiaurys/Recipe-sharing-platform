@@ -123,13 +123,7 @@ function Login() {
                       className="btn btn-outline-secondary"
                       onClick={() => setPasswordVisible(!passwordVisible)}
                     >
-                      <i
-                        className={`react-icon ${
-                          passwordVisible ? "eye-slash" : "eye"
-                        }`}
-                      >
-                        {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-                      </i>
+                      {passwordVisible ? <FaEyeSlash /> : <FaEye />}
                     </button>
                   </div>
                   {errors.password && (
