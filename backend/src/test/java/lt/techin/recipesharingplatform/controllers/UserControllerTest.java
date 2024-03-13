@@ -884,7 +884,36 @@ public class UserControllerTest {
         verify(this.userService, times(0)).existsUserByDisplayName("Display1");
     }
 
-    ////
+    @Test
+    void createUser_whenLastNameHas5SameCharacters_thenReturnBadRequest() throws Exception {
+        //  given
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "Display1",
+                                                                             "email": "email@email.com",
+                                                                             "password": "Password=1",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarrrrrrde",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.lastName").value("Same character cannot repeat 5 times or more"));
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+        verify(this.userService, times(0)).existsUserByDisplayName("Display1");
+    }
+
     @Test
     void createUser_whenEmptyGender_thenReturnBadRequest() throws Exception {
         //  given
