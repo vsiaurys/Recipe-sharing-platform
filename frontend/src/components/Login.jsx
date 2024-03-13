@@ -77,6 +77,7 @@ function Login() {
                         message: "Invalid email address",
                       },
                     })}
+                    autoComplete="email"
                   />
                   {errors.email && (
                     <div className="invalid-feedback">
@@ -110,6 +111,7 @@ function Login() {
                         message: "Password must be at most 20 characters long",
                       },
                     })}
+                    autoComplete="current-password"
                   />
                   {errors.password && (
                     <div className="invalid-feedback">
