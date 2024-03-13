@@ -734,4 +734,123 @@ public class UserControllerTest {
         verify(this.userService, times(0)).existsUserByEmail("email@email.com");
         verify(this.userService, times(0)).existsUserByDisplayName("Display1");
     }
+
+    @Test
+    void createUser_whenEmptyLastName_thenReturnBadRequest() throws Exception {
+        //  given
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "Display1",
+                                                                             "email": "email@email.com",
+                                                                             "password": "Password=1",
+                                                                             "firstName": "Vardas",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.lastName").value("Last name cannot be empty"));
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+        verify(this.userService, times(0)).existsUserByDisplayName("Display1");
+    }
+
+    //    @Test
+    //    void createUser_whenFirstNameTooShort_thenReturnBadRequest() throws Exception {
+    //        //  given
+    //
+    //        //  when
+    //        mockMvc.perform(
+    //                        post("/register")
+    //                                .contentType(MediaType.APPLICATION_JSON)
+    //                                .accept(MediaType.APPLICATION_JSON)
+    //                                .content(
+    //                                        """
+    //                                                                         {
+    //                                                                             "displayName": "Display1",
+    //                                                                             "email": "email@email.com",
+    //                                                                             "password": "Password=1",
+    //                                                                             "firstName": "N",
+    //                                                                             "lastName": "Pavarde",
+    //                                                                             "gender": "Female"
+    //                                                                         }
+    //                                                                         """))
+    //
+    //                //  then
+    //                .andExpect(status().isBadRequest())
+    //                .andExpect(jsonPath("$.firstName").value("First name must be at least 2 characters"));
+    //
+    //        verify(this.userService, times(0)).saveUser(any(User.class));
+    //        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+    //        verify(this.userService, times(0)).existsUserByDisplayName("Display1");
+    //    }
+    //
+    //    @Test
+    //    void createUser_whenFirstNameNotStartsWithAnUppercaseLetter_thenReturnBadRequest() throws Exception {
+    //        //  given
+    //
+    //        //  when
+    //        mockMvc.perform(
+    //                        post("/register")
+    //                                .contentType(MediaType.APPLICATION_JSON)
+    //                                .accept(MediaType.APPLICATION_JSON)
+    //                                .content(
+    //                                        """
+    //                                                                         {
+    //                                                                             "displayName": "Display1",
+    //                                                                             "email": "email@email.com",
+    //                                                                             "password": "Password=1",
+    //                                                                             "firstName": "name",
+    //                                                                             "lastName": "Pavarde",
+    //                                                                             "gender": "Female"
+    //                                                                         }
+    //                                                                         """))
+    //
+    //                //  then
+    //                .andExpect(status().isBadRequest())
+    //                .andExpect(jsonPath("$.firstName").value("First name must start out of a letter in uppercase"));
+    //
+    //        verify(this.userService, times(0)).saveUser(any(User.class));
+    //        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+    //        verify(this.userService, times(0)).existsUserByDisplayName("Display1");
+    //    }
+    //
+    //    @Test
+    //    void createUser_whenFirstNameContainsDigits_thenReturnBadRequest() throws Exception {
+    //        //  given
+    //
+    //        //  when
+    //        mockMvc.perform(
+    //                        post("/register")
+    //                                .contentType(MediaType.APPLICATION_JSON)
+    //                                .accept(MediaType.APPLICATION_JSON)
+    //                                .content(
+    //                                        """
+    //                                                                         {
+    //                                                                             "displayName": "Display1",
+    //                                                                             "email": "email@email.com",
+    //                                                                             "password": "Password=1",
+    //                                                                             "firstName": "Name123",
+    //                                                                             "lastName": "Pavarde",
+    //                                                                             "gender": "Female"
+    //                                                                         }
+    //                                                                         """))
+    //
+    //                //  then
+    //                .andExpect(status().isBadRequest())
+    //                .andExpect(jsonPath("$.firstName").value("First name may contain only letters"));
+    //
+    //        verify(this.userService, times(0)).saveUser(any(User.class));
+    //        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+    //        verify(this.userService, times(0)).existsUserByDisplayName("Display1");
+    //    }
 }
