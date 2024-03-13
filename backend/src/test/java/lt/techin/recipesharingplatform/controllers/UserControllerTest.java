@@ -478,7 +478,6 @@ public class UserControllerTest {
                                 .content(
                                         """
                                                                          {
-                                                                             "displayName": "",
                                                                              "email": "email@email.com",
                                                                              "password": "Password=1",
                                                                              "firstName": "Vardas",
@@ -525,5 +524,35 @@ public class UserControllerTest {
         verify(this.userService, times(0)).saveUser(any(User.class));
         verify(this.userService, times(0)).existsUserByEmail("email@email.com");
         verify(this.userService, times(0)).existsUserByDisplayName("DN");
+    }
+
+    @Test
+    void createUser_whenDisplayNotStartsFromLetter_thenReturnBadRequest() throws Exception {
+        //  given
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "1DisplayName",
+                                                                             "email": "email@email.com",
+                                                                             "password": "Password=1",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarde",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.displayName").value("Display name must start out of a letter"));
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+        verify(this.userService, times(0)).existsUserByDisplayName("1DisplayName");
     }
 }
