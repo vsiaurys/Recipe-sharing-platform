@@ -285,7 +285,7 @@ public class UserControllerTest {
         verify(this.userService, times(0)).existsUserByEmail("email@email.com");
         verify(this.userService, times(0)).existsUserByDisplayName("Display1");
     }
-    //////////////
+
     @Test
     void createUser_whenShortPassword_thenReturnBadRequest() throws Exception {
         //  given
@@ -464,5 +464,35 @@ public class UserControllerTest {
         verify(this.userService, times(0)).saveUser(any(User.class));
         verify(this.userService, times(0)).existsUserByEmail("email@email.com");
         verify(this.userService, times(0)).existsUserByDisplayName("Display1");
+    }
+
+    @Test
+    void createUser_whenEmptyDisplayName_thenReturnBadRequest() throws Exception {
+        //  given
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "",
+                                                                             "email": "email@email.com",
+                                                                             "password": "Password=1",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarde",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.displayName").value("Display name cannot be empty"));
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+        verify(this.userService, times(0)).existsUserByDisplayName("");
     }
 }
