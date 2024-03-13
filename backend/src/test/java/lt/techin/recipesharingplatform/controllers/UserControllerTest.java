@@ -598,7 +598,7 @@ public class UserControllerTest {
                                 .content(
                                         """
                                                                          {
-                                                                             "displayName": "offensive1",
+                                                                             "displayName": "bastard",
                                                                              "email": "email@email.com",
                                                                              "password": "Password=1",
                                                                              "firstName": "Vardas",

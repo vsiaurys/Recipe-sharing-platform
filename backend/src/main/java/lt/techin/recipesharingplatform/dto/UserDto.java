@@ -39,7 +39,8 @@ public class UserDto {
     @Size(min = 2, message = "First name must be at least 2 characters")
     @Pattern.List({
         @Pattern(regexp = "[A-Z].*", message = "First name must start out of a letter in uppercase"),
-        @Pattern(regexp = "[A-Za-z]+", message = "First name may contain only letters")
+        @Pattern(regexp = "[A-Za-z]+", message = "First name may contain only letters"),
+        @Pattern(regexp = "^(?!.*(.)\\1{4}).*$", message = "Same character cannot repeat 5 times or more")
     })
     private String firstName;
 
