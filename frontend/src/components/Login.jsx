@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css";
 
 function Login() {
@@ -12,6 +13,7 @@ function Login() {
   } = useForm();
 
   const [loginMessage, setLoginMessage] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const navigate = useNavigate();
 
@@ -88,31 +90,48 @@ function Login() {
                 <div className="mb-3">
                   <label
                     htmlFor="password"
-                    className="form-label"
+                    className="form-label input-group"
                   >
                     Password
                   </label>
-                  <input
-                    type="password"
-                    className={`form-control ${
-                      errors.password ? "is-invalid" : ""
-                    }`}
-                    id="password"
-                    placeholder="Password"
-                    {...register("password", {
-                      required: "Password is required",
-                      minLength: {
-                        value: 6,
-                        message: "Password must be at least 6 characters long",
-                      },
+                  <div className="input-group">
+                    <input
+                      type={passwordVisible ? "text" : "password"}
+                      className={`form-control ${
+                        errors.password ? "is-invalid" : ""
+                      }`}
+                      id="passwordInput"
+                      placeholder="Password"
+                      {...register("password", {
+                        required: "Password is required",
+                        minLength: {
+                          value: 6,
+                          message:
+                            "Password must be at least 6 characters long",
+                        },
 
-                      maxLength: {
-                        value: 20,
-                        message: "Password must be at most 20 characters long",
-                      },
-                    })}
-                    autoComplete="current-password"
-                  />
+                        maxLength: {
+                          value: 20,
+                          message:
+                            "Password must be at most 20 characters long",
+                        },
+                      })}
+                      autoComplete="current-password"
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={() => setPasswordVisible(!passwordVisible)}
+                    >
+                      <i
+                        className={`react-icon ${
+                          passwordVisible ? "eye-slash" : "eye"
+                        }`}
+                      >
+                        {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                      </i>
+                    </button>
+                  </div>
                   {errors.password && (
                     <div className="invalid-feedback">
                       {errors.password.message}
