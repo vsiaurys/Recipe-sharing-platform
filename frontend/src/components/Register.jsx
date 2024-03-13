@@ -14,7 +14,7 @@ export default function Register() {
   } = useForm();
   const password = watch("password");
   const [showModal, setShowModal] = useState(false);
-
+  const [emailExistsError, setEmailExistsError] = useState("");
   const navigate = useNavigate();
   //const { displayName } = useParams();
 
@@ -37,7 +37,7 @@ export default function Register() {
           reset();
           setTimeout(() => {
             navigate("/");
-          }, 4000);
+          }, 3000);
         } else {
         }
       } catch (error) {
