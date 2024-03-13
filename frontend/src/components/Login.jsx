@@ -57,7 +57,7 @@ function Login() {
                     Email address
                   </label>
                   <input
-                    type="email"
+                    type="text"
                     className={`form-control ${
                       errors.email ? "is-invalid" : ""
                     }`}
@@ -66,7 +66,7 @@ function Login() {
                     {...register("email", {
                       required: "Email is required",
                       pattern: {
-                        value: /^\S+@\S+\.\S+$/,
+                        value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
                         message: "Invalid email address",
                       },
                     })}
