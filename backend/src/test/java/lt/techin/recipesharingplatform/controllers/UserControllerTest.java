@@ -495,4 +495,35 @@ public class UserControllerTest {
         verify(this.userService, times(0)).existsUserByEmail("email@email.com");
         verify(this.userService, times(0)).existsUserByDisplayName("");
     }
+
+    @Test
+    void createUser_whenDisplayNameNotInRange_thenReturnBadRequest() throws Exception {
+        //  given
+
+        //  when
+        mockMvc.perform(
+                        post("/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(
+                                        """
+                                                                         {
+                                                                             "displayName": "DN",
+                                                                             "email": "email@email.com",
+                                                                             "password": "Password=1",
+                                                                             "firstName": "Vardas",
+                                                                             "lastName": "Pavarde",
+                                                                             "gender": "Female"
+                                                                         }
+                                                                         """))
+
+                //  then
+                .andExpect(status().isBadRequest())
+                .andExpect(
+                        jsonPath("$.displayName").value("Display name must be in range between 3 and 15 characters"));
+
+        verify(this.userService, times(0)).saveUser(any(User.class));
+        verify(this.userService, times(0)).existsUserByEmail("email@email.com");
+        verify(this.userService, times(0)).existsUserByDisplayName("DN");
+    }
 }
