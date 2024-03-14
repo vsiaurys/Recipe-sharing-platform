@@ -353,7 +353,10 @@ export default function Register() {
         >
           <div
             className="modal-content"
-            style={{ border: "4px solid #000000" }}
+            style={{
+              border: "4px solid #000000",
+              backgroundColor: "#f7f7f7",
+            }}
           >
             <div className="modal-header">
               <h5
