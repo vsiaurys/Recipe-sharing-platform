@@ -5,6 +5,8 @@ import lt.techin.recipesharingplatform.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -24,5 +26,9 @@ public class UserService {
 
     public boolean existsUserByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 }
