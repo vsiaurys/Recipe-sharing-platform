@@ -351,7 +351,10 @@ export default function Register() {
           className="modal-dialog modal-dialog-centered"
           role="document"
         >
-          <div className="modal-content">
+          <div
+            className="modal-content"
+            style={{ border: "4px solid #000000" }}
+          >
             <div className="modal-header">
               <h5
                 className="modal-title text-success"
@@ -363,7 +366,7 @@ export default function Register() {
             <div className="modal-body">
               Your registration was successful. Now you can login.
             </div>
-            <div className="modal-footer">
+            {/* <div className="modal-footer">
               <button
                 type="button"
                 className="btn btn-primary"
@@ -371,7 +374,7 @@ export default function Register() {
               >
                 Close
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
