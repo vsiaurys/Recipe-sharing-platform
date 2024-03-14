@@ -44,6 +44,14 @@ function Header() {
               </li>
               <li className="nav-item">
                 <Link
+                  to="/categories"
+                  className="nav-link"
+                >
+                  Categories
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
                   to="/register"
                   className="nav-link"
                 >
