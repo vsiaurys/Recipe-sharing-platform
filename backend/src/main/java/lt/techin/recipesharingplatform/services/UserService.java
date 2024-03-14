@@ -5,6 +5,8 @@ import lt.techin.recipesharingplatform.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -14,15 +16,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    //    public User findUser(String email) {
-    //        User user = userRepository.findUserByEmail(email);
-    //
-    //        return user;
-    //    }
-
     public User saveUser(User user) {
-        System.out.println("Service");
-        // return this.userRepository.save(user);
-        return user;
+        return this.userRepository.save(user);
+    }
+
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 }
