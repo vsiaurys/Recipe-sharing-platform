@@ -28,6 +28,10 @@ function App() {
           path="/login-successful"
           element={<LoginSuccessful />}
         />
+        <Route
+          path="/categories"
+          element={<Category />}
+        />
       </Routes>
       <footer className="mt-auto footer">
         <Footer />
