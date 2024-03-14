@@ -16,13 +16,11 @@ export default function Register() {
   const [showModal, setShowModal] = useState(false);
   const [emailExistsError, setEmailExistsError] = useState("");
   const navigate = useNavigate();
-  //const { displayName } = useParams();
 
+  //const { displayName } = useParams();
   //const [resgisterMessage, setRegisterMessage] = useState("");
 
   const onSubmit = async (data) => {
-    setShowModal(true);
-
     const postData = async () => {
       try {
         const response = await fetch("http://localhost:8080/register", {
@@ -33,12 +31,17 @@ export default function Register() {
           body: JSON.stringify(data),
         });
 
-        if (response.ok) {
+        if (response.status === 201) {
+          setShowModal(true);
           reset();
           setTimeout(() => {
             navigate("/");
           }, 3000);
         } else {
+          const responseData = await response.json();
+          if (response.status === 400) {
+            setEmailExistsError("This e-mail already exists!");
+          }
         }
       } catch (error) {
         console.error("Error registering user:", error);
@@ -67,7 +70,7 @@ export default function Register() {
                     type="text"
                     autoComplete="on"
                     className={`form-control ${
-                      errors.email ? "is-invalid" : ""
+                      errors.email || emailExistsError ? "is-invalid" : ""
                     }`}
                     id="email"
                     placeholder="Enter your e-mail"
@@ -80,9 +83,9 @@ export default function Register() {
                       },
                     })}
                   />
-                  {errors.email && (
+                  {(errors.email || emailExistsError) && (
                     <div className="invalid-feedback">
-                      {errors.email.message}
+                      {errors.email ? errors.email.message : emailExistsError}
                     </div>
                   )}
                 </div>
