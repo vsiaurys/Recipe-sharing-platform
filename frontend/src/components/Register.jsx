@@ -14,6 +14,7 @@ export default function Register() {
   const password = watch("password");
   const [showModal, setShowModal] = useState(false);
   const [emailExistsError, setEmailExistsError] = useState("");
+  const [displayNameExistsError, setDisplayNameExistsError] = useState("");
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
@@ -30,13 +31,18 @@ export default function Register() {
         if (response.status === 201) {
           setShowModal(true);
           reset();
+          setEmailExistsError("");
+          setDisplayNameExistsError("");
           setTimeout(() => {
             navigate("/");
           }, 3000);
-        } else {
+        } else if (response.status === 400) {
           const responseData = await response.json();
-          if (response.status === 400) {
-            setEmailExistsError("This e-mail already exists!");
+          if (responseData.email) {
+            setEmailExistsError(responseData.email);
+          }
+          if (responseData.displayName) {
+            setDisplayNameExistsError(responseData.displayName);
           }
         }
       } catch (error) {
@@ -49,6 +55,10 @@ export default function Register() {
 
   const handleEmailChange = () => {
     setEmailExistsError("");
+  };
+
+  const handleDisplayNameChange = () => {
+    setDisplayNameExistsError("");
   };
 
   return (
@@ -180,7 +190,9 @@ export default function Register() {
                   <input
                     type="text"
                     className={`form-control ${
-                      errors.displayName ? "is-invalid" : ""
+                      errors.displayName || displayNameExistsError
+                        ? "is-invalid"
+                        : ""
                     }`}
                     id="displayName"
                     placeholder="Your display name"
@@ -206,10 +218,13 @@ export default function Register() {
                           new RegExp(word, "i").test(value)
                         ) || "Display name contains offensive words!",
                     })}
+                    onChange={handleDisplayNameChange}
                   />
-                  {errors.displayName && (
+                  {(errors.displayName || displayNameExistsError) && (
                     <div className="invalid-feedback">
-                      {errors.displayName.message}
+                      {errors.displayName
+                        ? errors.displayName.message
+                        : displayNameExistsError}
                     </div>
                   )}
                 </div>
@@ -369,15 +384,6 @@ export default function Register() {
             <div className="modal-body">
               Your registration was successful. Now you can login.
             </div>
-            {/* <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => setShowModal(false)}
-              >
-                Close
-              </button>
-            </div> */}
           </div>
         </div>
       </div>
