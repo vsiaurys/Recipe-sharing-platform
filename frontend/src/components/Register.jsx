@@ -52,7 +52,7 @@ export default function Register() {
   };
 
   return (
-    <div className="container mt-5 mb-5">
+    <div className="container mt-4 mb-4">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
