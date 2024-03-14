@@ -51,6 +51,10 @@ export default function Register() {
     postData();
   };
 
+  const handleEmailChange = () => {
+    setEmailExistsError("");
+  };
+
   return (
     <div className="container mt-5 mb-5">
       <div className="row justify-content-center">
@@ -82,6 +86,7 @@ export default function Register() {
                         message: "Invalid email address!",
                       },
                     })}
+                    onChange={handleEmailChange}
                   />
                   {(errors.email || emailExistsError) && (
                     <div className="invalid-feedback">
