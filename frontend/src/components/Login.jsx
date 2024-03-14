@@ -125,12 +125,13 @@ function Login() {
                     >
                       {passwordVisible ? <FaEyeSlash /> : <FaEye />}
                     </button>
+
+                    {errors.password && (
+                      <div className="invalid-feedback">
+                        {errors.password.message}
+                      </div>
+                    )}
                   </div>
-                  {errors.password && (
-                    <div className="invalid-feedback">
-                      {errors.password.message}
-                    </div>
-                  )}
                 </div>
                 <button
                   type="submit"
