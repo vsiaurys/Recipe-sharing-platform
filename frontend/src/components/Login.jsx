@@ -100,7 +100,7 @@ function Login() {
                       className={`form-control ${
                         errors.password ? "is-invalid" : ""
                       }`}
-                      id="passwordInput"
+                      id="password"
                       placeholder="Password"
                       {...register("password", {
                         required: "Password is required",
