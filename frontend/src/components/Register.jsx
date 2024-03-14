@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import badWords from "./BadWords";
 import { useNavigate } from "react-router-dom";
-//import { useNavigate, useParams } from "react-router-dom";
 
 export default function Register() {
   const {
@@ -16,9 +15,6 @@ export default function Register() {
   const [showModal, setShowModal] = useState(false);
   const [emailExistsError, setEmailExistsError] = useState("");
   const navigate = useNavigate();
-
-  //const { displayName } = useParams();
-  //const [resgisterMessage, setRegisterMessage] = useState("");
 
   const onSubmit = async (data) => {
     const postData = async () => {
@@ -363,14 +359,6 @@ export default function Register() {
               >
                 Registration Successful!
               </h5>
-              {/* <button
-                type="button"
-                className="close"
-                onClick={() => setShowModal(false)}
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button> */}
             </div>
             <div className="modal-body">
               Your registration was successful. Now you can login.
