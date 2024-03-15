@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import badWords from "./BadWords";
 import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
 export default function Register() {
   const {
@@ -13,6 +14,7 @@ export default function Register() {
   } = useForm();
   const password = watch("password");
   const [showModal, setShowModal] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
   const [emailExistsError, setEmailExistsError] = useState("");
   const [displayNameExistsError, setDisplayNameExistsError] = useState("");
   const navigate = useNavigate();
@@ -30,10 +32,12 @@ export default function Register() {
 
         if (response.status === 201) {
           setShowModal(true);
+          setShowOverlay(true);
           reset();
           setEmailExistsError("");
           setDisplayNameExistsError("");
           setTimeout(() => {
+            setShowOverlay(false);
             navigate("/");
           }, 3000);
         } else if (response.status === 400) {
@@ -354,6 +358,7 @@ export default function Register() {
           </div>
         </div>
       </div>
+      {showOverlay && <div className="overlay"></div>}
       <div
         className={`modal fade ${showModal ? "show" : ""}`}
         style={{ display: showModal ? "block" : "none" }}
@@ -366,13 +371,7 @@ export default function Register() {
           className="modal-dialog modal-dialog-centered"
           role="document"
         >
-          <div
-            className="modal-content"
-            style={{
-              border: "4px solid #000000",
-              backgroundColor: "#f7f7f7",
-            }}
-          >
+          <div className="modal-content">
             <div className="modal-header">
               <h5
                 className="modal-title text-success"
