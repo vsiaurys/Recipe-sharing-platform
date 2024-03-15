@@ -1,9 +1,16 @@
 import { useState } from "react";
 import "./Header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Header({ loginState, setLoginState }) {
   const [collapsed, setCollapsed] = useState(true);
+
+  const navigate = useNavigate();
+  const handleLogin = () => {
+    localStorage.removeItem("email");
+    localStorage.removeItem("role");
+    navigate("/logout");
+  };
 
   const toggleNavbar = () => {
     setCollapsed(!collapsed);
@@ -53,7 +60,8 @@ function Header({ loginState, setLoginState }) {
               <li
                 onClick={() => {
                   if (!loginState) {
-                    setLoginState(true);
+                    handleLogin();
+                    setLoginState(!loginState);
                   }
                 }}
                 className="nav-item"
