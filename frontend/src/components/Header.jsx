@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
 
-function Header({ loginState, setLoginState }) {
+function Header({ isLoggedIn, setIsLoggedIn }) {
   const [collapsed, setCollapsed] = useState(true);
 
   const navigate = useNavigate();
@@ -59,9 +59,9 @@ function Header({ loginState, setLoginState }) {
               </li>
               <li
                 onClick={() => {
-                  if (!loginState) {
+                  if (isLoggedIn == true) {
                     handleLogin();
-                    setLoginState(!loginState);
+                    setIsLoggedIn(!isLoggedIn);
                   }
                 }}
                 className="nav-item"
@@ -70,7 +70,7 @@ function Header({ loginState, setLoginState }) {
                   to="/login"
                   className="nav-link"
                 >
-                  {loginState ? "Login" : "Logout"}
+                  {isLoggedIn ? "Logout" : "Login"}
                 </Link>
               </li>
             </ul>

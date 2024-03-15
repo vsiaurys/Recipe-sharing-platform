@@ -10,13 +10,13 @@ import { Route, Routes, NavLink } from "react-router-dom";
 import LoginSuccessful from "./components/LoginSuccessful";
 
 function App() {
-  const [loginState, setLoginState] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <div className="d-flex flex-column min-vh-100">
       <Header
-        loginState={loginState}
-        setLoginState={setLoginState}
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
       />
       <Routes>
         <Route
@@ -27,8 +27,8 @@ function App() {
           path="/login"
           element={
             <Login
-              loginState={loginState}
-              setLoginState={setLoginState}
+              isLoggedIn={isLoggedIn}
+              setIsLoggedIn={setIsLoggedIn}
             />
           }
         />
