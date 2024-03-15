@@ -39,7 +39,7 @@ export default function Register() {
           setTimeout(() => {
             setShowOverlay(false);
             navigate("/");
-          }, 3000);
+          }, 300000000);
         } else if (response.status === 400) {
           const responseData = await response.json();
           if (responseData.email) {
@@ -374,12 +374,12 @@ export default function Register() {
         >
           <div className="modal-content">
             <div className="modal-header">
-              <h5
+              <h2
                 className="modal-title text-success"
                 id="exampleModalCenterTitle"
               >
                 Registration Successful!
-              </h5>
+              </h2>
             </div>
             <div className="modal-body">
               Your registration was successful. Now you can login.
