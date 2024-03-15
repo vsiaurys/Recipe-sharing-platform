@@ -71,7 +71,7 @@ export default function Register() {
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
-              <h3 className="card-title">Register</h3>
+              <h1 className="card-title display-6">Register</h1>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-3">
                   <label
