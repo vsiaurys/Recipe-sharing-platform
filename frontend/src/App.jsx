@@ -6,6 +6,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import { Route, Routes, NavLink } from "react-router-dom";
 import LoginSuccessful from "./components/LoginSuccessful";
+import Categories from "./components/Categories";
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
         />
         <Route
           path="/categories"
-          element={<Category />}
+          element={<Categories />}
         />
       </Routes>
       <footer className="mt-auto footer">
