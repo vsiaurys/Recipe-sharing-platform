@@ -1,9 +1,12 @@
-export default function UpdateCategory() {
+export default function UpdateCategory({ id, name, updateCategory }) {
+  console.log(name);
   return (
     <>
+      {/* //{" "}
       <div className="container">
-        <h1 className="text-center">Update Category</h1>
-      </div>
+        // <h1 className="text-center">Update Category</h1>
+        //{" "}
+      </div> */}
     </>
   );
 }
