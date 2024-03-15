@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css";
 
-function Login() {
+function Login({ loginState, setLoginState }) {
   const {
     register,
     handleSubmit,
@@ -41,6 +41,7 @@ function Login() {
         localStorage.setItem("role", responseData.role);
         localStorage.setItem("email", responseData.email);
         navigate("/login-successful");
+        setLoginState(!loginState);
       } else {
         handleLoginResponse("error", responseData.message);
       }

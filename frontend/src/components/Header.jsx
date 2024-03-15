@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
 
-function Header() {
+function Header({ loginState, setLoginState }) {
   const [collapsed, setCollapsed] = useState(true);
 
   const toggleNavbar = () => {
@@ -50,12 +50,19 @@ function Header() {
                   Register
                 </Link>
               </li>
-              <li className="nav-item">
+              <li
+                onClick={() => {
+                  if (!loginState) {
+                    setLoginState(true);
+                  }
+                }}
+                className="nav-item"
+              >
                 <Link
                   to="/login"
                   className="nav-link"
                 >
-                  Login
+                  {loginState ? "Login" : "Logout"}
                 </Link>
               </li>
             </ul>

@@ -1,4 +1,5 @@
 import "./App.css";
+import { useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Main from "./components/Main";
@@ -8,9 +9,14 @@ import { Route, Routes, NavLink } from "react-router-dom";
 import LoginSuccessful from "./components/LoginSuccessful";
 
 function App() {
+  const [loginState, setLoginState] = useState(true);
+
   return (
     <div className="d-flex flex-column min-vh-100">
-      <Header />
+      <Header
+        loginState={loginState}
+        setLoginState={setLoginState}
+      />
       <Routes>
         <Route
           path="/"
@@ -18,7 +24,12 @@ function App() {
         />
         <Route
           path="/login"
-          element={<Login />}
+          element={
+            <Login
+              loginState={loginState}
+              setLoginState={setLoginState}
+            />
+          }
         />
         <Route
           path="/register"
