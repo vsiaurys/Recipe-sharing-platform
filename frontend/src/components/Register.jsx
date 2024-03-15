@@ -72,6 +72,7 @@ export default function Register() {
           <div className="card">
             <div className="card-body">
               <h1 className="card-title display-6">Register</h1>
+              <p>*All fields are required!</p>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-3">
                   <label
