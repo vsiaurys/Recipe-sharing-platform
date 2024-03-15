@@ -20,6 +20,14 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
+    public boolean existsUserByDisplayName(String displayName) {
+        return userRepository.existsByDisplayName(displayName);
+    }
+
+    public boolean existsUserByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
     public Optional<User> findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }
