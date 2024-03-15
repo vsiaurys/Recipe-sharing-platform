@@ -54,6 +54,7 @@ const categories = [
     name: "Category 11",
   },
 ];
+
 function updateCategory(id) {
   console.log(`Update ${id}`);
 }
@@ -70,68 +71,58 @@ export default function Categories() {
   return (
     <>
       <div className="container">
-        <h1 className="text-center">Browse Recipe Categories</h1>
-
-        {/* <ul className="list-group">
-          <li
-            className="list-group-item active"
-            aria-current="true"
-          >
-            An active item
-          </li>
-          <li className="list-group-item">A second item</li>
-          <li className="list-group-item">A third item</li>
-          <li className="list-group-item">A fourth item</li>
-          <li className="list-group-item">And a fifth one</li>
-        </ul> */}
-
-        <table className="table">
-          <tbody>
-            {categories.map((category) => {
-              return (
-                <tr key={category.id}>
-                  <th scope="row">{category.name}</th>
-                  <td>
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => updateCategory(category.id)}
-                    >
-                      Update
-                    </button>
-                    {/* <UpdateCategory
-                      categoryId={category.id}
-                      name={category.name}
-                      updateCategory={updateCategory}
-                    /> */}
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => deleteCategory(category.id)}
-                    >
-                      Delete
-                    </button>
-                    {/* <DeleteCategory
+        <h1 className="text-center">Manage Recipe Categories</h1>
+        <div className="col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+          <table className="table">
+            <tbody>
+              {categories.map((category) => {
+                return (
+                  <tr key={category.id}>
+                    <th scope="row">{category.name}</th>
+                    <td className="text-end">
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => updateCategory(category.id)}
+                      >
+                        Update
+                      </button>
+                      <UpdateCategory
+                        categoryId={category.id}
+                        name={category.name}
+                        updateCategory={updateCategory}
+                      />
+                    </td>
+                    <td className="text-end">
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => deleteCategory(category.id)}
+                      >
+                        Delete
+                      </button>
+                      {/* <DeleteCategory
                       categoryId={category.id}
                       deleteCategory={deleteCategory}
                     /> */}
-                  </td>
-                </tr>
-              );
-            })}
-            <tr>
-              <td>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => addCategory()}
-                >
-                  Add category
-                </button>
-                {/* <AddCategory addCategory={addCategory} /> */}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                    </td>
+                  </tr>
+                );
+              })}
+              <tr>
+                <th></th>
+                <td></td>
+                <td className="text-end">
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => addCategory()}
+                  >
+                    Add category
+                  </button>
+                  {/* <AddCategory addCategory={addCategory} /> */}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );
