@@ -39,7 +39,7 @@ export default function Register() {
           setTimeout(() => {
             setShowOverlay(false);
             navigate("/");
-          }, 300000000);
+          }, 3000);
         } else if (response.status === 400) {
           const responseData = await response.json();
           if (responseData.email) {
