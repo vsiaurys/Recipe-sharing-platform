@@ -6,7 +6,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
   const [collapsed, setCollapsed] = useState(true);
 
   const navigate = useNavigate();
-  const handleLogin = () => {
+  const handleLogout = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("role");
     navigate("/logout");
@@ -60,7 +60,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
               <li
                 onClick={() => {
                   if (isLoggedIn == true) {
-                    handleLogin();
+                    handleLogout();
                     setIsLoggedIn(!isLoggedIn);
                   }
                 }}
