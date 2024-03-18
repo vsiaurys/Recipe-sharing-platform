@@ -29,10 +29,12 @@ function App() {
           path="/login-successful"
           element={<LoginSuccessful />}
         />
-        <Route
-          path="/categories"
-          element={<Categories />}
-        />
+        {localStorage.getItem("role") === "ROLE_ADMIN" && (
+          <Route
+            path="/categories"
+            element={<Categories />}
+          />
+        )}
       </Routes>
       <footer className="mt-auto footer">
         <Footer />
