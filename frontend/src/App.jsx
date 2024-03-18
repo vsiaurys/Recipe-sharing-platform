@@ -24,7 +24,7 @@ function App() {
         />
         <Route
           path="/login"
-          element={<Login />}
+          element={<Login checkRole={checkRole} />}
         />
         <Route
           path="/register"
@@ -32,7 +32,7 @@ function App() {
         />
         <Route
           path="/login-successful"
-          element={<LoginSuccessful checkRole={checkRole} />}
+          element={<LoginSuccessful />}
         />
       </Routes>
       <footer className="mt-auto footer">
