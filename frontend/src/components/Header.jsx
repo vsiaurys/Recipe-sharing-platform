@@ -86,7 +86,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
         </div>
       </nav>
       {showOverlay && (
-        <div class="position-fixed top-0 left-0 w-100 h-100 bg-dark opacity-75 z-999"></div>
+        <div className="position-fixed top-0 left-0 w-100 h-100 bg-dark opacity-75 z-999"></div>
       )}
       <div
         className={`modal fade ${showModal ? "show" : ""}`}
