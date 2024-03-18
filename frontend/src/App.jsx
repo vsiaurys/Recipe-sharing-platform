@@ -10,7 +10,10 @@ import { Route, Routes, NavLink } from "react-router-dom";
 import LoginSuccessful from "./components/LoginSuccessful";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const role = localStorage.getItem("role");
+    return role !== null && role !== "";
+  });
 
   return (
     <div className="d-flex flex-column min-vh-100">
