@@ -63,7 +63,7 @@ function Header({ checkRole }) {
                   to="/register"
                   className="nav-link"
                 >
-                  {checkRole() ? "" : "Register"}
+                  {!checkRole() && "Register"}
                 </Link>
               </li>
               <li
@@ -78,7 +78,7 @@ function Header({ checkRole }) {
                   to="/login"
                   className="nav-link"
                 >
-                  {(checkRole() && "Logout") || "Login"}
+                  {checkRole() ? "Logout" : "Login"}
                 </Link>
               </li>
             </ul>
