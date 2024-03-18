@@ -1,15 +1,18 @@
 import { useState } from "react";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
+import ModalLogout from "./ModalLogout";
 
 function Header({ isLoggedIn, setIsLoggedIn }) {
   const [collapsed, setCollapsed] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("role");
-    navigate("/logout");
+    setShowModal(true);
+    navigate("/");
   };
 
   const toggleNavbar = () => {
@@ -77,6 +80,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
           </div>
         </div>
       </nav>
+      {showModal && <ModalLogout setShowModal={setShowModal} />}
     </div>
   );
 }

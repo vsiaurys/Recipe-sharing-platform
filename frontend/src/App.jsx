@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 import Main from "./components/Main";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import Logout from "./components/Logout";
+
 import { Route, Routes, NavLink } from "react-router-dom";
 import LoginSuccessful from "./components/LoginSuccessful";
 
@@ -39,10 +39,6 @@ function App() {
         <Route
           path="/login-successful"
           element={<LoginSuccessful />}
-        />
-        <Route
-          path="/logout"
-          element={<Logout />}
         />
       </Routes>
       <footer className="mt-auto footer">
