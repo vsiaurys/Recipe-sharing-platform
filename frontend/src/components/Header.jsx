@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
 
-function Header({ isLoggedIn, setIsLoggedIn }) {
+function Header({ checkRole }) {
   const [collapsed, setCollapsed] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
@@ -18,6 +18,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
       setShowOverlay(false);
     }, 3000);
     navigate("/");
+    checkRole();
   };
 
   const toggleNavbar = () => {
@@ -67,9 +68,8 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
               </li>
               <li
                 onClick={() => {
-                  if (isLoggedIn == true) {
+                  if (checkRole()) {
                     handleLogout();
-                    setIsLoggedIn(!isLoggedIn);
                   }
                 }}
                 className="nav-item"
@@ -78,7 +78,7 @@ function Header({ isLoggedIn, setIsLoggedIn }) {
                   to="/login"
                   className="nav-link"
                 >
-                  {isLoggedIn ? "Logout" : "Login"}
+                  {checkRole() ? "Logout" : "Login"}
                 </Link>
               </li>
             </ul>

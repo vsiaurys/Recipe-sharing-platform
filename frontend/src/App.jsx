@@ -10,17 +10,13 @@ import { Route, Routes, NavLink } from "react-router-dom";
 import LoginSuccessful from "./components/LoginSuccessful";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+  const checkRole = () => {
     const role = localStorage.getItem("role");
     return role !== null && role !== "";
-  });
-
+  };
   return (
     <div className="d-flex flex-column min-vh-100">
-      <Header
-        isLoggedIn={isLoggedIn}
-        setIsLoggedIn={setIsLoggedIn}
-      />
+      <Header checkRole={checkRole} />
       <Routes>
         <Route
           path="/"
@@ -28,12 +24,7 @@ function App() {
         />
         <Route
           path="/login"
-          element={
-            <Login
-              isLoggedIn={isLoggedIn}
-              setIsLoggedIn={setIsLoggedIn}
-            />
-          }
+          element={<Login />}
         />
         <Route
           path="/register"
@@ -41,7 +32,7 @@ function App() {
         />
         <Route
           path="/login-successful"
-          element={<LoginSuccessful />}
+          element={<LoginSuccessful checkRole={checkRole} />}
         />
       </Routes>
       <footer className="mt-auto footer">
