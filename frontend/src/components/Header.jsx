@@ -63,7 +63,7 @@ function Header({ checkRole }) {
                   to="/register"
                   className="nav-link"
                 >
-                  Register
+                  {checkRole() ? "" : "Register"}
                 </Link>
               </li>
               <li
