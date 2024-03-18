@@ -1,11 +1,11 @@
-// import { useState } from "react";
+import { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
 // import { useForm } from "react-hook-form";
 // import { useNavigate } from "react-router-dom";
 // import { FaEye, FaEyeSlash } from "react-icons/fa";
 // import "./Login.css";
 import UpdateCategory from "./UpdateCategory";
-import DeleteCategory from "./DeleteCategory";
+// import DeleteCategory from "./DeleteCategory";
 import AddCategory from "./AddCategory";
 
 const categories = [
@@ -55,19 +55,41 @@ const categories = [
   },
 ];
 
-function updateCategory(id) {
-  console.log(`Update ${id}`);
-}
-
-function deleteCategory(id) {
-  console.log(`Delete ${id}`);
-}
-
-function addCategory() {
-  console.log(`Add new category`);
-}
-
 export default function Categories() {
+  //const [update, setUpdate] = useState(false);
+
+  function getCategories() {
+    console.log("Get categories");
+    //   //console.log(`Update ${id}`);
+    //   //const url = "http://localhost:8080/";
+    //   // const getCategories = async () => {
+    //   //   const response = await fetch(`${url}categories`, {
+    //   //     method: "GET",
+    //   //     headers: { Authorization: "Basic " + btoa("aaaaaaaa:bbbbbbbb") },
+    //   //   });
+    //   //   const resp = await response.json();
+    //   //   setCategoires(resp);
+    //   // };
+  }
+
+  function updateCategory(id, name) {
+    console.log(`Update ${id}`);
+    //setUpdate(true);
+  }
+
+  function deleteCategory(id) {
+    console.log(`Delete ${id}`);
+  }
+
+  function addCategory() {
+    console.log(`Add new category`);
+  }
+
+  // useEffect(() => {
+  //   getCategories();
+  // }, [update]);
+
+  //console.log(update);
   return (
     <>
       <div className="container">
@@ -82,14 +104,19 @@ export default function Categories() {
                     <td className="text-end">
                       <button
                         className="btn btn-primary"
-                        onClick={() => updateCategory(category.id)}
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                        onClick={() =>
+                          updateCategory(category.id, category.name)
+                        }
                       >
                         Update
                       </button>
+
                       <UpdateCategory
                         categoryId={category.id}
-                        name={category.name}
-                        updateCategory={updateCategory}
+                        categoryName={category.name}
                       />
                     </td>
                     <td className="text-end">
@@ -113,11 +140,14 @@ export default function Categories() {
                 <td className="text-end">
                   <button
                     className="btn btn-primary"
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addCategoryModal"
                     onClick={() => addCategory()}
                   >
                     Add category
                   </button>
-                  {/* <AddCategory addCategory={addCategory} /> */}
+                  <AddCategory />
                 </td>
               </tr>
             </tbody>
