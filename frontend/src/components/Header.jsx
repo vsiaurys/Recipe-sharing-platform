@@ -42,14 +42,16 @@ function Header() {
                   Home
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link
-                  to="/categories"
-                  className="nav-link"
-                >
-                  Categories
-                </Link>
-              </li>
+              {localStorage.getItem("role") === "ROLE_ADMIN" && (
+                <li className="nav-item">
+                  <Link
+                    to="/categories"
+                    className="nav-link"
+                  >
+                    Categories
+                  </Link>
+                </li>
+              )}
               <li className="nav-item">
                 <Link
                   to="/register"
