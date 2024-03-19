@@ -18,18 +18,12 @@ function App() {
     <div className="d-flex flex-column min-vh-100">
       <Header
         checkRole={checkRole}
-        forceRender={forceRender}
         setForceRender={setForceRender}
       />
       <Routes>
         <Route
           path="/"
-          element={
-            <Main
-              checkRole={checkRole}
-              forceRender={forceRender}
-            />
-          }
+          element={<Main checkRole={checkRole} />}
         />
         <Route
           path="/login"
