@@ -1,10 +1,8 @@
-import { useEffect } from "react";
-
-export default function Main({ checkRole, forceRender }) {
+export default function Main({ checkRole }) {
   const role = localStorage.getItem("role");
   const email = localStorage.getItem("email");
   const displayName = localStorage.getItem("displayName");
-  useEffect(() => {}, [forceRender]);
+
   return (
     <>
       {checkRole() ? (
