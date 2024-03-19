@@ -1,9 +1,26 @@
 import { useState } from "react";
 import "./Header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ModalLogout from "./ModalLogout";
 
-function Header() {
+function Header({ checkRole }) {
   const [collapsed, setCollapsed] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("email");
+    localStorage.removeItem("role");
+    setShowModal(true);
+    setShowOverlay(true);
+    setTimeout(() => {
+      setShowModal(false);
+      setShowOverlay(false);
+    }, 3000);
+    navigate("/");
+    checkRole();
+  };
 
   const toggleNavbar = () => {
     setCollapsed(!collapsed);
@@ -44,25 +61,38 @@ function Header() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link
-                  to="/register"
-                  className="nav-link"
-                >
-                  Register
-                </Link>
+                {!checkRole() && (
+                  <Link
+                    to="/register"
+                    className="nav-link"
+                  >
+                    Register
+                  </Link>
+                )}
               </li>
-              <li className="nav-item">
+              <li
+                onClick={() => {
+                  if (checkRole()) {
+                    handleLogout();
+                  }
+                }}
+                className="nav-item"
+              >
                 <Link
                   to="/login"
                   className="nav-link"
                 >
-                  Login
+                  {checkRole() ? "Logout" : "Login"}
                 </Link>
               </li>
             </ul>
           </div>
         </div>
       </nav>
+      <ModalLogout
+        showModal={showModal}
+        showOverlay={showOverlay}
+      />
     </div>
   );
 }
