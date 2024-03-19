@@ -60,12 +60,14 @@ function Header({ checkRole }) {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link
-                  to="/register"
-                  className="nav-link"
-                >
-                  {!checkRole() && "Register"}
-                </Link>
+                {!checkRole() && (
+                  <Link
+                    to="/register"
+                    className="nav-link"
+                  >
+                    Register
+                  </Link>
+                )}
               </li>
               <li
                 onClick={() => {
