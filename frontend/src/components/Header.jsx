@@ -1,9 +1,26 @@
 import { useState } from "react";
 import "./Header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ModalLogout from "./ModalLogout";
 
-function Header({ loginState, setLoginState }) {
+function Header({ checkRole }) {
   const [collapsed, setCollapsed] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("email");
+    localStorage.removeItem("role");
+    setShowModal(true);
+    setShowOverlay(true);
+    setTimeout(() => {
+      setShowModal(false);
+      setShowOverlay(false);
+    }, 3000);
+    navigate("/");
+    checkRole();
+  };
 
   const toggleNavbar = () => {
     setCollapsed(!collapsed);
@@ -22,6 +39,7 @@ function Header({ loginState, setLoginState }) {
           <button
             className="navbar-toggler"
             type="button"
+            aria-label="Menu"
             onClick={toggleNavbar}
           >
             <span className="navbar-toggler-icon"></span>
@@ -43,17 +61,19 @@ function Header({ loginState, setLoginState }) {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link
-                  to="/register"
-                  className="nav-link"
-                >
-                  Register
-                </Link>
+                {!checkRole() && (
+                  <Link
+                    to="/register"
+                    className="nav-link"
+                  >
+                    Register
+                  </Link>
+                )}
               </li>
               <li
                 onClick={() => {
-                  if (!loginState) {
-                    setLoginState(true);
+                  if (checkRole()) {
+                    handleLogout();
                   }
                 }}
                 className="nav-item"
@@ -62,13 +82,17 @@ function Header({ loginState, setLoginState }) {
                   to="/login"
                   className="nav-link"
                 >
-                  {loginState ? "Login" : "Logout"}
+                  {checkRole() ? "Logout" : "Login"}
                 </Link>
               </li>
             </ul>
           </div>
         </div>
       </nav>
+      <ModalLogout
+        showModal={showModal}
+        showOverlay={showOverlay}
+      />
     </div>
   );
 }

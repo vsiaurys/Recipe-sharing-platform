@@ -5,18 +5,18 @@ import Footer from "./components/Footer";
 import Main from "./components/Main";
 import Register from "./components/Register";
 import Login from "./components/Login";
+
 import { Route, Routes, NavLink } from "react-router-dom";
 import LoginSuccessful from "./components/LoginSuccessful";
 
 function App() {
-  const [loginState, setLoginState] = useState(true);
-
+  const checkRole = () => {
+    const role = localStorage.getItem("role");
+    return role !== null && role !== "";
+  };
   return (
     <div className="d-flex flex-column min-vh-100">
-      <Header
-        loginState={loginState}
-        setLoginState={setLoginState}
-      />
+      <Header checkRole={checkRole} />
       <Routes>
         <Route
           path="/"
@@ -24,12 +24,7 @@ function App() {
         />
         <Route
           path="/login"
-          element={
-            <Login
-              loginState={loginState}
-              setLoginState={setLoginState}
-            />
-          }
+          element={<Login checkRole={checkRole} />}
         />
         <Route
           path="/register"
