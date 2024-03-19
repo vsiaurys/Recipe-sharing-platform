@@ -81,9 +81,7 @@ export default function Categories() {
     console.log(`Delete ${id}`);
   }
 
-  function addCategory() {
-    console.log(`Add new category`);
-  }
+  function addCategory() {}
 
   // useEffect(() => {
   //   getCategories();
