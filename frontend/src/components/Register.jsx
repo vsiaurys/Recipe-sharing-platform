@@ -1,5 +1,8 @@
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import BadWords from "./BadWords";
+import badWords from "./BadWords";
+import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
 export default function Register() {
   const {
@@ -7,20 +10,69 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm();
   const password = watch("password");
+  const [showModal, setShowModal] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [emailExistsError, setEmailExistsError] = useState("");
+  const [displayNameExistsError, setDisplayNameExistsError] = useState("");
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const postData = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.status === 201) {
+          setShowModal(true);
+          setShowOverlay(true);
+          reset();
+          setEmailExistsError("");
+          setDisplayNameExistsError("");
+          setTimeout(() => {
+            setShowOverlay(false);
+            navigate("/");
+          }, 300000000);
+        } else if (response.status === 400) {
+          const responseData = await response.json();
+          if (responseData.email) {
+            setEmailExistsError(responseData.email);
+          }
+          if (responseData.displayName) {
+            setDisplayNameExistsError(responseData.displayName);
+          }
+        }
+      } catch (error) {
+        console.error("Error registering user:", error);
+      }
+    };
+
+    postData();
+  };
+
+  const handleEmailChange = () => {
+    setEmailExistsError("");
+  };
+
+  const handleDisplayNameChange = () => {
+    setDisplayNameExistsError("");
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-4 mb-4">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
-              <h3 className="card-title">Register</h3>
+              <h1 className="card-title display-6">Register</h1>
+              <p>*All fields are required!</p>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-3">
                   <label
@@ -31,11 +83,12 @@ export default function Register() {
                   </label>
                   <input
                     type="text"
+                    autoComplete="on"
                     className={`form-control ${
-                      errors.email ? "is-invalid" : ""
+                      errors.email || emailExistsError ? "is-invalid" : ""
                     }`}
                     id="email"
-                    placeholder="Enter Your e-mail"
+                    placeholder="Enter your e-mail"
                     {...register("email", {
                       required: "Email is required!",
                       pattern: {
@@ -44,10 +97,11 @@ export default function Register() {
                         message: "Invalid email address!",
                       },
                     })}
+                    onChange={handleEmailChange}
                   />
-                  {errors.email && (
+                  {(errors.email || emailExistsError) && (
                     <div className="invalid-feedback">
-                      {errors.email.message}
+                      {errors.email ? errors.email.message : emailExistsError}
                     </div>
                   )}
                 </div>
@@ -64,17 +118,27 @@ export default function Register() {
                       errors.password ? "is-invalid" : ""
                     }`}
                     id="password"
-                    placeholder="Enter Your password"
+                    placeholder="Enter your password"
                     {...register("password", {
                       required: "Password is required!",
                       pattern: {
-                        value: /^(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.* ).+$/,
-                        message:
-                          "Password must contain at least one uppercase letter, one number and one special symbol. Cannot have empty spaces.",
+                        value: /^(?!.* ).+$/,
+                        message: "Password cannot have empty spaces.",
+                      },
+                      validate: {
+                        mustContainUppercaseLetter: (value) =>
+                          /^(?=.*[A-Z])/.test(value) ||
+                          "Password must contain at least one uppercase letter!",
+                        mustContainNumber: (value) =>
+                          /^(?=.*\d)/.test(value) ||
+                          "Password must contain at least one number!",
+                        mustContainSpecialSymbol: (value) =>
+                          /^(?=.*\W)/.test(value) ||
+                          "Password must contain at least one special symbol!",
                       },
                       minLength: {
                         value: 6,
-                        message: "Password must be at least 6 characters long",
+                        message: "Password must be at least 6 characters long!",
                       },
                       maxLength: {
                         value: 20,
@@ -109,7 +173,7 @@ export default function Register() {
                       errors.confirmPassword ? "is-invalid" : ""
                     }`}
                     id="confirmPassword"
-                    placeholder="Repeat Your password"
+                    placeholder="Repeat your password"
                     {...register("confirmPassword", {
                       validate: (value) =>
                         value === password || "The passwords do not match!",
@@ -131,7 +195,9 @@ export default function Register() {
                   <input
                     type="text"
                     className={`form-control ${
-                      errors.displayName ? "is-invalid" : ""
+                      errors.displayName || displayNameExistsError
+                        ? "is-invalid"
+                        : ""
                     }`}
                     id="displayName"
                     placeholder="Your display name"
@@ -153,14 +219,17 @@ export default function Register() {
                           "Display name must be not longer than 15 characters!",
                       },
                       validate: (value) =>
-                        !BadWords.some((word) =>
+                        !badWords.some((word) =>
                           new RegExp(word, "i").test(value)
                         ) || "Display name contains offensive words!",
                     })}
+                    onChange={handleDisplayNameChange}
                   />
-                  {errors.displayName && (
+                  {(errors.displayName || displayNameExistsError) && (
                     <div className="invalid-feedback">
-                      {errors.displayName.message}
+                      {errors.displayName
+                        ? errors.displayName.message
+                        : displayNameExistsError}
                     </div>
                   )}
                 </div>
@@ -173,6 +242,7 @@ export default function Register() {
                   </label>
                   <input
                     type="text"
+                    autoComplete="on"
                     className={`form-control ${
                       errors.firstName ? "is-invalid" : ""
                     }`}
@@ -181,9 +251,17 @@ export default function Register() {
                     {...register("firstName", {
                       required: "First name is required!",
                       pattern: {
-                        value: /^[A-Z](?!.*(\w)\1{4,})[A-Za-z]{2,}$/,
+                        value: /^[A-Za-z]{1,}$/,
                         message:
-                          "First name cannot have spaces or special symbols and must start in uppercase and same symbol cannot reapeat 5 times in a row!",
+                          "First name cannot have special symbols or spaces!",
+                      },
+                      validate: {
+                        hasNoRepeatedCharacters: (value) =>
+                          !/(.)\1{4,}/.test(value) ||
+                          "First name cannot have the same character repeated 5 times in a row!",
+                        startsWithUppercase: (value) =>
+                          /^[A-Z]/.test(value) ||
+                          "First name must start with an uppercase letter!",
                       },
                       minLength: {
                         value: 2,
@@ -206,6 +284,7 @@ export default function Register() {
                     Last Name
                   </label>
                   <input
+                    autoComplete="on"
                     type="text"
                     className={`form-control ${
                       errors.lastName ? "is-invalid" : ""
@@ -214,6 +293,19 @@ export default function Register() {
                     placeholder="Your last name"
                     {...register("lastName", {
                       required: "Last name is required!",
+                      pattern: {
+                        value: /^[A-Za-z]{1,}$/,
+                        message:
+                          "Last name cannot have special symbols or spaces!",
+                      },
+                      validate: {
+                        hasNoRepeatedCharacters: (value) =>
+                          !/(.)\1{4,}/.test(value) ||
+                          "Last name cannot have the same character repeated 5 times in a row!",
+                        startsWithUppercase: (value) =>
+                          /^[A-Z]/.test(value) ||
+                          "Last name must start with an uppercase letter!",
+                      },
                       minLength: {
                         value: 2,
                         message:
@@ -235,7 +327,7 @@ export default function Register() {
                     Gender
                   </label>
                   <select
-                    name="gender"
+                    id="gender"
                     className={`form-select ${
                       errors.gender && errors.gender.type === "required"
                         ? "is-invalid"
@@ -244,9 +336,9 @@ export default function Register() {
                     {...register("gender", { required: true })}
                   >
                     <option value="">Select...</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
                   </select>
                   {errors.gender && errors.gender.type === "required" && (
                     <div className="invalid-feedback">
@@ -262,8 +354,35 @@ export default function Register() {
                     Submit
                   </button>
                 </div>
-                {/* <input type="submit" /> */}
               </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {showOverlay && <div className="overlay"></div>}
+      <div
+        className={`modal fade ${showModal ? "show" : ""}`}
+        style={{ display: showModal ? "block" : "none" }}
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div
+          className="modal-dialog modal-dialog-centered"
+          role="document"
+        >
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2
+                className="modal-title text-success"
+                id="exampleModalCenterTitle"
+              >
+                Registration Successful!
+              </h2>
+            </div>
+            <div className="modal-body">
+              Your registration was successful. Now you can login.
             </div>
           </div>
         </div>

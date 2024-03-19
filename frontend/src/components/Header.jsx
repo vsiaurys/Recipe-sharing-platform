@@ -22,6 +22,7 @@ function Header() {
           <button
             className="navbar-toggler"
             type="button"
+            aria-label="Menu"
             onClick={toggleNavbar}
           >
             <span className="navbar-toggler-icon"></span>
