@@ -40,7 +40,7 @@ function Login({ checkRole }) {
         localStorage.setItem("displayName", responseData.displayName);
         localStorage.setItem("role", responseData.role);
         localStorage.setItem("email", responseData.email);
-        navigate("/login-successful");
+        navigate("/");
         checkRole();
       } else {
         handleLoginResponse("error", responseData.message);
