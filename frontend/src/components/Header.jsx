@@ -3,23 +3,25 @@ import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
 import ModalLogout from "./ModalLogout";
 
-function Header({ checkRole }) {
+function Header({ checkRole, setForceRender }) {
   const [collapsed, setCollapsed] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 
   const navigate = useNavigate();
   const handleLogout = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("role");
     setShowModal(true);
     setShowOverlay(true);
+    localStorage.removeItem("email");
+    localStorage.removeItem("role");
+    checkRole();
+    setForceRender((prevForceRender) => !prevForceRender);
     setTimeout(() => {
       setShowModal(false);
       setShowOverlay(false);
     }, 3000);
+
     navigate("/");
-    checkRole();
   };
 
   const toggleNavbar = () => {
