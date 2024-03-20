@@ -5,6 +5,8 @@ import lt.techin.recipesharingplatform.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryService {
     private final CategoryRepository categoryRepository;
@@ -20,5 +22,9 @@ public class CategoryService {
 
     public boolean existsByName(String name) {
         return categoryRepository.existsByName(name);
+    }
+
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
     }
 }
