@@ -97,9 +97,9 @@ export default function AddCategory({ addCategory }) {
                         "Category names can only contain letters and whitespaces, and must start with an uppercase letter",
                     },
                     minLength: {
-                      value: 3,
+                      value: 4,
                       message:
-                        "Category names must be at least 3 characters long",
+                        "Category names must be at least 4 characters long",
                     },
                     validate: (value) =>
                       !BadWords.some((word) =>
@@ -118,9 +118,7 @@ export default function AddCategory({ addCategory }) {
                     </div>
                   </div>
                 )}
-                {failed && (
-                  <div className="alert alert-danger">{createMessage}</div>
-                )}
+                {failed && <div className="text-danger">{createMessage}</div>}
                 {errors.name && (
                   <div className="invalid-feedback">{errors.name.message}</div>
                 )}
