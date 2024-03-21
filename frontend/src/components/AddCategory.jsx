@@ -11,9 +11,12 @@ export default function AddCategory({ addCategory }) {
 
   const [createMessage, setCreateMessage] = useState();
   const [created, setCreated] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const onSubmit = async (data) => {
     const url = "http://localhost:8080/";
+    setFailed(false);
+
     try {
       const response = await fetch(`${url}categories`, {
         method: "POST",
@@ -30,15 +33,16 @@ export default function AddCategory({ addCategory }) {
         },
       });
 
-      const responseData = await response.json();
-
       if (response.ok) {
         setCreateMessage(`New category ${data.name} successfully created`);
-        console.log("AAAAAAAAAAAAAAAAA");
         addCategory();
         setCreated(true);
-      } else {
-        setCreateMessage(responseData.message);
+      }
+      if (response.status === 400) {
+        setFailed(true);
+        setCreateMessage(
+          `Category ${data.name} already exists. Please choose another name`
+        );
       }
     } catch (error) {
       console.error("Error adding new category: ", error);
@@ -103,6 +107,7 @@ export default function AddCategory({ addCategory }) {
                       ) || "Display name contains offensive words!",
                   })}
                 />
+
                 {created && (
                   <div className="container mx-auto mt-5">
                     <div
@@ -112,6 +117,9 @@ export default function AddCategory({ addCategory }) {
                       {createMessage}
                     </div>
                   </div>
+                )}
+                {failed && (
+                  <div className="alert alert-danger">{createMessage}</div>
                 )}
                 {errors.name && (
                   <div className="invalid-feedback">{errors.name.message}</div>
