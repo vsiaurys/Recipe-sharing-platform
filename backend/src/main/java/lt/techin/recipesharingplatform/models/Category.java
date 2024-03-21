@@ -1,12 +1,14 @@
 package lt.techin.recipesharingplatform.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "Categories")
 public class Category {
+    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
