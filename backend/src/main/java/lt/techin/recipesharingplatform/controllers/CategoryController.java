@@ -25,7 +25,7 @@ public class CategoryController {
     public ResponseEntity<?> saveCategory(@Valid @RequestBody Category category) {
         if (categoryService.existsByName(category.getName())) {
             Map<String, Object> response = new HashMap<>();
-            response.put("message", "Wrong category name");
+            response.put("message", "Category with this name already exists");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
