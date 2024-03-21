@@ -8,11 +8,11 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "Categories")
 public class Category {
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull
     @Size(min = 4, max = 20, message = "Name must be from 4 to 20 characters")
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "Name must contain only letters and spaces")
     @Column(unique = true)
