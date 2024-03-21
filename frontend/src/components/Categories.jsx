@@ -8,66 +8,30 @@ import UpdateCategory from "./UpdateCategory";
 // import DeleteCategory from "./DeleteCategory";
 import AddCategory from "./AddCategory";
 
-const categories = [
-  {
-    id: 1,
-    name: "Category 1",
-  },
-  {
-    id: 2,
-    name: "Category 2",
-  },
-  {
-    id: 3,
-    name: "Category 3",
-  },
-  {
-    id: 4,
-    name: "Category 4",
-  },
-  {
-    id: 5,
-    name: "Category 5",
-  },
-  {
-    id: 6,
-    name: "Category 6",
-  },
-  {
-    id: 7,
-    name: "Category 7",
-  },
-  {
-    id: 8,
-    name: "Category 8",
-  },
-  {
-    id: 9,
-    name: "Category 9",
-  },
-  {
-    id: 10,
-    name: "Category 10",
-  },
-  {
-    id: 11,
-    name: "Category 11",
-  },
-];
-
 export default function Categories() {
-  //const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [categoryAdded, setCategoryAdded] = useState(false);
 
   const getCategories = async () => {
     console.log("Get categories");
-    console.log(localStorage);
-    // const url = "http://localhost:8080/";
-    // const response = await fetch(`${url}categories`, {
-    //   method: "GET",
-    //   "Content-Type": "application/json",
-    // });
-    // const resp = await response.json();
-    //setCategories(resp);
+
+    const url = "http://localhost:8080/";
+    const response = await fetch(`${url}categories`, {
+      method: "GET",
+      "Content-Type": "application/json",
+      headers: {
+        Authorization:
+          "Basic " +
+          btoa(
+            `${localStorage.getItem("email")}:${localStorage.getItem(
+              "password"
+            )}`
+          ),
+      },
+    });
+    const resp = await response.json();
+    setCategories(resp);
+    setCategoryAdded(false);
   };
 
   // function updateCategory(id, name) {
@@ -79,17 +43,19 @@ export default function Categories() {
   //   console.log(`Delete ${id}`);
   // }
 
-  function addCategory() {}
+  const addCategory = () => {
+    console.log("BBBBBBBBBBBBBBBBB");
+    setCategoryAdded(true);
+  };
 
   useEffect(() => {
     getCategories();
-  }, []);
+  }, [categoryAdded]);
 
-  //console.log(update);
   return (
     <>
       <div className="container">
-        <h1 className="text-center">Manage Recipe Categories</h1>
+        <h1 className="text-center">Recipe Categories</h1>
         <div className="col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
           <table className="table">
             <tbody>
@@ -130,7 +96,7 @@ export default function Categories() {
                   </tr>
                 );
               })}
-              {localStorage.role === "ROLE_ADMIN" && (
+              {localStorage.getItem("role") === "ROLE_ADMIN" && (
                 <tr>
                   {/* <th></th>
                 <td></td> */}
@@ -140,11 +106,11 @@ export default function Categories() {
                       type="button"
                       data-bs-toggle="modal"
                       data-bs-target="#addCategoryModal"
-                      onClick={() => addCategory()}
+                      // onClick={() => addCategory()}
                     >
                       Add category
                     </button>
-                    <AddCategory />
+                    <AddCategory addCategory={addCategory} />
                   </th>
                 </tr>
               )}

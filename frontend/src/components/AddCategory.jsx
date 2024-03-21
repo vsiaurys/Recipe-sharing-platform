@@ -1,29 +1,56 @@
 import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 import BadWords from "./BadWords";
 
-export default function AddCategory() {
+export default function AddCategory({ addCategory }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const [createMessage, setCreateMessage] = useState();
+  const [created, setCreated] = useState(false);
 
-    // const postData = async () => {
-    //   const send = await fetch("http://localhost:8080/actors", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: "Basic " + btoa("aaaaaaaa:bbbbbbbb"),
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
-    // };
+  const onSubmit = async (data) => {
+    const url = "http://localhost:8080/";
+    try {
+      const response = await fetch(`${url}categories`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "Basic " +
+            btoa(
+              `${localStorage.getItem("email")}:${localStorage.getItem(
+                "password"
+              )}`
+            ),
+        },
+      });
 
-    // postData();
+      const responseData = await response.json();
+
+      if (response.ok) {
+        setCreateMessage(`New category ${data.name} successfully created`);
+        console.log("AAAAAAAAAAAAAAAAA");
+        addCategory();
+        setCreated(true);
+      } else {
+        setCreateMessage(responseData.message);
+      }
+    } catch (error) {
+      console.error("Error adding new category: ", error);
+      setCreateMessage("An unexpected error occurred.");
+    }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setCreated(false);
+    }, 3000);
+  }, [created]);
 
   return (
     <>
@@ -55,12 +82,10 @@ export default function AddCategory() {
               <div className="modal-body">
                 <input
                   type="text"
-                  className={`form-control ${
-                    errors.category ? "is-invalid" : ""
-                  }`}
+                  className={`form-control ${errors.name ? "is-invalid" : ""}`}
                   id="disabledTextInput"
                   placeholder="Enter new category"
-                  {...register("category", {
+                  {...register("name", {
                     required: "Please enter category name",
                     pattern: {
                       value: /^[A-Z][a-zA-Z\s]*$/,
@@ -78,10 +103,18 @@ export default function AddCategory() {
                       ) || "Display name contains offensive words!",
                   })}
                 />
-                {errors.category && (
-                  <div className="invalid-feedback">
-                    {errors.category.message}
+                {created && (
+                  <div className="container mx-auto mt-5">
+                    <div
+                      className="alert alert-success"
+                      role="alert"
+                    >
+                      {createMessage}
+                    </div>
                   </div>
+                )}
+                {errors.name && (
+                  <div className="invalid-feedback">{errors.name.message}</div>
                 )}
               </div>
               <div className="modal-footer">
