@@ -14,10 +14,10 @@ export default function AddCategory({ addCategory }) {
   const [created, setCreated] = useState(false);
   const [failed, setFailed] = useState(false);
 
-  const resetForm = async () => {
+  const resetForm = () => {
     setFailed(false);
     setCreated(false);
-    document.getElementById("form-add-category").reset();
+    //document.getElementById("form-add-category").reset();
   };
 
   const onSubmit = async (data) => {
