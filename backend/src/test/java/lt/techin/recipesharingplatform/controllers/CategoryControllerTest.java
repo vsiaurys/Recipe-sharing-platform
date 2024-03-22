@@ -3,6 +3,7 @@ package lt.techin.recipesharingplatform.controllers;
 import lt.techin.recipesharingplatform.models.Category;
 import lt.techin.recipesharingplatform.security.SecurityConfig;
 import lt.techin.recipesharingplatform.services.CategoryService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -72,7 +74,10 @@ public class CategoryControllerTest {
         mockMvc.perform(post("/categories")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"\"}"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name")
+                        .value(Matchers.either(equalTo("Name must be from 4 to 20 characters"))
+                                .or(equalTo("Name must contain only letters and spaces"))));
 
         verify(this.categoryService, times(0)).saveCategory(any(Category.class));
     }
