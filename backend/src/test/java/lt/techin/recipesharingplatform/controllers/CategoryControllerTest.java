@@ -44,4 +44,15 @@ public class CategoryControllerTest {
 
         verify(this.categoryService, times(1)).saveCategory(any(Category.class));
     }
+
+    @Test
+    @WithMockUser(roles = {"USER"})
+    public void testSaveCategoryAsUser() throws Exception {
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\name\": \"TestCategory\"}"))
+                .andExpect(status().isForbidden());
+
+        verify(this.categoryService, times(0)).saveCategory(any(Category.class));
+    }
 }
