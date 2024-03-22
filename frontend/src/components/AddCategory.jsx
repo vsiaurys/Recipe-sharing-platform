@@ -139,7 +139,7 @@ export default function AddCategory({ addCategory }) {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn button-close"
                   data-bs-dismiss="modal"
                 >
                   Close
