@@ -84,7 +84,8 @@ public class UserController {
     }
 
     @PutMapping("/updateUser")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<?> updateUserWithFile(
+            @RequestPart("file") MultipartFile file, @RequestPart("userDto") UserDto userDto) {
 
         Optional<User> userOptional = userService.findUserByEmail(userDto.getEmail());
 
@@ -95,54 +96,44 @@ public class UserController {
             userToUpdate.setFirstName(userDto.getFirstName());
             userToUpdate.setLastName(userDto.getLastName());
             userToUpdate.setGender(userDto.getGender());
-            userToUpdate.setProfileImage(userDto.getProfileImage());
+
+            if (file != null && !file.isEmpty()) {
+                String contentType = file.getContentType();
+                if (contentType == null || (!contentType.equals("image/jpeg") && !contentType.equals("image/png"))) {
+                    Map<String, String> errorMap = new HashMap<>();
+                    errorMap.put("error", "Only JPEG and PNG file types are accepted");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+                }
+
+                String fileName = file.getOriginalFilename();
+                String currentDir = System.getProperty("user.dir");
+                String uploadDir = currentDir + File.separator + "uploads";
+                String filePath = uploadDir + File.separator + fileName;
+
+                File directory = new File(uploadDir);
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+
+                File destFile = new File(filePath);
+                try {
+                    file.transferTo(destFile);
+                } catch (IOException e) {
+                    Map<String, String> errorMap = new HashMap<>();
+                    errorMap.put("error", "Failed to upload file: " + e.getMessage());
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body(errorMap);
+                }
+
+                userToUpdate.setProfileImage("/uploads/" + fileName);
+            }
 
             User updatedUser = userService.saveUser(userToUpdate);
-
             return ResponseEntity.ok().body(updatedUser);
         } else {
-
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("message", "User not found with email: " + userDto.getEmail());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMap);
         }
-    }
-
-    @PostMapping("/single-file-upload")
-    public ResponseEntity<Map<String, String>> handleFileUploadUsingCurl(@RequestParam("file") MultipartFile file)
-            throws IOException {
-
-        String contentType = file.getContentType();
-        if (contentType == null || (!contentType.equals("image/jpeg") && !contentType.equals("image/png"))) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("error", "Only JPEG and PNG file types are accepted");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
-        }
-
-        String fileName = file.getOriginalFilename();
-        String currentDir = System.getProperty("user.dir");
-        String uploadDir = currentDir + File.separator + "uploads";
-        String filePath = uploadDir + File.separator + fileName;
-
-        File directory = new File(uploadDir);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-
-        File destFile = new File(filePath);
-        try {
-            file.transferTo(destFile);
-        } catch (IOException e) {
-            Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("error", "Failed to upload file: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMap);
-        }
-
-        String fileUrl = "/uploads/" + fileName;
-
-        Map<String, String> map = new HashMap<>();
-        map.put("message", "File upload successful");
-        map.put("fileLocation", fileUrl);
-        return ResponseEntity.ok(map);
     }
 }
