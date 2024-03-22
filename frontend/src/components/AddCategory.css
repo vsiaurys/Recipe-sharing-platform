@@ -1,3 +1,7 @@
 .category-name-exists {
   font-size: 0.79rem;
 }
+
+.button-add-category {
+  background-color: #71b7ce !important;
+}

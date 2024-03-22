@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
-// import { useForm } from "react-hook-form";
-// import { useNavigate } from "react-router-dom";
-// import { FaEye, FaEyeSlash } from "react-icons/fa";
-// import "./Login.css";
-import UpdateCategory from "./UpdateCategory";
+
+//import UpdateCategory from "./UpdateCategory";
 // import DeleteCategory from "./DeleteCategory";
 import AddCategory from "./AddCategory";
+import "./AddCategory.css";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
@@ -99,7 +96,7 @@ export default function Categories() {
                 <td></td> */}
                   <th>
                     <button
-                      className="btn btn-primary"
+                      className="btn button-add-category"
                       type="button"
                       data-bs-toggle="modal"
                       data-bs-target="#addCategoryModal"

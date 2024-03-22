@@ -146,7 +146,7 @@ export default function AddCategory({ addCategory }) {
                 </button>
                 <button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn button-add-category"
                 >
                   Add
                 </button>
