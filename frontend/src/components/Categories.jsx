@@ -37,7 +37,7 @@ export default function Categories() {
   return (
     <>
       <div className="container">
-        <h1 className="text-center">Recipe Categories</h1>
+        <h1 className="text-center mt-3">Recipe Categories</h1>
         <div className="col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
           <table className="table">
             <tbody>
