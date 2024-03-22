@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/categories")
@@ -22,8 +24,9 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<?> saveCategory(@Valid @RequestBody Category category) {
         if (categoryService.existsByName(category.getName())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Category with name " + category.getName() + " already exists");
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Category with this name already exists");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
         Category savedCategory = categoryService.saveCategory(category);
