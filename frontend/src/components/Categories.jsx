@@ -1,7 +1,4 @@
 import { useState, useEffect } from "react";
-
-//import UpdateCategory from "./UpdateCategory";
-// import DeleteCategory from "./DeleteCategory";
 import AddCategory from "./AddCategory";
 import "./AddCategory.css";
 
@@ -29,15 +26,6 @@ export default function Categories() {
     setCategoryAdded(false);
   };
 
-  // function updateCategory(id, name) {
-  //   console.log(`Update ${id}`);
-  //   //setUpdate(true);
-  // }
-
-  // function deleteCategory(id) {
-  //   console.log(`Delete ${id}`);
-  // }
-
   const addCategory = () => {
     setCategoryAdded(true);
   };
@@ -57,50 +45,17 @@ export default function Categories() {
                 return (
                   <tr key={category.id}>
                     <th scope="row">{category.name}</th>
-                    {/* <td className="text-end"> */}
-                    {/* <button
-                        className="btn btn-primary"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                        onClick={() =>
-                          updateCategory(category.id, category.name)
-                        }
-                      >
-                        Update
-                      </button> */}
-                    {/* 
-                      <UpdateCategory
-                        categoryId={category.id}
-                        categoryName={category.name}
-                      /> */}
-                    {/* </td> */}
-                    {/* <td className="text-end"> */}
-                    {/* <button
-                        className="btn btn-primary"
-                        onClick={() => deleteCategory(category.id)}
-                      >
-                        Delete
-                      </button> */}
-                    {/* <DeleteCategory
-                      categoryId={category.id}
-                      deleteCategory={deleteCategory}
-                    /> */}
-                    {/* </td> */}
                   </tr>
                 );
               })}
               {localStorage.getItem("role") === "ROLE_ADMIN" && (
                 <tr>
-                  {/* <th></th>
-                <td></td> */}
                   <th>
                     <button
                       className="btn button-add-category"
                       type="button"
                       data-bs-toggle="modal"
                       data-bs-target="#addCategoryModal"
-                      // onClick={() => addCategory()}
                     >
                       Add category
                     </button>

@@ -41,7 +41,7 @@ export default function AddCategory({ addCategory }) {
         addCategory();
         setCreated(true);
       }
-      if (response.status === 400 /*&& response.name === data.name*/) {
+      if (response.status === 400) {
         setFailed(true);
         setCreateMessage(
           `Category ${data.name} already exists. Please choose another name`
