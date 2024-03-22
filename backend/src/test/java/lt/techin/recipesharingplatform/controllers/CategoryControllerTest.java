@@ -81,6 +81,18 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
+    public void testSaveCategoryWithTooLongName() throws Exception {
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"Testttttttttttttttttt\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name", equalTo("Name must be from 4 to 20 characters")));
+
+        verify(this.categoryService, times(0)).saveCategory(any(Category.class));
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
     public void testSaveCategoryWithNumberInName() throws Exception {
         mockMvc.perform(post("/categories")
                         .contentType(MediaType.APPLICATION_JSON)
