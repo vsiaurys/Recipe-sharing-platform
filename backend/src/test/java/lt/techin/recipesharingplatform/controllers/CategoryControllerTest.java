@@ -98,7 +98,9 @@ public class CategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"Test1\"}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name", equalTo("Name must contain only letters and spaces")));
+                .andExpect(jsonPath(
+                        "$.name",
+                        equalTo("Name must start with an uppercase letter and contain only letters and spaces")));
 
         verify(this.categoryService, times(0)).saveCategory(any(Category.class));
     }
@@ -110,7 +112,9 @@ public class CategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"Test~\"}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name", equalTo("Name must contain only letters and spaces")));
+                .andExpect(jsonPath(
+                        "$.name",
+                        equalTo("Name must start with an uppercase letter and contain only letters and spaces")));
 
         verify(this.categoryService, times(0)).saveCategory(any(Category.class));
     }
