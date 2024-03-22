@@ -115,7 +115,7 @@ export default function AddCategory({ addCategory }) {
                     pattern: {
                       value: /^[A-Z][a-zA-Z]*( [a-zA-Z]*)*$/,
                       message:
-                        "Category names must start from an uppercase letter and can contain only letters and whitespaces",
+                        "Category name must start from an uppercase letter and can contain only letters and single whitespaces",
                     },
                     minLength: {
                       value: 4,
