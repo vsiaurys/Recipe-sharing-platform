@@ -14,7 +14,7 @@ export default function AddCategory({ addCategory }) {
   const [created, setCreated] = useState(false);
   const [failed, setFailed] = useState(false);
 
-  const resetForm = () => {
+  const resetForm = async () => {
     setFailed(false);
     setCreated(false);
     document.getElementById("form-add-category").reset();
