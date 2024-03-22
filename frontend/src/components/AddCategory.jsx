@@ -40,12 +40,14 @@ export default function AddCategory({ addCategory }) {
         },
       });
 
+      console.log(response.body);
+
       if (response.ok) {
         setCreateMessage(`New category ${data.name} successfully created`);
         addCategory();
         setCreated(true);
       }
-      if (response.status === 400) {
+      if (response.status === 400 && response.name === data.name) {
         setFailed(true);
         setCreateMessage(
           `Category ${data.name} already exists. Please choose another name`
@@ -111,9 +113,9 @@ export default function AddCategory({ addCategory }) {
                   {...register("name", {
                     required: "Please enter category name",
                     pattern: {
-                      value: /^[a-zA-Z]+( [a-zA-Z]+)*$/,
+                      value: /^[A-Z][a-zA-Z]*( [A-Z][a-zA-Z]*)*$/,
                       message:
-                        "Category names can only contain letters and whitespaces",
+                        "Category names must start from an uppercase letter and can contain only letters and whitespaces",
                     },
                     minLength: {
                       value: 4,
