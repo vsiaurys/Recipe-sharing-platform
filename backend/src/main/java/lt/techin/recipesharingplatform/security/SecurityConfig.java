@@ -21,7 +21,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(c -> c.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/register", "/login", "/single-file-upload")
+                        .requestMatchers(HttpMethod.POST, "/register", "/login")
                         .permitAll()
                         .requestMatchers(HttpMethod.PUT, "/updateUser")
                         .authenticated()
