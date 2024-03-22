@@ -14,15 +14,9 @@ export default function AddCategory({ addCategory }) {
   const [created, setCreated] = useState(false);
   const [failed, setFailed] = useState(false);
 
-  const resetForm = () => {
-    setFailed(false);
-    setCreated(false);
-    //document.getElementById("form-add-category").reset();
-  };
-
   const onSubmit = async (data) => {
     const url = "http://localhost:8080/";
-    resetForm();
+    setFailed(false);
 
     try {
       const response = await fetch(`${url}categories`, {
@@ -61,7 +55,7 @@ export default function AddCategory({ addCategory }) {
 
   useEffect(() => {
     setTimeout(() => {
-      resetForm();
+      setCreated(false);
     }, 3000);
   }, [created]);
 
@@ -92,7 +86,7 @@ export default function AddCategory({ addCategory }) {
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
-                  onClick={() => resetForm()}
+                  onClick={() => setFailed(false)}
                 />
               </div>
 
@@ -158,7 +152,7 @@ export default function AddCategory({ addCategory }) {
                   type="button"
                   className="btn button-close"
                   data-bs-dismiss="modal"
-                  onClick={() => resetForm()}
+                  onClick={() => setFailed(false)}
                 >
                   Close
                 </button>
