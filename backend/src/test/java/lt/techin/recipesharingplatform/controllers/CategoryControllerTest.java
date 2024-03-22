@@ -3,7 +3,6 @@ package lt.techin.recipesharingplatform.controllers;
 import lt.techin.recipesharingplatform.models.Category;
 import lt.techin.recipesharingplatform.security.SecurityConfig;
 import lt.techin.recipesharingplatform.services.CategoryService;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -70,14 +69,12 @@ public class CategoryControllerTest {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
-    public void testSaveCategoryWithEmptyName() throws Exception {
+    public void testSaveCategoryWithTooShortName() throws Exception {
         mockMvc.perform(post("/categories")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"\"}"))
+                        .content("{\"name\": \"Tes\"}"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.name")
-                        .value(Matchers.either(equalTo("Name must be from 4 to 20 characters"))
-                                .or(equalTo("Name must contain only letters and spaces"))));
+                .andExpect(jsonPath("$.name", equalTo("Name must be from 4 to 20 characters")));
 
         verify(this.categoryService, times(0)).saveCategory(any(Category.class));
     }
