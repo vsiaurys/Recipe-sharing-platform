@@ -13,8 +13,6 @@ export default function Categories() {
   const [categoryAdded, setCategoryAdded] = useState(false);
 
   const getCategories = async () => {
-    console.log("Get categories");
-
     const url = "http://localhost:8080/";
     const response = await fetch(`${url}categories`, {
       method: "GET",
@@ -44,7 +42,6 @@ export default function Categories() {
   // }
 
   const addCategory = () => {
-    console.log("BBBBBBBBBBBBBBBBB");
     setCategoryAdded(true);
   };
 

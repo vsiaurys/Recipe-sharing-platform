@@ -85,11 +85,19 @@ export default function AddCategory({ addCategory }) {
               </div>
 
               <div className="modal-body">
+                <label
+                  htmlFor="disabledTextInput"
+                  className="form-label fw-normal"
+                >
+                  Category name
+                </label>
+
                 <input
                   type="text"
                   className={`form-control ${errors.name ? "is-invalid" : ""}`}
                   id="disabledTextInput"
-                  placeholder="Enter new category"
+                  placeholder="Enter new category name"
+                  autoComplete="on"
                   {...register("name", {
                     required: "Please enter category name",
                     pattern: {
@@ -110,7 +118,7 @@ export default function AddCategory({ addCategory }) {
                 />
 
                 {created && (
-                  <div className="container mx-auto mt-5">
+                  <div className="container mx-auto mt-3">
                     <div
                       className="alert alert-success"
                       role="alert"
