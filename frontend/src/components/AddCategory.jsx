@@ -40,14 +40,14 @@ export default function AddCategory({ addCategory }) {
         },
       });
 
-      console.log(response.body);
+      console.log(response);
 
       if (response.ok) {
         setCreateMessage(`New category ${data.name} successfully created`);
         addCategory();
         setCreated(true);
       }
-      if (response.status === 400 && response.name === data.name) {
+      if (response.status === 400 /*&& response.name === data.name*/) {
         setFailed(true);
         setCreateMessage(
           `Category ${data.name} already exists. Please choose another name`
@@ -121,6 +121,11 @@ export default function AddCategory({ addCategory }) {
                       value: 4,
                       message:
                         "Category names must be at least 4 characters long",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message:
+                        "Category names must not be longer than 20 characters",
                     },
                     validate: (value) =>
                       !BadWords.some((word) =>
