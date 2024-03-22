@@ -50,9 +50,28 @@ public class CategoryControllerTest {
     public void testSaveCategoryAsUser() throws Exception {
         mockMvc.perform(post("/categories")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\name\": \"TestCategory\"}"))
+                        .content("{\"name\": \"TestCategory\"}"))
                 .andExpect(status().isForbidden());
 
         verify(this.categoryService, times(0)).saveCategory(any(Category.class));
+    }
+
+    @Test
+    public void testSaveCategoryAsUnauthenticatedUser() throws Exception {
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"TestCategory\"}"))
+                .andExpect(status().isUnauthorized());
+
+        verify(this.categoryService, times(0)).saveCategory(any(Category.class));
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    public void testSaveCategoryWithEmptyName() throws Exception {
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"\"}"))
+                .andExpect(status().isBadRequest());
     }
 }
