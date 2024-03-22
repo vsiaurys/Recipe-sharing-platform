@@ -21,8 +21,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(c -> c.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/register", "/login")
+                        .requestMatchers(HttpMethod.POST, "/register", "/login", "/single-file-upload")
                         .permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/updateUser")
+                        .authenticated()
                         .anyRequest()
                         .authenticated())
                 .httpBasic(Customizer.withDefaults());
