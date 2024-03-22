@@ -101,9 +101,9 @@ export default function AddCategory({ addCategory }) {
                   {...register("name", {
                     required: "Please enter category name",
                     pattern: {
-                      value: /^[A-Z][a-zA-Z\s]*$/,
+                      value: /^[a-zA-Z]+( [a-zA-Z]+)*$/,
                       message:
-                        "Category names can only contain letters and whitespaces, and must start with an uppercase letter",
+                        "Category names can only contain letters and whitespaces",
                     },
                     minLength: {
                       value: 4,
