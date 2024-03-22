@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import BadWords from "./BadWords";
+import "./AddCategory.css";
 
 export default function AddCategory({ addCategory }) {
   const {
@@ -118,7 +119,11 @@ export default function AddCategory({ addCategory }) {
                     </div>
                   </div>
                 )}
-                {failed && <div className="text-danger">{createMessage}</div>}
+                {failed && (
+                  <div className="category-name-exists text-danger">
+                    {createMessage}
+                  </div>
+                )}
                 {errors.name && (
                   <div className="invalid-feedback">{errors.name.message}</div>
                 )}
