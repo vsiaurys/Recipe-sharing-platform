@@ -90,4 +90,16 @@ public class CategoryControllerTest {
 
         verify(this.categoryService, times(0)).saveCategory(any(Category.class));
     }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    public void testSaveCategoryWithSymbolInName() throws Exception {
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"Test~\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name", equalTo("Name must contain only letters and spaces")));
+
+        verify(this.categoryService, times(0)).saveCategory(any(Category.class));
+    }
 }
