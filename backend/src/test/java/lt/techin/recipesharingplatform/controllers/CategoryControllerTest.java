@@ -73,5 +73,7 @@ public class CategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"\"}"))
                 .andExpect(status().isBadRequest());
+
+        verify(this.categoryService, times(0)).saveCategory(any(Category.class));
     }
 }
