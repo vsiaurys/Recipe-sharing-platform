@@ -83,7 +83,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorMap);
     }
 
-    @PutMapping("/updateUser")
+    @PutMapping("/update-user")
     public ResponseEntity<?> updateUserWithFile(
             @RequestPart("file") MultipartFile file, @RequestPart("userDto") UserDto userDto) {
 
