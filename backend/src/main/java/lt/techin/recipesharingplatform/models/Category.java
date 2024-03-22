@@ -14,7 +14,10 @@ public class Category {
 
     @NotNull
     @Size(min = 4, max = 20, message = "Name must be from 4 to 20 characters")
-    @Pattern(regexp = "^[a-zA-Z]+( [a-zA-Z]+)*$", message = "Name must contain only letters and spaces")
+    //    @Pattern(regexp = "^[a-zA-Z]+( [a-zA-Z]+)*$", message = "Name must contain only letters and spaces")
+    @Pattern(
+            regexp = "^[A-Z][a-zA-Z]*( [a-zA-Z]+)*$",
+            message = "Name must start with an uppercase letter and contain only letters and spaces")
     @Column(unique = true)
     private String name;
 
