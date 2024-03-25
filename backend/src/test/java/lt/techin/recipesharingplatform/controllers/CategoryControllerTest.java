@@ -143,5 +143,7 @@ public class CategoryControllerTest {
                         .content("{\"name\": \"" + categoryName + "\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.name", equalTo("Category with this name already exists")));
+
+        verify(this.categoryService, times(0)).saveCategory(any(Category.class));
     }
 }
