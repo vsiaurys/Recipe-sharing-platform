@@ -130,4 +130,18 @@ public class CategoryControllerTest {
 
         verify(this.categoryService, times(0)).saveCategory(any(Category.class));
     }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    public void testSaveCategoryWithExistingName() throws Exception {
+        String categoryName = "TestCategory";
+
+        given(categoryService.existsByName("TestCategory")).willReturn(true);
+
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"" + categoryName + "\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name", equalTo("Category with this name already exists")));
+    }
 }
