@@ -8,15 +8,14 @@ export default function AddCategory({ addCategory }) {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm();
 
   const [createMessage, setCreateMessage] = useState();
   const [created, setCreated] = useState(false);
-  const [failed, setFailed] = useState(false);
 
   const onSubmit = async (data) => {
     const url = "http://localhost:8080/";
-    setFailed(false);
 
     try {
       const response = await fetch(`${url}categories`, {
@@ -33,8 +32,6 @@ export default function AddCategory({ addCategory }) {
             ),
         },
       });
-      const responseData = await response.json();
-      //console.log(responseData);
 
       if (response.ok) {
         setCreateMessage(`New category ${data.name} successfully created`);
@@ -42,18 +39,14 @@ export default function AddCategory({ addCategory }) {
         setCreated(true);
       }
       if (response.status === 400) {
-        setFailed(true);
-        setCreateMessage(responseData.name);
-        // if (response.status === 400 && response.name === "Name must be from 4 to 20 characters") {
-        //   setFailed(true);
-        //   setCreateMessage(
-        //     `Category ${data.name} already exists. Please choose another name`
-        //   );
-        //console.log(responseData.name);
+        const responseData = await response.json();
+        setError("name", {
+          type: "server",
+          message: `${responseData.name}`,
+        });
       }
     } catch (error) {
       console.error("Error adding new category: ", error);
-      setCreateMessage("An unexpected error occurred.");
     }
   };
 
@@ -90,7 +83,6 @@ export default function AddCategory({ addCategory }) {
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
-                  onClick={() => setFailed(false)}
                 />
               </div>
 
@@ -109,28 +101,33 @@ export default function AddCategory({ addCategory }) {
                   placeholder="Enter new category name"
                   autoComplete="on"
                   {...register("name", {
-                    //   required: "Please enter category name",
-                    //   pattern: {
-                    //     value: /^[A-Z][a-zA-Z]*( [a-zA-Z]*)*$/,
-                    //     message:
-                    //       "Category name must start from an uppercase letter and can contain only letters and single whitespaces",
-                    //   },
-                    //   minLength: {
-                    //     value: 4,
-                    //     message:
-                    //       "Category names must be at least 4 characters long",
-                    //   },
-                    //   maxLength: {
-                    //     value: 20,
-                    //     message:
-                    //       "Category names must not be longer than 20 characters",
-                    //   },
-                    //   validate: (value) =>
-                    //     !BadWords.some((word) =>
-                    //       new RegExp(word, "i").test(value)
-                    //     ) || "Display name contains offensive words!",
+                    required: "Please enter category name",
+                    pattern: {
+                      value: /^[A-Z][a-zA-Z]*( [a-zA-Z]*)*$/,
+                      message:
+                        "Category name must start from an uppercase letter and can contain only letters and single whitespaces",
+                    },
+                    minLength: {
+                      value: 4,
+                      message:
+                        "Category name must be at least 4 characters long",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message:
+                        "Category name must not be longer than 20 characters",
+                    },
+                    validate: (value) =>
+                      !BadWords.some((word) =>
+                        new RegExp(word, "i").test(value)
+                      ) || "Display name contains offensive words!",
                   })}
                 />
+                {errors.name && (
+                  <div className="invalid-feedback">
+                    {errors.name ? errors.name.message : ""}
+                  </div>
+                )}
 
                 {created && (
                   <div className="container mx-auto mt-3">
@@ -142,19 +139,12 @@ export default function AddCategory({ addCategory }) {
                     </div>
                   </div>
                 )}
-                {failed && (
-                  <div className="category-name-exists text-danger">
-                    {createMessage}
-                  </div>
-                )}
-                {errors.name && <div className="">{errors.name.message}</div>}
               </div>
               <div className="modal-footer">
                 <button
                   type="button"
                   className="btn button-close"
                   data-bs-dismiss="modal"
-                  onClick={() => setFailed(false)}
                 >
                   Close
                 </button>
