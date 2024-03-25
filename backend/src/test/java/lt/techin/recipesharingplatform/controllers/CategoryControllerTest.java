@@ -136,7 +136,7 @@ public class CategoryControllerTest {
     public void testSaveCategoryWithExistingName() throws Exception {
         String categoryName = "TestCategory";
 
-        given(categoryService.existsByName("TestCategory")).willReturn(true);
+        given(categoryService.existsByName(categoryName)).willReturn(true);
 
         mockMvc.perform(post("/categories")
                         .contentType(MediaType.APPLICATION_JSON)
