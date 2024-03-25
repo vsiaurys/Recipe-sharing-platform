@@ -118,4 +118,16 @@ public class CategoryControllerTest {
 
         verify(this.categoryService, times(0)).saveCategory(any(Category.class));
     }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    public void testSaveCategoryWithEmptyName() throws Exception {
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name", equalTo("Name field cannot be empty.")));
+
+        verify(this.categoryService, times(0)).saveCategory(any(Category.class));
+    }
 }
