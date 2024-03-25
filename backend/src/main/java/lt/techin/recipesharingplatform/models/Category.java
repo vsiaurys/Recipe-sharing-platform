@@ -1,6 +1,7 @@
 package lt.techin.recipesharingplatform.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -12,9 +13,13 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotEmpty(message = "Name field cannot be empty.")
     @NotNull
     @Size(min = 4, max = 20, message = "Name must be from 4 to 20 characters")
-    @Pattern(regexp = "^[a-zA-Z]+( [a-zA-Z]+)*$", message = "Name must contain only letters and spaces")
+    //    @Pattern(regexp = "^[a-zA-Z]+( [a-zA-Z]+)*$", message = "Name must contain only letters and spaces")
+    @Pattern(
+            regexp = "^[A-Z][a-zA-Z]*( [a-zA-Z]+)*$",
+            message = "Name must start with an uppercase letter and contain only letters and spaces")
     @Column(unique = true)
     private String name;
 

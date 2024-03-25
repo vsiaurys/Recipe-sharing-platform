@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -50,8 +51,70 @@ public class CategoryControllerTest {
     public void testSaveCategoryAsUser() throws Exception {
         mockMvc.perform(post("/categories")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\name\": \"TestCategory\"}"))
+                        .content("{\"name\": \"TestCategory\"}"))
                 .andExpect(status().isForbidden());
+
+        verify(this.categoryService, times(0)).saveCategory(any(Category.class));
+    }
+
+    @Test
+    public void testSaveCategoryAsUnauthenticatedUser() throws Exception {
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"TestCategory\"}"))
+                .andExpect(status().isUnauthorized());
+
+        verify(this.categoryService, times(0)).saveCategory(any(Category.class));
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    public void testSaveCategoryWithTooShortName() throws Exception {
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"Tes\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name", equalTo("Name must be from 4 to 20 characters")));
+
+        verify(this.categoryService, times(0)).saveCategory(any(Category.class));
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    public void testSaveCategoryWithTooLongName() throws Exception {
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"Testttttttttttttttttt\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.name", equalTo("Name must be from 4 to 20 characters")));
+
+        verify(this.categoryService, times(0)).saveCategory(any(Category.class));
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    public void testSaveCategoryWithNumberInName() throws Exception {
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"Test1\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath(
+                        "$.name",
+                        equalTo("Name must start with an uppercase letter and contain only letters and spaces")));
+
+        verify(this.categoryService, times(0)).saveCategory(any(Category.class));
+    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    public void testSaveCategoryWithSymbolInName() throws Exception {
+        mockMvc.perform(post("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"Test~\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath(
+                        "$.name",
+                        equalTo("Name must start with an uppercase letter and contain only letters and spaces")));
 
         verify(this.categoryService, times(0)).saveCategory(any(Category.class));
     }
