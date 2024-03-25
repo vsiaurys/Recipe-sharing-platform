@@ -33,8 +33,8 @@ export default function AddCategory({ addCategory }) {
             ),
         },
       });
-
-      console.log(response);
+      const responseData = await response.json();
+      //console.log(responseData);
 
       if (response.ok) {
         setCreateMessage(`New category ${data.name} successfully created`);
@@ -43,9 +43,13 @@ export default function AddCategory({ addCategory }) {
       }
       if (response.status === 400) {
         setFailed(true);
-        setCreateMessage(
-          `Category ${data.name} already exists. Please choose another name`
-        );
+        setCreateMessage(responseData.name);
+        // if (response.status === 400 && response.name === "Name must be from 4 to 20 characters") {
+        //   setFailed(true);
+        //   setCreateMessage(
+        //     `Category ${data.name} already exists. Please choose another name`
+        //   );
+        //console.log(responseData.name);
       }
     } catch (error) {
       console.error("Error adding new category: ", error);
@@ -105,26 +109,26 @@ export default function AddCategory({ addCategory }) {
                   placeholder="Enter new category name"
                   autoComplete="on"
                   {...register("name", {
-                    required: "Please enter category name",
-                    pattern: {
-                      value: /^[A-Z][a-zA-Z]*( [a-zA-Z]*)*$/,
-                      message:
-                        "Category name must start from an uppercase letter and can contain only letters and single whitespaces",
-                    },
-                    minLength: {
-                      value: 4,
-                      message:
-                        "Category names must be at least 4 characters long",
-                    },
-                    maxLength: {
-                      value: 20,
-                      message:
-                        "Category names must not be longer than 20 characters",
-                    },
-                    validate: (value) =>
-                      !BadWords.some((word) =>
-                        new RegExp(word, "i").test(value)
-                      ) || "Display name contains offensive words!",
+                    //   required: "Please enter category name",
+                    //   pattern: {
+                    //     value: /^[A-Z][a-zA-Z]*( [a-zA-Z]*)*$/,
+                    //     message:
+                    //       "Category name must start from an uppercase letter and can contain only letters and single whitespaces",
+                    //   },
+                    //   minLength: {
+                    //     value: 4,
+                    //     message:
+                    //       "Category names must be at least 4 characters long",
+                    //   },
+                    //   maxLength: {
+                    //     value: 20,
+                    //     message:
+                    //       "Category names must not be longer than 20 characters",
+                    //   },
+                    //   validate: (value) =>
+                    //     !BadWords.some((word) =>
+                    //       new RegExp(word, "i").test(value)
+                    //     ) || "Display name contains offensive words!",
                   })}
                 />
 
@@ -143,9 +147,7 @@ export default function AddCategory({ addCategory }) {
                     {createMessage}
                   </div>
                 )}
-                {errors.name && (
-                  <div className="invalid-feedback">{errors.name.message}</div>
-                )}
+                {errors.name && <div className="">{errors.name.message}</div>}
               </div>
               <div className="modal-footer">
                 <button
