@@ -63,20 +63,13 @@ public class UserDto {
     private String profileImage;
 
     public UserDto(
-            String email,
-            String password,
-            String displayName,
-            String firstName,
-            String lastName,
-            String gender,
-            String profileImage) {
+            String email, String password, String displayName, String firstName, String lastName, String gender) {
         this.email = email;
         this.password = password;
         this.displayName = displayName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
-        this.profileImage = profileImage;
     }
 
     public String getEmail() {
