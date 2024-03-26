@@ -20,10 +20,10 @@ export default function Main({ checkRole }) {
           <div>Your role is: {role}</div>
         </div>
       ) : (
-        <div className="container">
+        <div className="container mt-5">
           <h1>Welcome</h1>
           <p>
-            Welcome to the Recipe sharing platform. Here you can share and look
+            Welcome to the Recipe Sharing Platform. Here you can share and look
             for favorite recipes.
           </p>
         </div>
