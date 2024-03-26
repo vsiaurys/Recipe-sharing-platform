@@ -72,6 +72,16 @@ function Header({ checkRole, setForceRender }) {
                   </Link>
                 )}
               </li>
+              <li className="nav-item">
+                {checkRole() && (
+                  <Link
+                    to="/updateprofile"
+                    className="nav-link"
+                  >
+                    Profile
+                  </Link>
+                )}
+              </li>
               <li
                 onClick={() => {
                   if (checkRole()) {
