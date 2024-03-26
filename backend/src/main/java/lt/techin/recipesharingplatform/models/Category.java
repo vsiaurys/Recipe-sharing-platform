@@ -20,7 +20,6 @@ public class Category {
 
     @Pattern(regexp = OffensiveWords.OFFENSIVE_WORDS_PATTERN, message = "Category name cannot contain offensive words")
     @NotEmpty(message = "Name field cannot be empty.", groups = FirstOrder.class)
-    //    @Pattern(regexp = "^[a-zA-Z]+( [a-zA-Z]+)*$", message = "Name must contain only letters and spaces")
     @Pattern(
             regexp = "^[A-Z][a-zA-Z]*( [a-zA-Z]+)*$",
             message = "Name must start with an uppercase letter and contain only letters and spaces",
