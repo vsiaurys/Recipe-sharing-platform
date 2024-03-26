@@ -69,6 +69,7 @@ function Header({ checkRole, setForceRender }) {
                   <Link
                     to="/categories"
                     className="nav-link"
+                    onClick={toggleNavbar}
                   >
                     Categories
                   </Link>
