@@ -4,29 +4,39 @@ import Footer from "./components/Footer";
 import Main from "./components/Main";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import { useState } from "react";
+
 import { Route, Routes, NavLink } from "react-router-dom";
-import LoginSuccessful from "./components/LoginSuccessful";
+import Categories from "./components/Categories";
 
 function App() {
+  const [forceRender, setForceRender] = useState(false);
+  const checkRole = () => {
+    const role = localStorage.getItem("role");
+    return role !== null && role !== "";
+  };
   return (
     <div className="d-flex flex-column min-vh-100">
-      <Header />
+      <Header
+        checkRole={checkRole}
+        setForceRender={setForceRender}
+      />
       <Routes>
         <Route
           path="/"
-          element={<Main />}
+          element={<Main checkRole={checkRole} />}
         />
         <Route
           path="/login"
-          element={<Login />}
+          element={<Login checkRole={checkRole} />}
         />
         <Route
           path="/register"
           element={<Register />}
         />
         <Route
-          path="/login-successful"
-          element={<LoginSuccessful />}
+          path="/categories"
+          element={<Categories checkRole={checkRole} />}
         />
       </Routes>
       <footer className="mt-auto footer">

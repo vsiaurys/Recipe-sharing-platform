@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css";
 
-function Login() {
+function Login({ checkRole }) {
   const {
     register,
     handleSubmit,
@@ -40,7 +40,9 @@ function Login() {
         localStorage.setItem("displayName", responseData.displayName);
         localStorage.setItem("role", responseData.role);
         localStorage.setItem("email", responseData.email);
-        navigate("/login-successful");
+        localStorage.setItem("password", data.password);
+        navigate("/");
+        checkRole();
       } else {
         handleLoginResponse("error", responseData.message);
       }
