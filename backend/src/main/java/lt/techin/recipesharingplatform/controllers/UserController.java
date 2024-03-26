@@ -7,6 +7,8 @@ import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -89,6 +91,17 @@ public class UserController {
             @RequestPart("file") MultipartFile file,
             @RequestPart("userDto") UserDto userDto) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        long userId = user.getId();
+
+        if (userId != id) {
+
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("error", "User is not authorized to update this user.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorMap);
+        }
+
         Optional<User> userOptional = userService.findUserById(id);
 
         if (userOptional.isPresent()) {
@@ -120,19 +133,19 @@ public class UserController {
                 File destFile = new File(filePath);
                 try {
                     file.transferTo(destFile);
+                    userToUpdate.setProfileImage("/uploads/" + fileName);
                 } catch (IOException e) {
                     Map<String, String> errorMap = new HashMap<>();
                     errorMap.put("error", "Failed to upload file: " + e.getMessage());
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                             .body(errorMap);
                 }
-
-                userToUpdate.setProfileImage("/uploads/" + fileName);
             }
 
             User updatedUser = userService.saveUser(userToUpdate);
             return ResponseEntity.ok().body(updatedUser);
         } else {
+
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("message", "User not found with ID: " + id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMap);
