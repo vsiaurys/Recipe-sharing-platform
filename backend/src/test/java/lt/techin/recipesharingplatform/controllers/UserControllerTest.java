@@ -1,5 +1,7 @@
 package lt.techin.recipesharingplatform.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lt.techin.recipesharingplatform.dto.UserDto;
 import lt.techin.recipesharingplatform.models.User;
 import lt.techin.recipesharingplatform.security.SecurityConfig;
 import lt.techin.recipesharingplatform.services.UserService;
@@ -9,8 +11,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Optional;
 
@@ -19,6 +24,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,6 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
     @MockBean
     private UserService userService;
@@ -47,16 +56,17 @@ public class UserControllerTest {
                                 .contentType(APPLICATION_JSON)
                                 .content(
                                         """
-                        {
-                            "email": "test@example.com",
-                            "password": "wrongpassword",
-                            "username": "Smauglys87",
-                            "firstName": "Vardas",
-                            "lastName": "Pavarde",
-                            "gender": "Male",
-                            "role": "ROLE_USER"
-                        }
-                        """))
+                                                {
+                                                    "email": "test@example.com",
+                                                    "password": "wrongpassword",
+                                                    "username": "Smauglys87",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Male",
+                                                    "role": "ROLE_USER"
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 // Then
                 .andExpect(status().isUnauthorized())
@@ -79,11 +89,11 @@ public class UserControllerTest {
                                 .contentType(APPLICATION_JSON)
                                 .content(
                                         """
-                        {
-                            "email": "test@example.com",
-                            "password": "wrongpassword"
-                        }
-                        """))
+                                                {
+                                                    "email": "test@example.com",
+                                                    "password": "wrongpassword"
+                                                }
+                                                """))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.message").value("The email or password provided is incorrect."));
 
@@ -103,11 +113,11 @@ public class UserControllerTest {
                                 .contentType(APPLICATION_JSON)
                                 .content(
                                         """
-                                {
-                                    "email": "test@example.com",
-                                    "password": "correctpassword"
-                                }
-                                """))
+                                                {
+                                                    "email": "test@example.com",
+                                                    "password": "correctpassword"
+                                                }
+                                                """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value(user.getEmail()))
                 .andExpect(jsonPath("$.role").value(user.getRole()));
@@ -129,15 +139,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                             {
-                                                                 "email": "email@email.com",
-                                                                 "password": "Password=123",
-                                                                 "displayName": "Smauglys87",
-                                                                 "firstName": "Vardas",
-                                                                 "lastName": "Pavarde",
-                                                                 "gender": "Male"
-                                                             }
-                                                             """))
+                                                {
+                                                    "email": "email@email.com",
+                                                    "password": "Password=123",
+                                                    "displayName": "Smauglys87",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Male"
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isCreated())
@@ -145,7 +156,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.displayName").value("Smauglys87"))
                 .andExpect(jsonPath("$.firstName").value("Vardas"))
                 .andExpect(jsonPath("$.lastName").value("Pavarde"))
-                .andExpect(jsonPath("$.gender").value("Male"));
+                .andExpect(jsonPath("$.gender").value("Male"))
+                .andExpect(jsonPath("$.profileImage").value("https://www.example.com"));
 
         verify(this.userService).saveUser(any(User.class));
     }
@@ -162,15 +174,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "abcdefghi.klmno49@efghijk.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "abcdefghi.klmno49@efghijk.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -194,15 +207,17 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isCreated())
@@ -210,7 +225,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.displayName").value("Display1"))
                 .andExpect(jsonPath("$.firstName").value("Vardas"))
                 .andExpect(jsonPath("$.lastName").value("Pavarde"))
-                .andExpect(jsonPath("$.gender").value("Female"));
+                .andExpect(jsonPath("$.gender").value("Female"))
+                .andExpect(jsonPath("$.profileImage").value("https://www.example.com"));
 
         verify(this.userService).saveUser(any(User.class));
         verify(this.userService).existsUserByDisplayName("Display1");
@@ -228,15 +244,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female"
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -260,15 +277,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isCreated())
@@ -276,7 +294,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.displayName").value("Display1"))
                 .andExpect(jsonPath("$.firstName").value("Vardas"))
                 .andExpect(jsonPath("$.lastName").value("Pavarde"))
-                .andExpect(jsonPath("$.gender").value("Female"));
+                .andExpect(jsonPath("$.gender").value("Female"))
+                .andExpect(jsonPath("$.profileImage").value("https://www.example.com"));
 
         verify(this.userService).saveUser(any(User.class));
         verify(this.userService).existsUserByEmail("email@email.com");
@@ -293,15 +312,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -323,15 +343,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "BadEmail",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "BadEmail",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -353,14 +374,15 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -382,15 +404,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                         {
-                                                                             "displayName": "Display1",
-                                                                             "email": "email@email.com",
-                                                                             "password": "Bad=1",
-                                                                             "firstName": "Vardas",
-                                                                             "lastName": "Pavarde",
-                                                                             "gender": "Female"
-                                                                         }
-                                                                         """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Bad=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -400,6 +423,7 @@ public class UserControllerTest {
         verify(this.userService, times(0)).existsUserByEmail("email@email.com");
         verify(this.userService, times(0)).existsUserByDisplayName("Display1");
     }
+
     ///////////
     @Test
     void createUser_whenPasswordHasNoDigit_thenReturnBadRequest() throws Exception {
@@ -412,15 +436,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "BadPassword=",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "BadPassword=",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -442,15 +467,17 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "BADPASSWORD=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "BADPASSWORD=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -472,15 +499,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "badpassword=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "badpassword=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -502,15 +530,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "BadPassword1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "BadPassword1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -532,15 +561,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Bad password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Bad password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -562,14 +592,15 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -591,15 +622,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "DN",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "DN",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -622,15 +654,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "1DisplayName",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "1DisplayName",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -652,15 +685,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1@",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1@",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -682,15 +716,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "bastard",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "bastard",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -712,14 +747,15 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -741,15 +777,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "N",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "N",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -771,15 +808,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "name",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "name",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -801,15 +839,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Name123",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Name123",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -831,15 +870,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Nammmmme",
-                                                                                 "lastName": "Pavarde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Nammmmme",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -861,14 +901,15 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -890,15 +931,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                                 {
-                                                                                     "displayName": "Display1",
-                                                                                     "email": "email@email.com",
-                                                                                     "password": "Password=1",
-                                                                                     "firstName": "Vardas",
-                                                                                     "lastName": "L",
-                                                                                     "gender": "Female"
-                                                                                 }
-                                                                                 """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "L",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -920,15 +962,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                                 {
-                                                                                     "displayName": "Display1",
-                                                                                     "email": "email@email.com",
-                                                                                     "password": "Password=1",
-                                                                                     "firstName": "Vardas",
-                                                                                     "lastName": "lastname",
-                                                                                     "gender": "Female"
-                                                                                 }
-                                                                                 """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "lastname",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -950,15 +993,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                                 {
-                                                                                     "displayName": "Display1",
-                                                                                     "email": "email@email.com",
-                                                                                     "password": "Password=1",
-                                                                                     "firstName": "Vardas",
-                                                                                     "lastName": "Lastname13",
-                                                                                     "gender": "Female"
-                                                                                 }
-                                                                                 """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Lastname13",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -980,15 +1024,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarrrrrrde",
-                                                                                 "gender": "Female"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarrrrrrde",
+                                                    "gender": "Female",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -1010,14 +1055,15 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                             {
-                                                                                 "displayName": "Display1",
-                                                                                 "email": "email@email.com",
-                                                                                 "password": "Password=1",
-                                                                                 "firstName": "Vardas",
-                                                                                 "lastName": "Pavarde"
-                                                                             }
-                                                                             """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -1039,15 +1085,16 @@ public class UserControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .content(
                                         """
-                                                                                     {
-                                                                                         "displayName": "Display1",
-                                                                                         "email": "email@email.com",
-                                                                                         "password": "Password=1",
-                                                                                         "firstName": "Vardas",
-                                                                                         "lastName": "Pavarde",
-                                                                                         "gender": "Fem"
-                                                                                     }
-                                                                                     """))
+                                                {
+                                                    "displayName": "Display1",
+                                                    "email": "email@email.com",
+                                                    "password": "Password=1",
+                                                    "firstName": "Vardas",
+                                                    "lastName": "Pavarde",
+                                                    "gender": "Fem",
+                                                    "profileImage": "https://www.example.com"
+                                                }
+                                                """))
 
                 //  then
                 .andExpect(status().isBadRequest())
@@ -1057,4 +1104,40 @@ public class UserControllerTest {
         verify(this.userService, times(0)).existsUserByEmail("email@email.com");
         verify(this.userService, times(0)).existsUserByDisplayName("Display1");
     }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void updateUser_whenUpdateSuccessful_thenReturnOkAndBody() throws Exception {
+        // given
+        byte[] imageBytes = new byte[] {1, 2, 3, 4, 5};
+        MockMultipartFile file = new MockMultipartFile("file", "image.jpg", MediaType.IMAGE_JPEG_VALUE, imageBytes);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto data = new UserDto("test2@example.com", "123456aA!", "Galva", "Jebus", "Mangaramas", "Male");
+        MockMultipartFile userDto = new MockMultipartFile(
+                "userDto", "userDto", MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(data));
+        User oldUser = new User("test1@example.com", "123456aA!", "Smauglyss", "Tomasas", "Pavarde1", "Female");
+        User updatedUser = new User("test2@example.com", "123456aA!", "Galva", "Jebus", "Mangaramas", "Male");
+
+        given(userService.findUserById(1)).willReturn(Optional.of(oldUser));
+        given(userService.saveUser(any(User.class))).willReturn(updatedUser);
+
+        // when
+        mockMvc.perform(multipart("/update-user/{id}", 1)
+                        .file(file)
+                        .file(userDto)
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(request -> {
+                            request.setMethod("PUT");
+                            return request;
+                        }))
+                // then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("test2@example.com"))
+                .andExpect(jsonPath("$.displayName").value("Galva"))
+                .andExpect(jsonPath("$.firstName").value("Jebus"))
+                .andExpect(jsonPath("$.lastName").value("Mangaramas"))
+                .andExpect(jsonPath("$.gender").value("Male"));
     }
+}
