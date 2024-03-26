@@ -11,7 +11,7 @@ export default function Footer() {
   return (
     <div className="container text-start p-3 w-100">
       <div className="row">
-        <div className="col-sm-12 col-md-8 col-lg-9">
+        <div className="col-8 col-sm-6 col-md-8 col-lg-9">
           <ul className="list-unstyled">
             {" "}
             <li>&#169; {getCurrentYear()} RECIPE SHARING PLATFORM</li>
@@ -27,7 +27,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div className="col-sm-12 col-md-4 col-lg-3">
+        <div className="col-4 col-sm-6 col-md-4 col-lg-3">
           <ul className="list-unstyled">
             <li>
               <span className="fw-semibold">Our address:</span> Trinapolio g. 2,
