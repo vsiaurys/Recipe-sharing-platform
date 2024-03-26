@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import Main from "./components/Main";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import Update from "./components/Update";
 import { useState } from "react";
 
 import { Route, Routes, NavLink } from "react-router-dom";
@@ -32,6 +33,10 @@ function App() {
         <Route
           path="/register"
           element={<Register />}
+        />
+        <Route
+          path="/updateprofile"
+          element={<Update />}
         />
       </Routes>
       <footer className="mt-auto footer">
