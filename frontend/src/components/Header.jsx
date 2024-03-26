@@ -62,6 +62,17 @@ function Header({ checkRole, setForceRender }) {
                   Home
                 </Link>
               </li>
+
+              <li className="nav-item">
+                {checkRole() && (
+                  <Link
+                    to="/categories"
+                    className="nav-link"
+                  >
+                    Categories
+                  </Link>
+                )}
+              </li>
               <li className="nav-item">
                 {!checkRole() && (
                   <Link

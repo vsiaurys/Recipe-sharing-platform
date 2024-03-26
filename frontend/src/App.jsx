@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import { useState } from "react";
 
 import { Route, Routes, NavLink } from "react-router-dom";
+import Categories from "./components/Categories";
 
 function App() {
   const [forceRender, setForceRender] = useState(false);
@@ -32,6 +33,10 @@ function App() {
         <Route
           path="/register"
           element={<Register />}
+        />
+        <Route
+          path="/categories"
+          element={<Categories checkRole={checkRole} />}
         />
       </Routes>
       <footer className="mt-auto footer">
