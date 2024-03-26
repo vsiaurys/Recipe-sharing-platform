@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lt.techin.recipesharingplatform.validation.OffensiveWords;
+import org.hibernate.validator.constraints.URL;
 
 public class UserDto {
     @NotEmpty(message = "Email cannot be empty")
@@ -57,6 +58,10 @@ public class UserDto {
     @Pattern(regexp = "^(Male|Female|Other)$", message = "Gender must be Male, Female, or Other")
     private String gender;
 
+    @Size(max = 255, message = "Profile image URL must be less than 255 characters")
+    @URL(message = "Invalid profile image URL")
+    private String profileImage;
+
     public UserDto(
             String email, String password, String displayName, String firstName, String lastName, String gender) {
         this.email = email;
@@ -89,5 +94,9 @@ public class UserDto {
 
     public String getGender() {
         return gender;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
     }
 }
