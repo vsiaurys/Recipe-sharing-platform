@@ -83,11 +83,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorMap);
     }
 
-    @PutMapping("/update-user")
+    @PutMapping("/update-user/{id}")
     public ResponseEntity<?> updateUserWithFile(
-            @RequestPart("file") MultipartFile file, @RequestPart("userDto") UserDto userDto) {
+            @PathVariable("id") Long id,
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("userDto") UserDto userDto) {
 
-        Optional<User> userOptional = userService.findUserByEmail(userDto.getEmail());
+        Optional<User> userOptional = userService.findUserById(id);
 
         if (userOptional.isPresent()) {
             User userToUpdate = userOptional.get();
@@ -132,7 +134,7 @@ public class UserController {
             return ResponseEntity.ok().body(updatedUser);
         } else {
             Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("message", "User not found with email: " + userDto.getEmail());
+            errorMap.put("message", "User not found with ID: " + id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMap);
         }
     }
