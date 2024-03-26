@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/register", "/login")
                         .permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/updateUser")
+                        .requestMatchers(HttpMethod.PUT, "//update-user/{id}")
                         .authenticated()
                         .anyRequest()
                         .authenticated())
