@@ -58,6 +58,7 @@ function Header({ checkRole, setForceRender }) {
                 <Link
                   to="/"
                   className="nav-link"
+                  onClick={toggleNavbar}
                 >
                   Home
                 </Link>
@@ -68,6 +69,7 @@ function Header({ checkRole, setForceRender }) {
                   <Link
                     to="/categories"
                     className="nav-link"
+                    onClick={toggleNavbar}
                   >
                     Categories
                   </Link>
@@ -78,6 +80,7 @@ function Header({ checkRole, setForceRender }) {
                   <Link
                     to="/register"
                     className="nav-link"
+                    onClick={toggleNavbar}
                   >
                     Register
                   </Link>
@@ -94,6 +97,7 @@ function Header({ checkRole, setForceRender }) {
                 <Link
                   to="/login"
                   className="nav-link"
+                  onClick={toggleNavbar}
                 >
                   {checkRole() ? "Logout" : "Login"}
                 </Link>
