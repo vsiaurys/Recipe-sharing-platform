@@ -26,7 +26,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div className="col-5 col-sm-6 col-md-4 col-lg-3">
+        <div className="col-5 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-end">
           <ul className="list-unstyled">
             <li>Trinapolio g. 2, Vilnius</li>
             <li>+370 5 269 7455</li>
