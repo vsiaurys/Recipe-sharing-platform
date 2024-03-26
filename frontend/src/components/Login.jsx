@@ -40,7 +40,6 @@ function Login({ checkRole }) {
         localStorage.setItem("displayName", responseData.displayName);
         localStorage.setItem("role", responseData.role);
         localStorage.setItem("email", responseData.email);
-
         localStorage.setItem("firstName", responseData.firstName);
         localStorage.setItem("lastName", responseData.lastName);
         localStorage.setItem("gender", responseData.gender);
