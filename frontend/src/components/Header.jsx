@@ -58,20 +58,34 @@ function Header({ checkRole, setForceRender }) {
                 <Link
                   to="/"
                   className="nav-link"
+                  onClick={toggleNavbar}
                 >
                   Home
                 </Link>
               </li>
-              <li className="nav-item">
-                {!checkRole() && (
+
+              {checkRole() && (
+                <li className="nav-item">
+                  <Link
+                    to="/categories"
+                    className="nav-link"
+                    onClick={toggleNavbar}
+                  >
+                    Categories
+                  </Link>
+                </li>
+              )}
+              {!checkRole() && (
+                <li className="nav-item">
                   <Link
                     to="/register"
                     className="nav-link"
+                    onClick={toggleNavbar}
                   >
                     Register
                   </Link>
-                )}
-              </li>
+                </li>
+              )}
               <li className="nav-item">
                 {checkRole() && (
                   <Link
@@ -93,6 +107,7 @@ function Header({ checkRole, setForceRender }) {
                 <Link
                   to="/login"
                   className="nav-link"
+                  onClick={toggleNavbar}
                 >
                   {checkRole() ? "Logout" : "Login"}
                 </Link>

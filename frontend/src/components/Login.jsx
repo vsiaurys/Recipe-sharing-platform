@@ -43,6 +43,7 @@ function Login({ checkRole }) {
         localStorage.setItem("firstName", responseData.firstName);
         localStorage.setItem("lastName", responseData.lastName);
         localStorage.setItem("gender", responseData.gender);
+        localStorage.setItem("password", responseData.password);
         navigate("/");
         checkRole();
       } else {

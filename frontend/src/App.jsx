@@ -8,6 +8,7 @@ import UpdateProfile from "./components/UpdateProfile";
 import { useState } from "react";
 
 import { Route, Routes, NavLink } from "react-router-dom";
+import Categories from "./components/Categories";
 
 function App() {
   const [forceRender, setForceRender] = useState(false);
@@ -36,7 +37,11 @@ function App() {
         />
         <Route
           path="/updateprofile"
-          element={<UpdateProfile />}
+          element={<UpdateProfile checkRole={checkRole} />}
+        />
+        <Route
+          path="/categories"
+          element={<Categories checkRole={checkRole} />}
         />
       </Routes>
       <footer className="mt-auto footer">
