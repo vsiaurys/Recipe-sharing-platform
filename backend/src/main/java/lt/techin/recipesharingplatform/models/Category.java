@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lt.techin.recipesharingplatform.dto.FirstOrder;
 import lt.techin.recipesharingplatform.dto.SecondOrder;
 import lt.techin.recipesharingplatform.dto.ThirdOrder;
+import lt.techin.recipesharingplatform.validation.OffensiveWords;
 
 @Entity
 @Table(name = "Categories")
@@ -17,6 +18,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Pattern(regexp = OffensiveWords.OFFENSIVE_WORDS_PATTERN, message = "Category name cannot contain offensive words")
     @NotEmpty(message = "Name field cannot be empty.", groups = FirstOrder.class)
     //    @Pattern(regexp = "^[a-zA-Z]+( [a-zA-Z]+)*$", message = "Name must contain only letters and spaces")
     @Pattern(
