@@ -115,34 +115,38 @@ public class UserController {
 
             userToUpdate.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-            if (file != null && !file.isEmpty()) {
-                String contentType = file.getContentType();
-                if (contentType == null || (!contentType.equals("image/jpeg") && !contentType.equals("image/png"))) {
-                    Map<String, String> errorMap = new HashMap<>();
-                    errorMap.put("error", "Only JPEG and PNG file types are accepted");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
-                }
+            if (file == null || file.isEmpty()) {
 
-                String fileName = file.getOriginalFilename();
-                String currentDir = System.getProperty("user.dir");
-                String uploadDir = currentDir + File.separator + "uploads";
-                String filePath = uploadDir + File.separator + fileName;
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put("error", "File upload failed: The file is empty.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+            }
 
-                File directory = new File(uploadDir);
-                if (!directory.exists()) {
-                    directory.mkdirs();
-                }
+            String contentType = file.getContentType();
+            if (!contentType.equals("image/jpeg") && !contentType.equals("image/png")) {
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put("error", "Only JPEG and PNG file types are accepted");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+            }
 
-                File destFile = new File(filePath);
-                try {
-                    file.transferTo(destFile);
-                    userToUpdate.setProfileImage("/uploads/" + fileName);
-                } catch (IOException e) {
-                    Map<String, String> errorMap = new HashMap<>();
-                    errorMap.put("error", "Failed to upload file: " + e.getMessage());
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .body(errorMap);
-                }
+            String fileName = file.getOriginalFilename();
+            String currentDir = System.getProperty("user.dir");
+            String uploadDir = currentDir + File.separator + "uploads";
+            String filePath = uploadDir + File.separator + fileName;
+
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            File destFile = new File(filePath);
+            try {
+                file.transferTo(destFile);
+                userToUpdate.setProfileImage("/uploads/" + fileName);
+            } catch (IOException e) {
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put("error", "Failed to upload file: " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMap);
             }
 
             User updatedUser = userService.saveUser(userToUpdate);
