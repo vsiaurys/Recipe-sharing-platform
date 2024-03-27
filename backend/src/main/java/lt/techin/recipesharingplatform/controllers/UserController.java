@@ -112,6 +112,7 @@ public class UserController {
             userToUpdate.setLastName(userDto.getLastName());
             userToUpdate.setGender(userDto.getGender());
             userToUpdate.setEmail(userDto.getEmail());
+            userToUpdate.setPassword(userDto.getPassword());
 
             if (file != null && !file.isEmpty()) {
                 String contentType = file.getContentType();
