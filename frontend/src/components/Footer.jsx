@@ -11,24 +11,26 @@ export default function Footer() {
   return (
     <div className="container text-start p-3 w-100">
       <div className="row">
-        <div className="col-sm-12 col-md-8 col-lg-9">
-          <p>&#169; {getCurrentYear()} RECIPE SHARING PLATFORM</p>
-          <p className="fw-semibold">Contact email:</p>
-          <p>
-            <a
-              className="contact-email"
-              href="mailto:vardas.pavarde@gmail.com"
-            >
-              vardas.pavarde@gmail.com
-            </a>
-          </p>
+        <div className="col-7 col-sm-6 col-md-8 col-lg-9">
+          <ul className="list-unstyled">
+            {" "}
+            <li>&#169; {getCurrentYear()} RECIPE SHARING PLATFORM</li>
+            <li>
+              <a
+                className="contact-email"
+                href="mailto:vardas.pavarde@gmail.com"
+              >
+                vardas.pavarde@gmail.com
+              </a>
+            </li>
+          </ul>
         </div>
 
-        <div className="col-sm-12 col-md-4 col-lg-3">
-          <p className="fw-semibold">Our address: </p>
-          <p>Trinapolio g. 2, Vilnius</p>
-          <p className="fw-semibold">Call us: </p>
-          <p>+370 5 269 7455</p>
+        <div className="col-5 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-end">
+          <ul className="list-unstyled">
+            <li>Trinapolio g. 2, Vilnius</li>
+            <li>+370 5 269 7455</li>
+          </ul>
         </div>
       </div>
     </div>
