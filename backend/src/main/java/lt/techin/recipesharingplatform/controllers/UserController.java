@@ -89,7 +89,7 @@ public class UserController {
     public ResponseEntity<?> updateUserWithFile(
             @PathVariable("id") Long id,
             @RequestPart("file") MultipartFile file,
-            @RequestPart("userDto") UserDto userDto) {
+            @Valid @RequestPart("userDto") UserDto userDto) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
