@@ -7,3 +7,8 @@
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 999;
 }
+
+.button-update-user {
+  background-color: #71b7ce !important;
+  border-color: #71b7ce !important;
+}
