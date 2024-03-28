@@ -96,6 +96,12 @@ public class UserController {
 
         String authenticatedEmail = authentication.getName();
 
+        if (!this.userService.findUserById(id).isPresent()) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("error", "User you are trying to update does not exist in database.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorMap);
+        }
+
         if (!Objects.equals(
                 authenticatedEmail, this.userService.findUserById(id).get().getEmail())) {
 
