@@ -108,7 +108,10 @@ public class UserController {
         Optional<User> checkIfEmailInDatabase = userService.findUserByEmail(userDto.getEmail());
         boolean checkIfDisplayNameInDatabase = userService.existsUserByDisplayName(userDto.getDisplayName());
 
-        if (checkIfDisplayNameInDatabase) {
+        if (checkIfDisplayNameInDatabase
+                && !Objects.equals(
+                        userDto.getDisplayName(),
+                        userService.findUserById(id).get().getDisplayName())) {
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("error", "User with this display name already exists.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
