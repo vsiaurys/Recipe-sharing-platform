@@ -1140,4 +1140,34 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.lastName").value("Mangaramas"))
                 .andExpect(jsonPath("$.gender").value("Male"));
     }
+
+    @Test
+    @WithMockUser(roles = "USER", username = "test1@example.com")
+    void updateUser_whenFileNotSupported_thenReturnError() throws Exception {
+        // given
+        byte[] imageBytes = new byte[] {1, 2, 3, 4, 5};
+        MockMultipartFile file = new MockMultipartFile("file", "image.bmp", MediaType.IMAGE_GIF_VALUE, imageBytes);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto data = new UserDto("test2@example.com", "123456aA!", "Galva", "Jebus", "Mangaramas", "Male");
+        MockMultipartFile userDto = new MockMultipartFile(
+                "userDto", "userDto", MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(data));
+        User oldUser = new User("test1@example.com", "123456aA!", "Smauglyss", "Tomasas", "Pavarde1", "Female");
+        User updatedUser = new User("test2@example.com", "123456aA!", "Galva", "Jebus", "Mangaramas", "Male");
+        given(userService.findUserById(1)).willReturn(Optional.of(oldUser));
+
+        // when
+        mockMvc.perform(multipart("/update-user/{id}", 1)
+                        .file(file)
+                        .file(userDto)
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(request -> {
+                            request.setMethod("PUT");
+                            return request;
+                        }))
+                // then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Only JPEG and PNG file types are accepted"));
+    }
 }
