@@ -114,7 +114,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
         }
 
-        if (checkIfEmailInDatabase.isPresent()) {
+        if (checkIfEmailInDatabase.isPresent() && !Objects.equals(authenticatedEmail, userDto.getEmail())) {
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("error", "User with this email already exists.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
