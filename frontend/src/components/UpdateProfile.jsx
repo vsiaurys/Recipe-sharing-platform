@@ -18,19 +18,51 @@ export default function UpdateProfile() {
   const [showOverlay, setShowOverlay] = useState(false);
   const [emailExistsError, setEmailExistsError] = useState("");
   const [displayNameExistsError, setDisplayNameExistsError] = useState("");
+  const [file, setFile] = useState();
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    const postData = async () => {
+    const updateData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/register", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-        if (response.status === 201) {
+        const formData = new FormData();
+
+        formData.append("file", file);
+        formData.append(
+          "userDto",
+          new Blob([JSON.stringify(data)], {
+            type: "application/json",
+          })
+        );
+        const url = "http://localhost:8080/";
+
+        const response = await fetch(
+          `${url}update-user/${localStorage.getItem("id")}`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization:
+                "Basic " +
+                btoa(
+                  `${localStorage.getItem("email")}:${localStorage.getItem(
+                    "password"
+                  )}`
+                ),
+            },
+            body: formData,
+          }
+        );
+        if (response.status === 200) {
+          const responseData = await response.json();
+
+          localStorage.setItem("id", responseData.id);
+          localStorage.setItem("displayName", responseData.displayName);
+          localStorage.setItem("role", responseData.role);
+          localStorage.setItem("email", responseData.email);
+          localStorage.setItem("firstName", responseData.firstName);
+          localStorage.setItem("lastName", responseData.lastName);
+          localStorage.setItem("gender", responseData.gender);
+          localStorage.setItem("password", data.password);
+
           setShowModal(true);
           setShowOverlay(true);
           reset();
@@ -40,21 +72,28 @@ export default function UpdateProfile() {
             setShowOverlay(false);
             navigate("/");
           }, 3000);
-        } else if (response.status === 400) {
+        } else {
           const responseData = await response.json();
-          if (responseData.email) {
-            setEmailExistsError(responseData.email);
+          if (responseData.error === "User with this email already exists.") {
+            setEmailExistsError(responseData.error);
           }
-          if (responseData.displayName) {
-            setDisplayNameExistsError(responseData.displayName);
+          if (
+            responseData.error === "User with this display name already exists."
+          ) {
+            setDisplayNameExistsError(responseData.error);
           }
         }
       } catch (error) {
         console.error("Error updating profile:", error);
       }
     };
-    postData();
+    updateData();
   };
+
+  function handleUploadOnChange(event) {
+    event.preventDefault();
+    setFile(event.target.files[0]);
+  }
 
   const handleEmailChange = () => {
     setEmailExistsError("");
@@ -70,7 +109,7 @@ export default function UpdateProfile() {
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
-              <h1 className="card-title display-6">Your profile</h1>
+              <h1 className="card-title display-6">Update your profile</h1>
               <p>*All fields are required!</p>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-3">
@@ -88,7 +127,7 @@ export default function UpdateProfile() {
                     }`}
                     id="email"
                     placeholder="Enter your e-mail"
-                    value={localStorage.getItem("email")}
+                    defaultValue={localStorage.getItem("email")}
                     {...register("email", {
                       required: "Email is required!",
                       pattern: {
@@ -201,7 +240,7 @@ export default function UpdateProfile() {
                     }`}
                     id="displayName"
                     placeholder="Your display name"
-                    value={localStorage.getItem("displayName")}
+                    defaultValue={localStorage.getItem("displayName")}
                     {...register("displayName", {
                       required: "Display name is required!",
                       pattern: {
@@ -249,7 +288,7 @@ export default function UpdateProfile() {
                     }`}
                     id="firstName"
                     placeholder="Your first name"
-                    value={localStorage.getItem("firstName")}
+                    defaultValue={localStorage.getItem("firstName")}
                     {...register("firstName", {
                       required: "First name is required!",
                       pattern: {
@@ -293,7 +332,7 @@ export default function UpdateProfile() {
                     }`}
                     id="lastName"
                     placeholder="Your last name"
-                    value={localStorage.getItem("lastName")}
+                    defaultValue={localStorage.getItem("lastName")}
                     {...register("lastName", {
                       required: "Last name is required!",
                       pattern: {
@@ -351,12 +390,29 @@ export default function UpdateProfile() {
                     </div>
                   )}
                 </div>
+                <div className="mb-3">
+                  <label
+                    htmlFor="picture"
+                    className="form-label"
+                  >
+                    Upload profile picture
+                  </label>
+                  <input
+                    id="picture"
+                    type="file"
+                    name="picture"
+                    accept="image/png, image/jpeg"
+                    onChange={(event) => {
+                      handleUploadOnChange(event);
+                    }}
+                  />
+                </div>
                 <div className="mb-2 mt-2">
                   <button
                     type="submit"
                     className="btn btn-primary"
                   >
-                    Submit
+                    Update
                   </button>
                 </div>
               </form>

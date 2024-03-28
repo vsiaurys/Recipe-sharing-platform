@@ -91,6 +91,7 @@ function Header({ checkRole, setForceRender }) {
                   <Link
                     to="/updateprofile"
                     className="nav-link"
+                    onClick={toggleNavbar}
                   >
                     Profile
                   </Link>

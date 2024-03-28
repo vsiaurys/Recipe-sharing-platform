@@ -37,13 +37,14 @@ function Login({ checkRole }) {
 
       if (response.ok) {
         handleLoginResponse("success", responseData.message);
+        localStorage.setItem("id", responseData.id);
         localStorage.setItem("displayName", responseData.displayName);
         localStorage.setItem("role", responseData.role);
         localStorage.setItem("email", responseData.email);
         localStorage.setItem("firstName", responseData.firstName);
         localStorage.setItem("lastName", responseData.lastName);
         localStorage.setItem("gender", responseData.gender);
-        localStorage.setItem("password", responseData.password);
+        localStorage.setItem("password", data.password);
         navigate("/");
         checkRole();
       } else {
