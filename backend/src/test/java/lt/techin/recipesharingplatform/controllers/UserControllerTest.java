@@ -1143,7 +1143,7 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser(roles = "USER", username = "test1@example.com")
-    void updateUser_whenFileNotSupported_thenReturnError() throws Exception {
+    void updateUser_whenFileNotSupported_thenReturnBadRequest() throws Exception {
         // given
         byte[] imageBytes = new byte[] {1, 2, 3, 4, 5};
         MockMultipartFile file = new MockMultipartFile("file", "image.bmp", MediaType.IMAGE_GIF_VALUE, imageBytes);
