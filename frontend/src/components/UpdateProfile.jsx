@@ -390,6 +390,7 @@ export default function UpdateProfile() {
                     </div>
                   )}
                 </div>
+
                 <div className="mb-3">
                   <label
                     htmlFor="picture"
@@ -398,13 +399,13 @@ export default function UpdateProfile() {
                     Upload profile picture
                   </label>
                   <input
+                    className="form-control"
                     id="picture"
                     type="file"
                     name="picture"
                     accept="image/png, image/jpeg"
-                    onChange={(event) => {
-                      handleUploadOnChange(event);
-                    }}
+                    onChange={handleUploadOnChange}
+                    required
                   />
                 </div>
                 <div className="mb-2 mt-2">
