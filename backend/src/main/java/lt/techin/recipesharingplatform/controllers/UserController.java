@@ -105,7 +105,13 @@ public class UserController {
         }
 
         Optional<User> userOptional = userService.findUserById(id);
+        Optional<User> checkIfEmailInDatabase = userService.findUserByEmail(userDto.getEmail());
 
+        if (checkIfEmailInDatabase.isPresent()) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("error", "User with this email already exists.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+        }
         if (userOptional.isPresent()) {
             User userToUpdate = userOptional.get();
 
@@ -113,6 +119,7 @@ public class UserController {
             userToUpdate.setFirstName(userDto.getFirstName());
             userToUpdate.setLastName(userDto.getLastName());
             userToUpdate.setGender(userDto.getGender());
+
             userToUpdate.setEmail(userDto.getEmail());
 
             userToUpdate.setPassword(passwordEncoder.encode(userDto.getPassword()));
