@@ -1106,7 +1106,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser(roles = "USER", username = "test1@example.com")
     void updateUser_whenUpdateSuccessful_thenReturnOkAndBody() throws Exception {
         // given
         byte[] imageBytes = new byte[] {1, 2, 3, 4, 5};

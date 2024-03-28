@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -89,13 +90,14 @@ public class UserController {
     public ResponseEntity<?> updateUserWithFile(
             @PathVariable("id") Long id,
             @RequestPart("file") MultipartFile file,
-            @RequestPart("userDto") UserDto userDto) {
+            @Valid @RequestPart("userDto") UserDto userDto) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        long userId = user.getId();
 
-        if (userId != id) {
+        String authenticatedEmail = authentication.getName();
+
+        if (!Objects.equals(
+                authenticatedEmail, this.userService.findUserById(id).get().getEmail())) {
 
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("error", "User is not authorized to update this user.");
@@ -103,7 +105,13 @@ public class UserController {
         }
 
         Optional<User> userOptional = userService.findUserById(id);
+        Optional<User> checkIfEmailInDatabase = userService.findUserByEmail(userDto.getEmail());
 
+        if (checkIfEmailInDatabase.isPresent()) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("error", "User with this email already exists.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+        }
         if (userOptional.isPresent()) {
             User userToUpdate = userOptional.get();
 
@@ -111,36 +119,43 @@ public class UserController {
             userToUpdate.setFirstName(userDto.getFirstName());
             userToUpdate.setLastName(userDto.getLastName());
             userToUpdate.setGender(userDto.getGender());
+
             userToUpdate.setEmail(userDto.getEmail());
 
-            if (file != null && !file.isEmpty()) {
-                String contentType = file.getContentType();
-                if (contentType == null || (!contentType.equals("image/jpeg") && !contentType.equals("image/png"))) {
-                    Map<String, String> errorMap = new HashMap<>();
-                    errorMap.put("error", "Only JPEG and PNG file types are accepted");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
-                }
+            userToUpdate.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-                String fileName = file.getOriginalFilename();
-                String currentDir = System.getProperty("user.dir");
-                String uploadDir = currentDir + File.separator + "uploads";
-                String filePath = uploadDir + File.separator + fileName;
+            if (file == null || file.isEmpty()) {
 
-                File directory = new File(uploadDir);
-                if (!directory.exists()) {
-                    directory.mkdirs();
-                }
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put("error", "File upload failed: The file is empty.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+            }
 
-                File destFile = new File(filePath);
-                try {
-                    file.transferTo(destFile);
-                    userToUpdate.setProfileImage("/uploads/" + fileName);
-                } catch (IOException e) {
-                    Map<String, String> errorMap = new HashMap<>();
-                    errorMap.put("error", "Failed to upload file: " + e.getMessage());
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .body(errorMap);
-                }
+            String contentType = file.getContentType();
+            if (!contentType.equals("image/jpeg") && !contentType.equals("image/png")) {
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put("error", "Only JPEG and PNG file types are accepted");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+            }
+
+            String fileName = file.getOriginalFilename();
+            String currentDir = System.getProperty("user.dir");
+            String uploadDir = currentDir + File.separator + "uploads";
+            String filePath = uploadDir + File.separator + fileName;
+
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            File destFile = new File(filePath);
+            try {
+                file.transferTo(destFile);
+                userToUpdate.setProfileImage("/uploads/" + fileName);
+            } catch (IOException e) {
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put("error", "Failed to upload file: " + e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMap);
             }
 
             User updatedUser = userService.saveUser(userToUpdate);
