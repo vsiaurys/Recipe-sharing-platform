@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -92,10 +93,11 @@ public class UserController {
             @Valid @RequestPart("userDto") UserDto userDto) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        long userId = user.getId();
 
-        if (userId != id) {
+        String authenticatedEmail = authentication.getName();
+
+        if (!Objects.equals(
+                authenticatedEmail, this.userService.findUserById(id).get().getEmail())) {
 
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("error", "User is not authorized to update this user.");
