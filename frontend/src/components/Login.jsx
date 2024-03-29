@@ -141,7 +141,7 @@ function Login({ checkRole }) {
                 </div>
                 <button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn button-login"
                 >
                   Login
                 </button>
