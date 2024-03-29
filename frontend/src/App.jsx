@@ -36,7 +36,7 @@ function App() {
           element={<Register />}
         />
         <Route
-          path="/updateprofile"
+          path="/update-profile"
           element={<UpdateProfile checkRole={checkRole} />}
         />
         <Route
