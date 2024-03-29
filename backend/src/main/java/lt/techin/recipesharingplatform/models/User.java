@@ -27,6 +27,8 @@ public class User implements UserDetails {
     private String gender;
     private String role;
 
+    private String profileImage;
+
     public User(String email, String password, String displayName, String firstName, String lastName, String gender) {
         this.email = email;
         this.password = password;
@@ -101,6 +103,14 @@ public class User implements UserDetails {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     @Override
