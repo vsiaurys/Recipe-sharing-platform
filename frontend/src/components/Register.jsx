@@ -349,7 +349,7 @@ export default function Register() {
                 <div className="mb-2 mt-2">
                   <button
                     type="submit"
-                    className="btn btn-primary"
+                    className="btn button-register"
                   >
                     Submit
                   </button>
