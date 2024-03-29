@@ -1143,7 +1143,7 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser(roles = "USER", username = "test1@example.com")
-    void updateUser_whenFileNotSupported_thenReturnError() throws Exception {
+    void updateUser_whenFileNotSupported_thenReturnBadRequest() throws Exception {
         // given
         byte[] imageBytes = new byte[] {1, 2, 3, 4, 5};
         MockMultipartFile file = new MockMultipartFile("file", "image.bmp", MediaType.IMAGE_GIF_VALUE, imageBytes);
@@ -1169,5 +1169,35 @@ public class UserControllerTest {
                 // then
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("Only JPEG and PNG file types are accepted"));
+    }
+
+    @Test
+    @WithMockUser(roles = "USER", username = "test1@example.com")
+    void updateUser_whenUserDoesNotExistInDatabase_thenReturnUnauthorized() throws Exception {
+        // given
+        byte[] imageBytes = new byte[] {1, 2, 3, 4, 5};
+        MockMultipartFile file = new MockMultipartFile("file", "image.bmp", MediaType.IMAGE_JPEG_VALUE, imageBytes);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserDto data = new UserDto("test2@example.com", "123456aA!", "Galva", "Jebus", "Mangaramas", "Male");
+        MockMultipartFile userDto = new MockMultipartFile(
+                "userDto", "userDto", MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(data));
+        User oldUser = new User("test1@example.com", "123456aA!", "Smauglyss", "Tomasas", "Pavarde1", "Female");
+        User updatedUser = new User("test2@example.com", "123456aA!", "Galva", "Jebus", "Mangaramas", "Male");
+        given(userService.findUserById(1)).willReturn(Optional.empty());
+
+        // when
+        mockMvc.perform(multipart("/update-user/{id}", 1)
+                        .file(file)
+                        .file(userDto)
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(request -> {
+                            request.setMethod("PUT");
+                            return request;
+                        }))
+                // then
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("User you are trying to update does not exist in database."));
     }
 }
