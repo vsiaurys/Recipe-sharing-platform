@@ -8,3 +8,7 @@ body a {
 .login {
   color: red;
 }
+
+.button-login {
+  background-color: #71b7ce !important;
+}
