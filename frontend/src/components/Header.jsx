@@ -89,7 +89,7 @@ function Header({ checkRole, setForceRender }) {
               <li className="nav-item">
                 {checkRole() && (
                   <Link
-                    to="/updateprofile"
+                    to="/update-profile"
                     className="nav-link"
                     onClick={toggleNavbar}
                   >

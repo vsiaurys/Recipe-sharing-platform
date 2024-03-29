@@ -404,6 +404,7 @@ export default function UpdateProfile() {
                     type="file"
                     name="picture"
                     accept="image/png, image/jpeg"
+                    onChange={handleUploadOnChange}
                   />
                 </div>
                 <div className="mb-2 mt-2">
