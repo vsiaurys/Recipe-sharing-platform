@@ -409,7 +409,7 @@ export default function UpdateProfile() {
                 <div className="mb-2 mt-2">
                   <button
                     type="submit"
-                    className="btn btn-primary button-update-user"
+                    className="btn btn-primary button-update-user text-dark"
                   >
                     Update
                   </button>
