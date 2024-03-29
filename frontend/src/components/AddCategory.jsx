@@ -50,12 +50,6 @@ export default function AddCategory({ addCategory }) {
     }
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setCreated(false);
-    }, 3000);
-  }, [created]);
-
   return (
     <>
       <form
