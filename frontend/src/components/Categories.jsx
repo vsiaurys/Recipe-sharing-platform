@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import AddCategory from "./AddCategory";
-import "./AddCategory.css";
+import "./Categories.css";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [categoryAdded, setCategoryAdded] = useState(false);
+  const role = localStorage.getItem("role");
 
   const getCategories = async () => {
     const url = "http://localhost:8080/";
@@ -45,14 +46,34 @@ export default function Categories() {
                 return (
                   <tr key={category.id}>
                     <th scope="row">{category.name}</th>
+                    {role === "ROLE_ADMIN" && (
+                      <td>
+                        <button
+                          className="btn button-category"
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#updateCategoryModal"
+                        >
+                          Update
+                        </button>
+                        <button
+                          className="btn button-category"
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteCategoryModal"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 );
               })}
-              {localStorage.getItem("role") === "ROLE_ADMIN" && (
+              {role === "ROLE_ADMIN" && (
                 <tr>
                   <th>
                     <button
-                      className="btn button-add-category"
+                      className="btn button-category"
                       type="button"
                       data-bs-toggle="modal"
                       data-bs-target="#addCategoryModal"
