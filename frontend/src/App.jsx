@@ -12,10 +12,13 @@ import Categories from "./components/Categories";
 
 function App() {
   const [forceRender, setForceRender] = useState(false);
+
   const checkRole = () => {
     const role = localStorage.getItem("role");
+
     return role !== null && role !== "";
   };
+
   return (
     <div className="d-flex flex-column min-vh-100">
       <Header

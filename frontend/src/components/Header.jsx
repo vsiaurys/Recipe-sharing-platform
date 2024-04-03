@@ -32,20 +32,30 @@ function Header({ checkRole, setForceRender }) {
     <div className="header-container">
       <nav className="container navbar navbar-expand-lg navbar-dark">
         <div className="container d-flex justify-content-between align-items-center">
-          <p className="logo my-auto navbar-brand">
-            <img
-              src="./images/logo_2.png"
-              alt="Logo with words: Recipe Sharing Platform stacked on each other with pot with steam on top. "
-            />
-          </p>
-          <button
-            className="navbar-toggler"
-            type="button"
-            aria-label="Menu"
-            onClick={toggleNavbar}
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
+          <div className="">
+            <p className="logo my-auto navbar-brand">
+              <img
+                src="./images/logo_2.png"
+                alt="Logo with words: Recipe Sharing Platform stacked on each other with pot with steam on top. "
+              />
+            </p>
+          </div>
+
+          {checkRole() && (
+            <div className="text-white">
+              {localStorage.getItem("displayName")}
+            </div>
+          )}
+          <div className="ms-auto">
+            <button
+              className="navbar-toggler"
+              type="button"
+              aria-label="Menu"
+              onClick={toggleNavbar}
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+          </div>
         </div>
 
         <div
