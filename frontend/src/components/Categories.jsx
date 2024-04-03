@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import AddCategory from "./AddCategory";
+import DeleteCategory from "./DeleteCategory";
 import "./Categories.css";
 
 export default function Categories() {
@@ -64,6 +65,7 @@ export default function Categories() {
                         >
                           Delete
                         </button>
+                        <DeleteCategory deleteCategory={category.id} />
                       </td>
                     )}
                   </tr>
@@ -79,7 +81,7 @@ export default function Categories() {
                       data-bs-toggle="modal"
                       data-bs-target="#addCategoryModal"
                     >
-                      Add new category
+                      Add category
                     </button>
                     <AddCategory addCategory={addCategory} />
                   </td>
