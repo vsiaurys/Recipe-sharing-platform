@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import AddCategory from "./AddCategory";
+import UpdateCategory from "./UpdateCategory";
 import DeleteCategory from "./DeleteCategory";
 import "./Categories.css";
 
@@ -57,6 +58,7 @@ export default function Categories() {
                         >
                           Update
                         </button>
+                        <UpdateCategory categoryId={category.id} />
                         <button
                           className="btn button-category mx-1"
                           type="button"
@@ -65,7 +67,7 @@ export default function Categories() {
                         >
                           Delete
                         </button>
-                        <DeleteCategory deleteCategory={category.id} />
+                        <DeleteCategory categoryId={category.id} />
                       </td>
                     )}
                   </tr>

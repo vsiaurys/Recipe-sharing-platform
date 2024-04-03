@@ -1,5 +1,5 @@
-export default function DeleteCategory({ deleteCategory }) {
-  console.log(deleteCategory);
+export default function DeleteCategory({ categoryId }) {
+  console.log("Delete category " + categoryId);
   // return (
   //   <>
   //     <div className="container">
