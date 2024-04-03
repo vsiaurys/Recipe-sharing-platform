@@ -47,9 +47,9 @@ export default function Categories() {
                   <tr key={category.id}>
                     <th scope="row">{category.name}</th>
                     {role === "ROLE_ADMIN" && (
-                      <td>
+                      <td className="d-flex justify-content-end">
                         <button
-                          className="btn button-category"
+                          className="btn button-category mx-1"
                           type="button"
                           data-bs-toggle="modal"
                           data-bs-target="#updateCategoryModal"
@@ -57,7 +57,7 @@ export default function Categories() {
                           Update
                         </button>
                         <button
-                          className="btn button-category"
+                          className="btn button-category mx-1"
                           type="button"
                           data-bs-toggle="modal"
                           data-bs-target="#deleteCategoryModal"
@@ -71,9 +71,10 @@ export default function Categories() {
               })}
               {role === "ROLE_ADMIN" && (
                 <tr>
-                  <th>
+                  <th scope="row"></th>
+                  <td className="d-flex justify-content-end">
                     <button
-                      className="btn button-category"
+                      className="btn button-category mx-1"
                       type="button"
                       data-bs-toggle="modal"
                       data-bs-target="#addCategoryModal"
@@ -81,7 +82,7 @@ export default function Categories() {
                       Add category
                     </button>
                     <AddCategory addCategory={addCategory} />
-                  </th>
+                  </td>
                 </tr>
               )}
             </tbody>
