@@ -79,7 +79,7 @@ export default function Categories() {
                       data-bs-toggle="modal"
                       data-bs-target="#addCategoryModal"
                     >
-                      Add category
+                      Add new category
                     </button>
                     <AddCategory addCategory={addCategory} />
                   </td>
