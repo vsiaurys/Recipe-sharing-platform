@@ -70,7 +70,7 @@ export default function UpdateCategory({ categoryId }) {
                   className="modal-title fs-5"
                   id="AddCategoryLabel"
                 >
-                  Add Category
+                  Update Category
                 </h1>
                 <button
                   type="button"
