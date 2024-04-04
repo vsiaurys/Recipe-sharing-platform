@@ -58,7 +58,7 @@ export default function Categories() {
                         >
                           Update
                         </button>
-                        <UpdateCategory categoryId={category.id} />
+                        <UpdateCategory addCategory={addCategory} />
                         <button
                           className="btn button-category mx-1"
                           type="button"
