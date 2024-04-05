@@ -31,4 +31,8 @@ public class CategoryService {
     public boolean existsCategoryById(long id) {
         return categoryRepository.existsById(id);
     }
+
+    public void deleteCategoryById(long id) {
+        categoryRepository.deleteById(id);
+    }
 }
