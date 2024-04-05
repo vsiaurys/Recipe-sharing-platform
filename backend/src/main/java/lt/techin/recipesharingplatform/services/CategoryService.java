@@ -27,4 +27,8 @@ public class CategoryService {
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
+
+    public boolean existsCategoryById(long id) {
+        return categoryRepository.existsById(id);
+    }
 }

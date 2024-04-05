@@ -43,11 +43,6 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Category>> getAllCategories() {
-        List<Category> categories = categoryService.getAllCategories();
-        return ResponseEntity.ok(categories);
-    }
     //    @PutMapping("/movies/{id}")
     //    public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable long id) {
     //        if (this.movieService.existsMovieById(id)) {
