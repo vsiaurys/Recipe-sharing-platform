@@ -23,6 +23,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/categories")
                         .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/categories/{id}")
+                        .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/register", "/login")
                         .permitAll()
                         .requestMatchers(HttpMethod.PUT, "//update-user/{id}")
