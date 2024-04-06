@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping
 public class CategoryController {
     private final CategoryService categoryService;
 
@@ -21,7 +21,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping
+    @PostMapping("/categories")
     public ResponseEntity<?> saveCategory(@Valid @RequestBody Category category) {
         if (categoryService.existsByName(category.getName())) {
             Map<String, Object> response = new HashMap<>();
@@ -37,7 +37,7 @@ public class CategoryController {
                 .body(savedCategory);
     }
 
-    @GetMapping
+    @GetMapping("/categories")
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
