@@ -43,22 +43,24 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
-    //    @PutMapping("/movies/{id}")
-    //    public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable long id) {
-    //        if (this.movieService.existsMovieById(id)) {
-    //            Movie movieFromDb = this.movieService.findMovieById(id);
-    //
-    //            movieFromDb.setTitle(movie.getTitle());
-    //            movieFromDb.setDateReleased(movie.getDateReleased());
-    //            movieFromDb.setLengthMinutes(movie.getLengthMinutes());
-    //
-    //            return ResponseEntity.ok(this.movieService.saveMovie(movieFromDb));
-    //        }
-    //        Movie savedMovie = this.movieService.saveMovie(movie);
-    //
-    //        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
-    //                .path("/{id}").buildAndExpand(savedMovie.getId()).toUri()).body(savedMovie);
-    //    }
+    @PutMapping("/categories/{id}")
+    public ResponseEntity<?> updateCategory(@Valid @RequestBody Category category, @PathVariable long id) {
+        if (this.categoryService.existsCategoryById(id)) {
+            Category categoryFromDb = this.categoryService.findCategoryById(id);
+
+            categoryFromDb.setName(category.getName());
+
+            return ResponseEntity.ok(this.categoryService.saveCategory(categoryFromDb));
+        }
+
+        Category savedCategory = this.categoryService.saveCategory(category);
+
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
+                        .path("/{id}")
+                        .buildAndExpand(savedCategory.getId())
+                        .toUri())
+                .body(savedCategory);
+    }
 
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable long id) {
