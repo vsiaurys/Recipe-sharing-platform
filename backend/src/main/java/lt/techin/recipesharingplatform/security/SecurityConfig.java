@@ -25,6 +25,8 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/categories/{id}")
                         .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/categories/{id}")
+                        .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/register", "/login")
                         .permitAll()
                         .requestMatchers(HttpMethod.PUT, "//update-user/{id}")
