@@ -67,7 +67,10 @@ export default function Categories() {
                         >
                           Delete
                         </button>
-                        <DeleteCategory addCategory={addCategory} />
+                        <DeleteCategory
+                          categoryId={category.id}
+                          categoryName={category.name}
+                        />
                       </td>
                     )}
                   </tr>
