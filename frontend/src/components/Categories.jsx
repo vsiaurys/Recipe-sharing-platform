@@ -7,6 +7,7 @@ import "./Categories.css";
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [categoryAdded, setCategoryAdded] = useState(false);
+  const [categoryDeleted, setCategoryDeleted] = useState(false);
   const role = localStorage.getItem("role");
 
   const getCategories = async () => {
@@ -27,15 +28,20 @@ export default function Categories() {
     const resp = await response.json();
     setCategories(resp);
     setCategoryAdded(false);
+    setCategoryDeleted(false);
   };
 
   const addCategory = () => {
     setCategoryAdded(true);
   };
 
+  const deleteCategory = () => {
+    setCategoryDeleted(true);
+  };
+
   useEffect(() => {
     getCategories();
-  }, [categoryAdded]);
+  }, [categoryAdded, categoryDeleted]);
 
   return (
     <>
@@ -70,6 +76,7 @@ export default function Categories() {
                         <DeleteCategory
                           categoryId={category.id}
                           categoryName={category.name}
+                          deleteCategory={deleteCategory}
                         />
                       </td>
                     )}

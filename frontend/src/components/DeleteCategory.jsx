@@ -1,9 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
-import BadWords from "./BadWords";
 import "./AddCategory.css";
 
-export default function DeleteCategory({ categoryId }) {
+export default function DeleteCategory({
+  categoryId,
+  categoryName,
+  deleteCategory,
+}) {
   const {
     register,
     handleSubmit,
@@ -18,8 +21,8 @@ export default function DeleteCategory({ categoryId }) {
     const url = "http://localhost:8080/";
 
     try {
-      const response = await fetch(`${url}categories`, {
-        method: "POST",
+      const response = await fetch(`${url}categories/${categoryId}`, {
+        method: "DELETE",
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
@@ -35,7 +38,7 @@ export default function DeleteCategory({ categoryId }) {
 
       if (response.ok) {
         setCreateMessage(`New category ${data.name} successfully created`);
-        addCategory();
+        deleteCategory();
         setCreated(true);
       }
       if (response.status === 400) {
@@ -81,7 +84,7 @@ export default function DeleteCategory({ categoryId }) {
               </div>
 
               <div class="modal-body">
-                <p>Category name</p>
+                <p>{categoryName}</p>
               </div>
 
               <div className="modal-footer">
