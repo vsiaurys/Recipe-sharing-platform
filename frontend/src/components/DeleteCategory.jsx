@@ -60,7 +60,7 @@ export default function DeleteCategory({ categoryId }) {
           className="modal fade"
           id="deleteCategoryModal"
           tabIndex={-1}
-          aria-labelledby="AddCategoryLabel"
+          aria-labelledby="DeleteCategoryLabel"
           aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered">
@@ -68,9 +68,9 @@ export default function DeleteCategory({ categoryId }) {
               <div className="modal-header">
                 <h1
                   className="modal-title fs-5"
-                  id="AddCategoryLabel"
+                  id="DeleteCategoryLabel"
                 >
-                  Delete Category
+                  Are you sure you want to delete category?
                 </h1>
                 <button
                   type="button"
@@ -80,73 +80,23 @@ export default function DeleteCategory({ categoryId }) {
                 />
               </div>
 
-              <div className="modal-body">
-                <label
-                  htmlFor="disabledTextInput"
-                  className="form-label fw-normal"
-                >
-                  Category name
-                </label>
-
-                <input
-                  type="text"
-                  className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                  id="disabledTextInput"
-                  placeholder="Enter new category name"
-                  autoComplete="on"
-                  {...register("name", {
-                    required: "Please enter category name",
-                    pattern: {
-                      value: /^[A-Z][a-zA-Z]*( [a-zA-Z]*)*$/,
-                      message:
-                        "Category name must start from an uppercase letter and can contain only letters and single whitespaces",
-                    },
-                    minLength: {
-                      value: 4,
-                      message:
-                        "Category name must be at least 4 characters long",
-                    },
-                    maxLength: {
-                      value: 20,
-                      message:
-                        "Category name must not be longer than 20 characters",
-                    },
-                    validate: (value) =>
-                      !BadWords.some((word) =>
-                        new RegExp(word, "i").test(value)
-                      ) || "Display name contains offensive words!",
-                  })}
-                />
-                {errors.name && (
-                  <div className="invalid-feedback">
-                    {errors.name ? errors.name.message : ""}
-                  </div>
-                )}
-
-                {created && (
-                  <div className="container mx-auto mt-3">
-                    <div
-                      className="alert alert-success"
-                      role="alert"
-                    >
-                      {createMessage}
-                    </div>
-                  </div>
-                )}
+              <div class="modal-body">
+                <p>Category name</p>
               </div>
+
               <div className="modal-footer">
                 <button
                   type="button"
                   className="btn button-close"
                   data-bs-dismiss="modal"
                 >
-                  Close
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="btn button-add-category"
                 >
-                  Add
+                  Delete
                 </button>
               </div>
             </div>
