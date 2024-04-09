@@ -11,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping
@@ -47,6 +48,14 @@ public class CategoryController {
     public ResponseEntity<?> updateCategory(@Valid @RequestBody Category category, @PathVariable long id) {
         if (this.categoryService.existsCategoryById(id)) {
             Category categoryFromDb = this.categoryService.findCategoryById(id);
+
+            Optional<Category> checkIfCategoryInDatabase = categoryService.findCategoryByName(categoryFromDb.getName());
+
+            if (checkIfCategoryInDatabase.isPresent()) {
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put("error", "This category already exists.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+            }
 
             categoryFromDb.setName(category.getName());
 
