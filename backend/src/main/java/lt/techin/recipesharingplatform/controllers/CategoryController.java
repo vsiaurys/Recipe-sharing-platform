@@ -50,7 +50,8 @@ public class CategoryController {
             Category categoryFromDb = this.categoryService.findCategoryById(id);
             Optional<Category> checkIfCategoryInDatabase = categoryService.findCategoryByName(category.getName());
 
-            if (checkIfCategoryInDatabase.isPresent()) {
+            if (checkIfCategoryInDatabase.isPresent()
+                    && checkIfCategoryInDatabase.get().getId() != id) {
                 Map<String, String> errorMap = new HashMap<>();
                 errorMap.put("error", "This category already exists.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
