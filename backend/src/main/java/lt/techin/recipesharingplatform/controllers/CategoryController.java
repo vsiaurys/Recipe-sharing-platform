@@ -48,8 +48,7 @@ public class CategoryController {
     public ResponseEntity<?> updateCategory(@Valid @RequestBody Category category, @PathVariable long id) {
         if (this.categoryService.existsCategoryById(id)) {
             Category categoryFromDb = this.categoryService.findCategoryById(id);
-
-            Optional<Category> checkIfCategoryInDatabase = categoryService.findCategoryByName(categoryFromDb.getName());
+            Optional<Category> checkIfCategoryInDatabase = categoryService.findCategoryByName(category.getName());
 
             if (checkIfCategoryInDatabase.isPresent()) {
                 Map<String, String> errorMap = new HashMap<>();
@@ -60,6 +59,14 @@ public class CategoryController {
             categoryFromDb.setName(category.getName());
 
             return ResponseEntity.ok(this.categoryService.saveCategory(categoryFromDb));
+        }
+
+        Optional<Category> checkIfCategoryInDatabase = categoryService.findCategoryByName(category.getName());
+
+        if (checkIfCategoryInDatabase.isPresent()) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("error", "This category already exists.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
         }
 
         Category savedCategory = this.categoryService.saveCategory(category);
