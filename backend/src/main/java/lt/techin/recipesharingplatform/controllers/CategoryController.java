@@ -79,13 +79,16 @@ public class CategoryController {
     }
 
     @DeleteMapping("/categories/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable long id) {
+    public ResponseEntity<?> deleteCategory(@PathVariable long id) {
 
         if (this.categoryService.existsCategoryById(id)) {
             this.categoryService.deleteCategoryById(id);
 
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.notFound().build();
+
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("error", "Nothing to delete");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
     }
 }
