@@ -14,9 +14,6 @@ export default function DeleteCategory({
     setError,
   } = useForm();
 
-  const [createMessage, setCreateMessage] = useState();
-  const [created, setCreated] = useState(false);
-
   const onSubmit = async (data) => {
     const url = "http://localhost:8080/";
 
@@ -37,9 +34,7 @@ export default function DeleteCategory({
       });
 
       if (response.ok) {
-        setCreateMessage(`New category ${data.name} successfully created`);
         deleteCategory();
-        setCreated(true);
       }
       if (response.status === 400) {
         const responseData = await response.json();
@@ -47,16 +42,17 @@ export default function DeleteCategory({
           type: "server",
           message: `${responseData.name}`,
         });
+        console.log(responseData);
       }
     } catch (error) {
-      console.error("Error adding new category: ", error);
+      console.error("Error deleting category: ", error);
     }
   };
 
   return (
     <>
       <form
-        id="form-add-category"
+        id="form-delete-category"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div
@@ -83,9 +79,7 @@ export default function DeleteCategory({
                 />
               </div>
 
-              <div class="modal-body">
-                <p>{categoryName}</p>
-              </div>
+              <div className="modal-body">{categoryName}</div>
 
               <div className="modal-footer">
                 <button

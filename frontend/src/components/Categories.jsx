@@ -8,6 +8,8 @@ export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [categoryAdded, setCategoryAdded] = useState(false);
   const [categoryDeleted, setCategoryDeleted] = useState(false);
+  const [id, setId] = useState();
+  const [name, setName] = useState("");
   const role = localStorage.getItem("role");
 
   const getCategories = async () => {
@@ -61,6 +63,7 @@ export default function Categories() {
                           type="button"
                           data-bs-toggle="modal"
                           data-bs-target="#updateCategoryModal"
+                          onClick={() => setId(category.id)}
                         >
                           Update
                         </button>
@@ -70,12 +73,16 @@ export default function Categories() {
                           type="button"
                           data-bs-toggle="modal"
                           data-bs-target="#deleteCategoryModal"
+                          onClick={() => {
+                            setId(category.id);
+                            setName(category.name);
+                          }}
                         >
                           Delete
                         </button>
                         <DeleteCategory
-                          categoryId={category.id}
-                          categoryName={category.name}
+                          categoryId={id}
+                          categoryName={name}
                           deleteCategory={deleteCategory}
                         />
                       </td>
