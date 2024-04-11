@@ -43,7 +43,7 @@ export default function Categories() {
 
   useEffect(() => {
     getCategories();
-  }, [categoryAdded, categoryDeleted]);
+  }, [categoryAdded, categoryDeleted, id, name]);
 
   return (
     <>
@@ -90,6 +90,7 @@ export default function Categories() {
                   </tr>
                 );
               })}
+
               {role === "ROLE_ADMIN" && (
                 <tr>
                   <th scope="row"></th>
