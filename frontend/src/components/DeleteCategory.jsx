@@ -1,4 +1,4 @@
-import "./AddCategory.css";
+import "./DeleteCategory.css";
 
 export default function DeleteCategory({
   categoryId,
@@ -78,7 +78,7 @@ export default function DeleteCategory({
               </button>
               <button
                 type="submit"
-                className="btn button-add-category"
+                className="btn button-delete-category"
                 onClick={() => onSubmit()}
               >
                 Delete
