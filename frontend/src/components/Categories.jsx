@@ -43,7 +43,7 @@ export default function Categories() {
 
   useEffect(() => {
     getCategories();
-  }, [categoryAdded, categoryDeleted, id, name]);
+  }, [categoryAdded, categoryDeleted]);
 
   return (
     <>
