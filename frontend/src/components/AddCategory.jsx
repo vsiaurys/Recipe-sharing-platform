@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import BadWords from "./BadWords";
 import "./AddCategory.css";
 
-export default function AddCategory({ addCategory }) {
+export default function AddCategory({ changeCategory }) {
   const {
     register,
     handleSubmit,
@@ -35,7 +35,7 @@ export default function AddCategory({ addCategory }) {
 
       if (response.ok) {
         setCreateMessage(`New category ${data.name} successfully created`);
-        addCategory();
+        changeCategory();
         setCreated(true);
       }
       if (response.status === 400) {

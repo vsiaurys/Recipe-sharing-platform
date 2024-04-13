@@ -3,7 +3,7 @@ import "./DeleteCategory.css";
 export default function DeleteCategory({
   categoryId,
   categoryName,
-  deleteCategory,
+  changeCategory,
 }) {
   const onSubmit = async (data) => {
     const url = "http://localhost:8080/";
@@ -25,7 +25,7 @@ export default function DeleteCategory({
       });
 
       if (response.ok) {
-        deleteCategory();
+        changeCategory();
       }
       if (response.status === 400) {
         const responseData = await response.json();
@@ -33,7 +33,6 @@ export default function DeleteCategory({
           type: "server",
           message: `${responseData.name}`,
         });
-        console.log(responseData);
       }
     } catch (error) {
       console.error("Error deleting category: ", error);

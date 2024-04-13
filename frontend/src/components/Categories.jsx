@@ -6,8 +6,7 @@ import "./Categories.css";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
-  const [categoryAdded, setCategoryAdded] = useState(false);
-  const [categoryDeleted, setCategoryDeleted] = useState(false);
+  const [categoryChanged, setCategoryChanged] = useState(false);
   const [id, setId] = useState();
   const [name, setName] = useState("");
   const role = localStorage.getItem("role");
@@ -29,21 +28,16 @@ export default function Categories() {
     });
     const resp = await response.json();
     setCategories(resp);
-    setCategoryAdded(false);
-    setCategoryDeleted(false);
+    setCategoryChanged(false);
   };
 
-  const addCategory = () => {
-    setCategoryAdded(true);
-  };
-
-  const deleteCategory = () => {
-    setCategoryDeleted(true);
+  const changeCategory = () => {
+    setCategoryChanged(true);
   };
 
   useEffect(() => {
     getCategories();
-  }, [categoryAdded, categoryDeleted]);
+  }, [categoryChanged]);
 
   return (
     <>
@@ -67,7 +61,7 @@ export default function Categories() {
                         >
                           Update
                         </button>
-                        <UpdateCategory addCategory={addCategory} />
+                        <UpdateCategory addCategory={changeCategory} />
                         <button
                           className="btn button-category mx-1"
                           type="button"
@@ -83,7 +77,7 @@ export default function Categories() {
                         <DeleteCategory
                           categoryId={id}
                           categoryName={name}
-                          deleteCategory={deleteCategory}
+                          changeCategory={changeCategory}
                         />
                       </td>
                     )}
@@ -103,7 +97,7 @@ export default function Categories() {
                     >
                       Add category
                     </button>
-                    <AddCategory addCategory={addCategory} />
+                    <AddCategory changeCategory={changeCategory} />
                   </td>
                 </tr>
               )}
