@@ -38,7 +38,7 @@ export default function DeleteCategory({
       console.error("Error deleting category: ", error);
     }
   };
-
+  console.log(categoryId);
   return (
     <>
       <div
