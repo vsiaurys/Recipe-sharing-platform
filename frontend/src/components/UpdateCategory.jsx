@@ -3,7 +3,11 @@ import { useState, useEffect } from "react";
 import BadWords from "./BadWords";
 import "./AddCategory.css";
 
-export default function UpdateCategory({ categoryId }) {
+export default function UpdateCategory({
+  categoryId,
+  categoryName,
+  changeCategory,
+}) {
   const {
     register,
     handleSubmit,
@@ -35,7 +39,7 @@ export default function UpdateCategory({ categoryId }) {
 
       if (response.ok) {
         setCreateMessage(`New category ${data.name} successfully created`);
-        addCategory();
+        changeCategory();
         setCreated(true);
       }
       if (response.status === 400) {
@@ -81,18 +85,11 @@ export default function UpdateCategory({ categoryId }) {
               </div>
 
               <div className="modal-body">
-                <label
-                  htmlFor="disabledTextInput"
-                  className="form-label fw-normal"
-                >
-                  Category name
-                </label>
-
                 <input
                   type="text"
                   className={`form-control ${errors.name ? "is-invalid" : ""}`}
                   id="disabledTextInput"
-                  placeholder="Enter new category name"
+                  defaultValue={categoryName}
                   autoComplete="on"
                   {...register("name", {
                     required: "Please enter category name",
@@ -140,13 +137,13 @@ export default function UpdateCategory({ categoryId }) {
                   className="btn button-close"
                   data-bs-dismiss="modal"
                 >
-                  Close
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="btn button-add-category"
                 >
-                  Add
+                  Update
                 </button>
               </div>
             </div>
