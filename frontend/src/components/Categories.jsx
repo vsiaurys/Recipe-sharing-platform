@@ -57,26 +57,25 @@ export default function Categories() {
                           type="button"
                           data-bs-toggle="modal"
                           data-bs-target="#updateCategoryModal"
-                          onClick={() => setId(category.id)}
                         >
                           Update
                         </button>
-                        <UpdateCategory addCategory={changeCategory} />
+                        <UpdateCategory
+                          categoryId={category.id}
+                          categoryName={category.name}
+                          changeCategory={changeCategory}
+                        />
                         <button
                           className="btn button-category mx-1"
                           type="button"
                           data-bs-toggle="modal"
                           data-bs-target="#deleteCategoryModal"
-                          onClick={() => {
-                            setId(category.id);
-                            setName(category.name);
-                          }}
                         >
                           Delete
                         </button>
                         <DeleteCategory
-                          categoryId={id}
-                          categoryName={name}
+                          categoryId={category.id}
+                          categoryName={category.name}
                           changeCategory={changeCategory}
                         />
                       </td>
