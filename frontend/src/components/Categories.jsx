@@ -27,16 +27,23 @@ export default function Categories() {
       },
     });
     const resp = await response.json();
+    console.log(resp);
+    console.log(
+      "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
+    );
     setCategories(resp);
     setCategoryChanged(false);
+    console.log("getCategories");
   };
 
   const changeCategory = () => {
     setCategoryChanged(true);
+    console.log("ChangeCategory");
   };
 
   useEffect(() => {
     getCategories();
+    console.log("UseEffect");
   }, [categoryChanged]);
 
   return (
@@ -69,7 +76,7 @@ export default function Categories() {
                           className="btn button-category mx-1"
                           type="button"
                           data-bs-toggle="modal"
-                          data-bs-target="#deleteCategoryModal"
+                          data-bs-target={"#deleteCategoryModal" + category.id}
                         >
                           Delete
                         </button>
