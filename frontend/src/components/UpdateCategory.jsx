@@ -57,14 +57,14 @@ export default function UpdateCategory({
   return (
     <>
       <form
-        id="form-add-category"
+        id={"form-add-category" + categoryId}
         onSubmit={handleSubmit(onSubmit)}
       >
         <div
           className="modal fade"
-          id="updateCategoryModal"
+          id={"updateCategoryModal" + categoryId}
           tabIndex={-1}
-          aria-labelledby="AddCategoryLabel"
+          aria-labelledby={"UpdateCategoryLabel" + categoryId}
           aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered">
@@ -72,7 +72,7 @@ export default function UpdateCategory({
               <div className="modal-header">
                 <h1
                   className="modal-title fs-5"
-                  id="AddCategoryLabel"
+                  id={"UpdateCategoryLabel" + categoryId}
                 >
                   Update Category
                 </h1>
