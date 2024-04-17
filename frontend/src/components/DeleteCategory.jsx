@@ -12,16 +12,13 @@ export default function DeleteCategory({
     setError,
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     const url = "http://localhost:8080/";
 
-    //console.log(`${url}categories/${categoryId}`);
     try {
       const response = await fetch(`${url}categories/${categoryId}`, {
         method: "DELETE",
-        body: JSON.stringify(data),
         headers: {
-          "Content-Type": "application/json",
           Authorization:
             "Basic " +
             btoa(
@@ -34,7 +31,6 @@ export default function DeleteCategory({
 
       if (response.ok) {
         changeCategory();
-        //console.log("DELETE category");
       }
       if (response.status === 400) {
         const responseData = await response.json();
@@ -47,11 +43,11 @@ export default function DeleteCategory({
       console.error("Error deleting category: ", error);
     }
   };
-  //console.log(categoryId + " " + categoryName);
+
   return (
     <>
       <form
-        id={"form-add-category" + categoryId}
+        id={"form-delete-category" + categoryId}
         onSubmit={handleSubmit(onSubmit)}
       >
         <div

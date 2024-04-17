@@ -6,9 +6,7 @@ import "./Categories.css";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
-  const [categoryChanged, setCategoryChanged] = useState(false);
-  const [id, setId] = useState();
-  const [name, setName] = useState("");
+  const [categoryChanged, setCategoryChanged] = useState();
   const role = localStorage.getItem("role");
 
   const getCategories = async () => {
@@ -26,24 +24,19 @@ export default function Categories() {
           ),
       },
     });
+
     const resp = await response.json();
-    console.log(resp);
-    console.log(
-      "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"
-    );
     setCategories(resp);
     setCategoryChanged(false);
-    console.log("getCategories");
+    console.log(categories);
   };
 
   const changeCategory = () => {
     setCategoryChanged(true);
-    console.log("ChangeCategory");
   };
 
   useEffect(() => {
     getCategories();
-    console.log("UseEffect");
   }, [categoryChanged]);
 
   return (
@@ -63,7 +56,7 @@ export default function Categories() {
                           className="btn button-category mx-1"
                           type="button"
                           data-bs-toggle="modal"
-                          data-bs-target="#updateCategoryModal"
+                          data-bs-target={"#updateCategoryModal" + category.id}
                         >
                           Update
                         </button>
