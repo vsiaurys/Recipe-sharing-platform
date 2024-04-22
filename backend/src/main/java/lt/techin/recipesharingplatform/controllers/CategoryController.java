@@ -29,7 +29,7 @@ public class CategoryController {
             response.put("name", "Category with this name already exists");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-
+savee
         category.setEnabled(true);
         Category savedCategory = categoryService.saveCategory(category);
 
