@@ -3,6 +3,7 @@ package lt.techin.recipesharingplatform.models;
 import jakarta.persistence.*;
 import jakarta.validation.GroupSequence;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lt.techin.recipesharingplatform.dto.FirstOrder;
@@ -28,6 +29,9 @@ public class Category {
     @Column(unique = true)
     private String name;
 
+    @NotNull
+    private boolean enabled;
+
     public Category() {}
 
     public Category(String name) {
@@ -48,5 +52,13 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
