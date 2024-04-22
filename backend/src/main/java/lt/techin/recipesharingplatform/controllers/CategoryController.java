@@ -30,7 +30,9 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
+        category.setEnabled(true);
         Category savedCategory = categoryService.saveCategory(category);
+
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
                         .path("/{id}")
                         .buildAndExpand(savedCategory.getId())
