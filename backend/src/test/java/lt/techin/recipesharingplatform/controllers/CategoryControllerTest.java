@@ -14,9 +14,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -157,4 +159,58 @@ public class CategoryControllerTest {
 
         verify(this.categoryService, times(0)).saveCategory(any(Category.class));
     }
+
+    //    @DeleteMapping("/movies/{id}")
+    //    public ResponseEntity<Void> deleteMovie(@PathVariable long id) {
+    //
+    //        if (this.movieService.existsMovieById(id)) {
+    //            this.movieService.deleteMovieById(id);
+    //
+    //            return ResponseEntity.noContent().build();
+    //        }
+    //        return ResponseEntity.notFound().build();
+    //    }
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    void deleteCategory_whenCategoryExists_return204() throws Exception {
+        //  given
+        given(this.categoryService.existsCategoryById(anyLong())).willReturn(true);
+
+        //  when
+        mockMvc.perform(delete("/categories/{id}", 11L))
+
+                // then
+                .andExpect(status().isNoContent());
+
+        verify(this.categoryService).deleteCategoryById(11L);
+    }
+    //
+    //    @Test
+    //    @WithMockUser(roles = {"ADMIN"})
+    //    void deleteMovie_whenNoMovieFound_return404() throws Exception {
+    ////  given
+    //        given(this.movieService.existsMovieById(anyLong())).willReturn(false);
+    //
+    ////  when
+    //        mockMvc.perform(delete("/movies/{id}", 11L))
+    //
+    ////  then
+    //                .andExpect(status().isNotFound());
+    //    }
+    //
+    //    @Test
+    //    @WithMockUser
+    //    void deleteMovie_whenNotAllowed_return403() throws Exception {
+    ////  given
+    //        given(this.movieService.existsMovieById(anyLong())).willReturn(true);
+    //
+    ////  when
+    //        mockMvc.perform(delete("/movies/{id}", 11L))
+    //
+    ////  then
+    //                .andExpect(status().isForbidden());
+    //
+    //        verify(this.movieService, times(0)).existsMovieById(11L);
+    //    }
+
 }
