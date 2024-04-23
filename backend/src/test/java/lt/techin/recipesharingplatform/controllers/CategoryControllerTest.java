@@ -184,19 +184,19 @@ public class CategoryControllerTest {
 
         verify(this.categoryService).deleteCategoryById(11L);
     }
-    //
-    //    @Test
-    //    @WithMockUser(roles = {"ADMIN"})
-    //    void deleteMovie_whenNoMovieFound_return404() throws Exception {
-    ////  given
-    //        given(this.movieService.existsMovieById(anyLong())).willReturn(false);
-    //
-    ////  when
-    //        mockMvc.perform(delete("/movies/{id}", 11L))
-    //
-    ////  then
-    //                .andExpect(status().isNotFound());
-    //    }
+
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
+    void deleteCategory_whenNoCategoryFound_return404() throws Exception {
+        //  given
+        given(this.categoryService.existsCategoryById(anyLong())).willReturn(false);
+
+        //  when
+        mockMvc.perform(delete("/category/{id}", 11L))
+
+                //  then
+                .andExpect(status().isNotFound());
+    }
     //
     //    @Test
     //    @WithMockUser
