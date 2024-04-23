@@ -197,20 +197,19 @@ public class CategoryControllerTest {
                 //  then
                 .andExpect(status().isNotFound());
     }
-    //
-    //    @Test
-    //    @WithMockUser
-    //    void deleteMovie_whenNotAllowed_return403() throws Exception {
-    ////  given
-    //        given(this.movieService.existsMovieById(anyLong())).willReturn(true);
-    //
-    ////  when
-    //        mockMvc.perform(delete("/movies/{id}", 11L))
-    //
-    ////  then
-    //                .andExpect(status().isForbidden());
-    //
-    //        verify(this.movieService, times(0)).existsMovieById(11L);
-    //    }
 
+    @Test
+    @WithMockUser
+    void deleteCategory_whenNotAllowed_return403() throws Exception {
+        //  given
+        given(this.categoryService.existsCategoryById(anyLong())).willReturn(true);
+
+        //  when
+        mockMvc.perform(delete("/categories/{id}", 11L))
+
+                //  then
+                .andExpect(status().isForbidden());
+
+        verify(this.categoryService, times(0)).existsCategoryById(11L);
+    }
 }
