@@ -9,6 +9,10 @@ export default function Categories() {
   const [categoryChanged, setCategoryChanged] = useState();
   const role = localStorage.getItem("role");
 
+  useEffect(() => {
+    getCategories();
+  }, [categoryChanged]);
+
   const getCategories = async () => {
     const url = "http://localhost:8080/";
     const response = await fetch(`${url}categories`, {
@@ -34,10 +38,6 @@ export default function Categories() {
   const changeCategory = () => {
     setCategoryChanged(true);
   };
-
-  useEffect(() => {
-    getCategories();
-  }, [categoryChanged]);
 
   return (
     <>
@@ -74,6 +74,19 @@ export default function Categories() {
                           Delete
                         </button>
                         <DeleteCategory
+                          categoryId={category.id}
+                          categoryName={category.name}
+                          changeCategory={changeCategory}
+                        />
+                        <button
+                          className="btn button-category mx-1"
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target={"#deleteCategoryModal" + category.id}
+                        >
+                          Disable
+                        </button>
+                        <ShowCategory
                           categoryId={category.id}
                           categoryName={category.name}
                           changeCategory={changeCategory}
