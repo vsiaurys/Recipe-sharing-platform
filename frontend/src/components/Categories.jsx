@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import AddCategory from "./AddCategory";
 import UpdateCategory from "./UpdateCategory";
 import DeleteCategory from "./DeleteCategory";
+import ToggleCategory from "./ToggleCategory";
 import "./Categories.css";
 
 export default function Categories() {
@@ -82,11 +83,11 @@ export default function Categories() {
                           className="btn button-category mx-1"
                           type="button"
                           data-bs-toggle="modal"
-                          data-bs-target={"#deleteCategoryModal" + category.id}
+                          data-bs-target={"#toggleCategoryModal" + category.id}
                         >
                           Disable
                         </button>
-                        <ShowCategory
+                        <ToggleCategory
                           categoryId={category.id}
                           categoryName={category.name}
                           changeCategory={changeCategory}
