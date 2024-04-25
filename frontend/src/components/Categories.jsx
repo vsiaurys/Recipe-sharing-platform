@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import AddCategory from "./AddCategory";
 import UpdateCategory from "./UpdateCategory";
 import DeleteCategory from "./DeleteCategory";
-import ToggleCategory from "./ToggleCategory";
+import ToggleCategoryVisibility from "./ToggleCategoryVisibility";
 import "./Categories.css";
 
 export default function Categories() {
@@ -85,9 +85,9 @@ export default function Categories() {
                           data-bs-toggle="modal"
                           data-bs-target={"#toggleCategoryModal" + category.id}
                         >
-                          Disable
+                          Show/Hide
                         </button>
-                        <ToggleCategory
+                        <ToggleCategoryVisibility
                           categoryId={category.id}
                           categoryName={category.name}
                           changeCategory={changeCategory}
