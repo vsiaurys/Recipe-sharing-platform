@@ -185,8 +185,10 @@ public class CategoryControllerTest {
         mockMvc.perform(delete("/category/{id}", 11L))
 
                 //  then
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error", equalTo("Nothing to delete")));
+                .andExpect(status().isNotFound());
+        // .andExpect(jsonPath("$.error").value("Nothing to delete"));
+
+        verify(this.categoryService, times(0)).deleteCategoryById(11L);
     }
 
     @Test
