@@ -160,16 +160,6 @@ public class CategoryControllerTest {
         verify(this.categoryService, times(0)).saveCategory(any(Category.class));
     }
 
-    //    @DeleteMapping("/movies/{id}")
-    //    public ResponseEntity<Void> deleteMovie(@PathVariable long id) {
-    //
-    //        if (this.movieService.existsMovieById(id)) {
-    //            this.movieService.deleteMovieById(id);
-    //
-    //            return ResponseEntity.noContent().build();
-    //        }
-    //        return ResponseEntity.notFound().build();
-    //    }
     @Test
     @WithMockUser(roles = {"ADMIN"})
     void deleteCategory_whenCategoryExists_return204() throws Exception {
@@ -195,7 +185,8 @@ public class CategoryControllerTest {
         mockMvc.perform(delete("/category/{id}", 11L))
 
                 //  then
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error", equalTo("Nothing to delete")));
     }
 
     @Test
