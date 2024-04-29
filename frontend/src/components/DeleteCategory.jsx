@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./DeleteCategory.css";
 import { useForm } from "react-hook-form";
 
@@ -11,6 +12,8 @@ export default function DeleteCategory({
     formState: { errors },
     setError,
   } = useForm();
+
+  const [deleted, setDeleted] = useState(false);
 
   const onSubmit = async () => {
     const url = "http://localhost:8080/";
@@ -32,6 +35,7 @@ export default function DeleteCategory({
       if (response.ok) {
         console.log("AAAAAAAAAAAAAAAAAAAAAAAAA");
         changeCategory();
+        setDeleted(true);
       }
       if (response.status === 400) {
         const responseData = await response.json();
@@ -76,6 +80,17 @@ export default function DeleteCategory({
               </div>
 
               <div className="modal-body">{categoryName}</div>
+
+              {deleted && (
+                <div className="container mx-auto mt-3">
+                  <div
+                    className="alert alert-success"
+                    role="alert"
+                  >
+                    Successfully deleted
+                  </div>
+                </div>
+              )}
 
               <div className="modal-footer">
                 <button
