@@ -13,12 +13,11 @@ export default function AddCategory({ changeCategory }) {
 
   const [createMessage, setCreateMessage] = useState();
   const [created, setCreated] = useState(false);
+  //const [modalVisible, setModalVisible] = useState(false);
 
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const closeModal = () => {
-    setModalVisible(!modalVisible);
-  };
+  // const closeModal = () => {
+  //   setModalVisible(!modalVisible);
+  // };
 
   const onSubmit = async (data) => {
     const url = "http://localhost:8080/";
@@ -151,7 +150,7 @@ export default function AddCategory({ changeCategory }) {
                 <button
                   type="submit"
                   className="btn button-add-category"
-                  onClick={closeModal}
+                  // onClick={closeModal}
                 >
                   Add
                 </button>
