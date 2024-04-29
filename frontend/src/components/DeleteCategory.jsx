@@ -30,6 +30,7 @@ export default function DeleteCategory({
       });
 
       if (response.ok) {
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAA");
         changeCategory();
       }
       if (response.status === 400) {
@@ -87,6 +88,7 @@ export default function DeleteCategory({
                 <button
                   type="submit"
                   className="btn button-delete-category"
+                  // onClick={onSubmit}
                 >
                   Delete
                 </button>
