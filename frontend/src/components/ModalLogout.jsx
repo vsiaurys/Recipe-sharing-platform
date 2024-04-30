@@ -8,13 +8,13 @@ function ModalLogout({ showModal, showOverlay }) {
         className={`modal fade ${showModal ? "show" : ""}`}
         style={{ display: showModal ? "block" : "none" }}
         tabIndex="-1"
-        role="dialog"
+        // role="dialog"
         aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true"
       >
         <div
           className="modal-dialog modal-dialog-centered"
-          role="document"
+          // role="document"
         >
           <div className="modal-content">
             <div className="modal-header">
