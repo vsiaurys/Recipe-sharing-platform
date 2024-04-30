@@ -3,7 +3,11 @@ import { useState, useEffect } from "react";
 import BadWords from "./BadWords";
 import "./AddCategory.css";
 
-export default function AddCategory({ changeCategory }) {
+export default function AddCategory({
+  changeCategory,
+  showModal,
+  showOverlay,
+}) {
   const {
     register,
     handleSubmit,
@@ -15,9 +19,9 @@ export default function AddCategory({ changeCategory }) {
   const [created, setCreated] = useState(false);
   //const [modalVisible, setModalVisible] = useState(false);
 
-  // const closeModal = () => {
-  //   setModalVisible(!modalVisible);
-  // };
+  const closeModal = () => {
+    setModalVisible(!modalVisible);
+  };
 
   const onSubmit = async (data) => {
     const url = "http://localhost:8080/";
@@ -57,13 +61,17 @@ export default function AddCategory({ changeCategory }) {
 
   return (
     <>
+      {showOverlay && (
+        <div className="position-fixed top-0 left-0 w-100 h-100 bg-dark opacity-75 z-999"></div>
+      )}
       <form
         id="form-add-category"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div
-          className="modal fade"
-          id="addCategoryModal"
+          className={`modal fade ${showModal ? "show" : ""}`}
+          style={{ display: showModal ? "block" : "none" }}
+          //id="addCategoryModal"
           tabIndex={-1}
           aria-labelledby="AddCategoryLabel"
           aria-hidden="true"
@@ -150,7 +158,7 @@ export default function AddCategory({ changeCategory }) {
                 <button
                   type="submit"
                   className="btn button-add-category"
-                  // onClick={closeModal}
+                  onClick={closeModal}
                 >
                   Add
                 </button>
