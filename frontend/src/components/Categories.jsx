@@ -8,6 +8,9 @@ import "./Categories.css";
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [categoryChanged, setCategoryChanged] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+
   const role = localStorage.getItem("role");
 
   useEffect(() => {
@@ -38,6 +41,8 @@ export default function Categories() {
 
   const changeCategory = () => {
     setCategoryChanged(true);
+    setShowModal(true);
+    setShowOverlay(true);
   };
 
   return (
@@ -107,10 +112,15 @@ export default function Categories() {
                       type="button"
                       data-bs-toggle="modal"
                       data-bs-target="#addCategoryModal"
+                      onClick={changeCategory}
                     >
                       Add category
                     </button>
-                    <AddCategory changeCategory={changeCategory} />
+                    <AddCategory
+                      changeCategory={changeCategory}
+                      showModal={showModal}
+                      showOverlay={showOverlay}
+                    />
                   </td>
                 </tr>
               )}
