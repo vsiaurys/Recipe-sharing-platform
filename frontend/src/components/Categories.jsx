@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import AddCategory from "./AddCategory";
+//import AddCategory from "./AddCategory"; ////////////////////////
+import AddCategoryNew from "./AddCategoryNew"; /////////////////////////////////////
 import UpdateCategory from "./UpdateCategory";
 import DeleteCategory from "./DeleteCategory";
 import ToggleCategoryVisibility from "./ToggleCategoryVisibility";
@@ -8,6 +9,7 @@ import "./Categories.css";
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [categoryChanged, setCategoryChanged] = useState();
+
   const [showModal, setShowModal] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
 
@@ -41,6 +43,12 @@ export default function Categories() {
 
   const changeCategory = () => {
     setCategoryChanged(true);
+    // setShowModal(true);
+    // setShowOverlay(true);
+  };
+
+  const addCategory = () => {
+    //setCategoryChanged(true);
     setShowModal(true);
     setShowOverlay(true);
   };
@@ -110,14 +118,14 @@ export default function Categories() {
                     <button
                       className="btn button-category mx-1"
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#addCategoryModal"
-                      onClick={changeCategory}
+                      //data-bs-toggle="modal"
+                      //data-bs-target="#addCategoryModal"
+                      onClick={addCategory}
                     >
                       Add category
                     </button>
-                    <AddCategory
-                      changeCategory={changeCategory}
+                    <AddCategoryNew
+                      //changeCategory={changeCategory}
                       showModal={showModal}
                       showOverlay={showOverlay}
                     />
