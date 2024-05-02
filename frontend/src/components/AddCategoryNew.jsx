@@ -4,7 +4,7 @@ import BadWords from "./BadWords";
 
 import "./AddCategory.css";
 
-export default function AddCategoryNew({ showModal, showOverlay }) {
+export default function AddCategoryNew({ showModal, showOverlay, closeModal }) {
   const {
     register,
     handleSubmit,
@@ -16,8 +16,7 @@ export default function AddCategoryNew({ showModal, showOverlay }) {
   const [created, setCreated] = useState(false);
 
   const onSubmit = () => {
-    showModal = false;
-    showOverlay = false;
+    closeModal();
   };
 
   return (
@@ -119,7 +118,6 @@ export default function AddCategoryNew({ showModal, showOverlay }) {
                 <button
                   type="submit"
                   className="btn button-add-category"
-                  // onClick={closeModal}
                 >
                   Add
                 </button>
