@@ -11,7 +11,6 @@ export default function Categories() {
   const [categoryChanged, setCategoryChanged] = useState();
 
   const [showModal, setShowModal] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(false);
 
   const role = localStorage.getItem("role");
 
@@ -38,7 +37,7 @@ export default function Categories() {
     const resp = await response.json();
     setCategories(resp);
     setCategoryChanged(false);
-    console.log(categories);
+    //console.log(categories);
   };
 
   const changeCategory = () => {
@@ -47,10 +46,13 @@ export default function Categories() {
     // setShowOverlay(true);
   };
 
-  const addCategory = () => {
+  const openModal = () => {
     //setCategoryChanged(true);
     setShowModal(true);
-    setShowOverlay(true);
+  };
+  const closeModal = () => {
+    //setCategoryChanged(true);
+    setShowModal(false);
   };
 
   return (
@@ -120,14 +122,15 @@ export default function Categories() {
                       type="button"
                       //data-bs-toggle="modal"
                       //data-bs-target="#addCategoryModal"
-                      onClick={addCategory}
+                      onClick={openModal}
                     >
                       Add category
                     </button>
                     <AddCategoryNew
                       //changeCategory={changeCategory}
                       showModal={showModal}
-                      showOverlay={showOverlay}
+                      closeModal={closeModal}
+                      changeCategory={changeCategory}
                     />
                   </td>
                 </tr>
