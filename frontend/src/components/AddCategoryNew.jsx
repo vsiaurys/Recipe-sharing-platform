@@ -4,7 +4,11 @@ import BadWords from "./BadWords";
 
 import "./AddCategory.css";
 
-export default function AddCategoryNew({ showModal, showOverlay, closeModal }) {
+export default function AddCategoryNew({
+  showModal,
+  closeModal,
+  changeCategory,
+}) {
   const {
     register,
     handleSubmit,
@@ -15,13 +19,46 @@ export default function AddCategoryNew({ showModal, showOverlay, closeModal }) {
   const [createMessage, setCreateMessage] = useState();
   const [created, setCreated] = useState(false);
 
-  const onSubmit = () => {
-    closeModal();
+  const onSubmit = async (data) => {
+    const url = "http://localhost:8080/";
+
+    try {
+      const response = await fetch(`${url}categories`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            "Basic " +
+            btoa(
+              `${localStorage.getItem("email")}:${localStorage.getItem(
+                "password"
+              )}`
+            ),
+        },
+      });
+
+      if (response.ok) {
+        //setCreateMessage(`New category ${data.name} successfully created`);
+        changeCategory();
+        //setCreated(true);
+        closeModal();
+      }
+      if (response.status === 400) {
+        const responseData = await response.json();
+        setError("name", {
+          type: "server",
+          message: `${responseData.name}`,
+        });
+      }
+    } catch (error) {
+      console.error("Error adding new category: ", error);
+    }
   };
 
   return (
     <>
-      {showOverlay && (
+      {showModal && (
         <div className="position-fixed top-0 left-0 w-100 h-100 bg-dark opacity-75 z-999"></div>
       )}
       <form
@@ -48,8 +85,9 @@ export default function AddCategoryNew({ showModal, showOverlay, closeModal }) {
                 <button
                   type="button"
                   className="btn-close"
-                  data-bs-dismiss="modal"
+                  //data-bs-dismiss="modal"
                   aria-label="Close"
+                  onClick={closeModal}
                 />
               </div>
 
@@ -96,7 +134,7 @@ export default function AddCategoryNew({ showModal, showOverlay, closeModal }) {
                   </div>
                 )}
 
-                {created && (
+                {/* {created && (
                   <div className="container mx-auto mt-3">
                     <div
                       className="alert alert-success"
@@ -105,13 +143,14 @@ export default function AddCategoryNew({ showModal, showOverlay, closeModal }) {
                       {createMessage}
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
               <div className="modal-footer">
                 <button
                   type="button"
                   className="btn button-close"
-                  data-bs-dismiss="modal"
+                  //data-bs-dismiss="modal"
+                  onClick={closeModal}
                 >
                   Close
                 </button>
