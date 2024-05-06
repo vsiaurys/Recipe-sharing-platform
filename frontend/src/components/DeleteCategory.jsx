@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 export default function DeleteCategory({
   categoryId,
   categoryName,
+  showModal,
+  closeModal,
   changeCategory,
 }) {
   const {
@@ -13,7 +15,7 @@ export default function DeleteCategory({
     setError,
   } = useForm();
 
-  const [deleted, setDeleted] = useState(false);
+  //const [deleted, setDeleted] = useState(false);
 
   const onSubmit = async () => {
     const url = "http://localhost:8080/";
@@ -35,7 +37,8 @@ export default function DeleteCategory({
       if (response.ok) {
         console.log("AAAAAAAAAAAAAAAAAAAAAAAAA");
         changeCategory();
-        setDeleted(true);
+        //setDeleted(true);
+        closeModal();
       }
       if (response.status === 400) {
         const responseData = await response.json();
@@ -51,13 +54,16 @@ export default function DeleteCategory({
 
   return (
     <>
+      {showModal && (
+        <div className="position-fixed top-0 left-0 w-100 h-100 bg-dark opacity-75 z-999"></div>
+      )}
       <form
         id={"form-delete-category" + categoryId}
         onSubmit={handleSubmit(onSubmit)}
       >
         <div
-          className="modal fade"
-          id={"deleteCategoryModal" + categoryId}
+          className={`modal fade ${showModal ? "show" : ""}`}
+          style={{ display: showModal ? "block" : "none" }}
           tabIndex={-1}
           aria-labelledby={"DeleteCategoryLabel" + categoryId}
           aria-hidden="true"
@@ -74,14 +80,15 @@ export default function DeleteCategory({
                 <button
                   type="button"
                   className="btn-close"
-                  data-bs-dismiss="modal"
+                  //data-bs-dismiss="modal"
                   aria-label="Close"
+                  onClick={closeModal}
                 />
               </div>
 
               <div className="modal-body">{categoryName}</div>
 
-              {deleted && (
+              {/* {deleted && (
                 <div className="container mx-auto mt-3">
                   <div
                     className="alert alert-success"
@@ -90,13 +97,14 @@ export default function DeleteCategory({
                     Successfully deleted
                   </div>
                 </div>
-              )}
+              )} */}
 
               <div className="modal-footer">
                 <button
                   type="button"
                   className="btn button-close"
                   data-bs-dismiss="modal"
+                  onClick={closeModal}
                 >
                   Cancel
                 </button>
