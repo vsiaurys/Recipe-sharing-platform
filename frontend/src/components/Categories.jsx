@@ -84,21 +84,24 @@ export default function Categories() {
                         <button
                           className="btn button-category mx-1"
                           type="button"
-                          data-bs-toggle="modal"
-                          data-bs-target={"#deleteCategoryModal" + category.id}
+                          //data-bs-toggle="modal"
+                          //data-bs-target={"#deleteCategoryModal" + category.id}
+                          onClick={openModal}
                         >
                           Delete
                         </button>
                         <DeleteCategory
                           categoryId={category.id}
                           categoryName={category.name}
+                          showModal={showModal}
+                          closeModal={closeModal}
                           changeCategory={changeCategory}
                         />
                         <button
                           className="btn button-category mx-1"
                           type="button"
-                          data-bs-toggle="modal"
-                          data-bs-target={"#toggleCategoryModal" + category.id}
+                          //ata-bs-toggle="modal"
+                          //data-bs-target={"#toggleCategoryModal" + category.id}
                         >
                           Show/Hide
                         </button>
@@ -126,8 +129,8 @@ export default function Categories() {
                     >
                       Add category
                     </button>
+
                     <AddCategoryNew
-                      //changeCategory={changeCategory}
                       showModal={showModal}
                       closeModal={closeModal}
                       changeCategory={changeCategory}
