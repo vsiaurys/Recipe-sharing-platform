@@ -1,13 +1,9 @@
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import BadWords from "./BadWords";
 import "./AddCategory.css";
 
-export default function AddCategory({
-  changeCategory,
-  showModal,
-  showOverlay,
-}) {
+export default function AddCategory({ changeCategory, closeModal }) {
   const {
     register,
     handleSubmit,
@@ -17,11 +13,6 @@ export default function AddCategory({
 
   const [createMessage, setCreateMessage] = useState();
   const [created, setCreated] = useState(false);
-  //const [modalVisible, setModalVisible] = useState(false);
-
-  const closeModal = () => {
-    setModalVisible(!modalVisible);
-  };
 
   const onSubmit = async (data) => {
     const url = "http://localhost:8080/";
@@ -46,6 +37,7 @@ export default function AddCategory({
         setCreateMessage(`New category ${data.name} successfully created`);
         changeCategory();
         setCreated(true);
+        closeModal();
       }
       if (response.status === 400) {
         const responseData = await response.json();
@@ -61,17 +53,13 @@ export default function AddCategory({
 
   return (
     <>
-      {showOverlay && (
-        <div className="position-fixed top-0 left-0 w-100 h-100 bg-dark opacity-75 z-999"></div>
-      )}
       <form
         id="form-add-category"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div
-          className={`modal fade ${showModal ? "show" : ""}`}
-          style={{ display: showModal ? "block" : "none" }}
-          //id="addCategoryModal"
+          className="modal fade"
+          id="addCategoryModal"
           tabIndex={-1}
           aria-labelledby="AddCategoryLabel"
           aria-hidden="true"
