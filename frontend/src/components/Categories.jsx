@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import AddCategory from "./AddCategory";
-//import AddCategoryNew from "./AddCategoryNew"; /////////////////////////////////////
 //import UpdateCategory from "./UpdateCategory";
 //import DeleteCategory from "./DeleteCategory";
 //import ToggleCategoryVisibility from "./ToggleCategoryVisibility";
@@ -35,7 +34,6 @@ export default function Categories() {
     const resp = await response.json();
     setCategories(resp);
     setCategoryChanged(false);
-    //console.log(categories);
   };
 
   const changeCategory = () => {
@@ -45,8 +43,13 @@ export default function Categories() {
   const closeModal = () => {
     const modal = document.getElementById("addCategoryModal");
     modal.classList.remove("show");
+
+    // Check if modalBackdrop exists before attempting to remove it
     const modalBackdrop = document.getElementsByClassName("modal-backdrop")[0];
-    modalBackdrop.parentNode.removeChild(modalBackdrop);
+    if (modalBackdrop) {
+      modalBackdrop.parentNode.removeChild(modalBackdrop); // Remove the modal backdrop
+    }
+    window.parent.focus();
   };
 
   return (
