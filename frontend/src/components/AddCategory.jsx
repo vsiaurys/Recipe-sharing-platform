@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-//import { useState } from "react";
+import { useState } from "react";
 import BadWords from "./BadWords";
 import "./AddCategory.css";
 
@@ -13,8 +13,7 @@ export default function AddCategory({ changeCategory, closeModal }) {
     clearErrors,
   } = useForm();
 
-  //const [createMessage, setCreateMessage] = useState();
-  //const [created, setCreated] = useState(false);
+  const [createMessage, setCreateMessage] = useState();
 
   const onSubmit = async (data) => {
     const url = "http://localhost:8080/";
@@ -36,11 +35,12 @@ export default function AddCategory({ changeCategory, closeModal }) {
       });
 
       if (response.ok) {
-        //setCreateMessage(`New category ${data.name} successfully created`);
         changeCategory();
-        //setCreated(true);
-        clearFields();
-        closeModal();
+        setCreateMessage(`New category ${data.name} successfully created`);
+        setTimeout(() => {
+          clearFields();
+          closeModal();
+        }, 15000);
       }
       if (response.status === 400) {
         const responseData = await response.json();
@@ -57,6 +57,7 @@ export default function AddCategory({ changeCategory, closeModal }) {
   const clearFields = () => {
     reset();
     clearErrors();
+    setCreateMessage("");
   };
 
   return (
@@ -73,94 +74,98 @@ export default function AddCategory({ changeCategory, closeModal }) {
           aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1
-                  className="modal-title fs-5"
-                  id="AddCategoryLabel"
-                >
-                  Add Category
-                </h1>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  onClick={clearFields}
-                />
+            {createMessage && (
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h2>{createMessage}</h2>
+                </div>
+                <div className="modal-body">
+                  <div className="alert alert-success">{createMessage}</div>
+                </div>
               </div>
+            )}
 
-              <div className="modal-body">
-                <label
-                  htmlFor="categoryName"
-                  className="form-label fw-normal"
-                >
-                  Category name
-                </label>
+            {!createMessage && (
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1
+                    className="modal-title fs-5"
+                    id="AddCategoryLabel"
+                  >
+                    Add Category
+                  </h1>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onClick={clearFields}
+                  />
+                </div>
 
-                <input
-                  type="text"
-                  className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                  id="categoryName"
-                  placeholder="Enter new category name"
-                  autoComplete="on"
-                  {...register("name", {
-                    required: "Please enter category name",
-                    pattern: {
-                      value: /^[A-Z][a-zA-Z]*( [a-zA-Z]*)*$/,
-                      message:
-                        "Category name must start from an uppercase letter and can contain only letters and single whitespaces",
-                    },
-                    minLength: {
-                      value: 4,
-                      message:
-                        "Category name must be at least 4 characters long",
-                    },
-                    maxLength: {
-                      value: 20,
-                      message:
-                        "Category name must not be longer than 20 characters",
-                    },
-                    validate: (value) =>
-                      !BadWords.some((word) =>
-                        new RegExp(word, "i").test(value)
-                      ) || "Display name contains offensive words!",
-                  })}
-                />
-                {errors.name && (
-                  <div className="invalid-feedback">
-                    {errors.name ? errors.name.message : ""}
-                  </div>
-                )}
+                <div className="modal-body">
+                  <label
+                    htmlFor="categoryName"
+                    className="form-label fw-normal"
+                  >
+                    Category name
+                  </label>
 
-                {/* {created && (
-                  <div className="container mx-auto mt-3">
-                    <div
-                      className="alert alert-success"
-                      role="alert"
-                    >
-                      {createMessage}
+                  <input
+                    type="text"
+                    className={`form-control ${
+                      errors.name ? "is-invalid" : ""
+                    }`}
+                    id="categoryName"
+                    placeholder="Enter new category name"
+                    autoComplete="on"
+                    {...register("name", {
+                      required: "Please enter category name",
+                      pattern: {
+                        value: /^[A-Z][a-zA-Z]*( [a-zA-Z]*)*$/,
+                        message:
+                          "Category name must start from an uppercase letter and can contain only letters and single whitespaces",
+                      },
+                      minLength: {
+                        value: 4,
+                        message:
+                          "Category name must be at least 4 characters long",
+                      },
+                      maxLength: {
+                        value: 20,
+                        message:
+                          "Category name must not be longer than 20 characters",
+                      },
+                      validate: (value) =>
+                        !BadWords.some((word) =>
+                          new RegExp(word, "i").test(value)
+                        ) || "Display name contains offensive words!",
+                    })}
+                  />
+                  {errors.name && (
+                    <div className="invalid-feedback">
+                      {errors.name ? errors.name.message : ""}
                     </div>
-                  </div>
-                )} */}
+                  )}
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn button-close"
+                    data-bs-dismiss="modal"
+                    onClick={clearFields}
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn button-add-category"
+                  >
+                    Add
+                  </button>
+                </div>
               </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn button-close"
-                  data-bs-dismiss="modal"
-                  onClick={clearFields}
-                >
-                  Close
-                </button>
-                <button
-                  type="submit"
-                  className="btn button-add-category"
-                >
-                  Add
-                </button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </form>
