@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+//import { useState } from "react";
 import BadWords from "./BadWords";
 import "./AddCategory.css";
 
@@ -8,11 +8,13 @@ export default function AddCategory({ changeCategory, closeModal }) {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
     setError,
+    clearErrors,
   } = useForm();
 
-  const [createMessage, setCreateMessage] = useState();
-  const [created, setCreated] = useState(false);
+  //const [createMessage, setCreateMessage] = useState();
+  //const [created, setCreated] = useState(false);
 
   const onSubmit = async (data) => {
     const url = "http://localhost:8080/";
@@ -34,9 +36,10 @@ export default function AddCategory({ changeCategory, closeModal }) {
       });
 
       if (response.ok) {
-        setCreateMessage(`New category ${data.name} successfully created`);
+        //setCreateMessage(`New category ${data.name} successfully created`);
         changeCategory();
-        setCreated(true);
+        //setCreated(true);
+        clearFields();
         closeModal();
       }
       if (response.status === 400) {
@@ -49,6 +52,11 @@ export default function AddCategory({ changeCategory, closeModal }) {
     } catch (error) {
       console.error("Error adding new category: ", error);
     }
+  };
+
+  const clearFields = () => {
+    reset();
+    clearErrors();
   };
 
   return (
@@ -78,12 +86,13 @@ export default function AddCategory({ changeCategory, closeModal }) {
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
+                  onClick={clearFields}
                 />
               </div>
 
               <div className="modal-body">
                 <label
-                  htmlFor="disabledTextInput"
+                  htmlFor="categoryName"
                   className="form-label fw-normal"
                 >
                   Category name
@@ -92,7 +101,7 @@ export default function AddCategory({ changeCategory, closeModal }) {
                 <input
                   type="text"
                   className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                  id="disabledTextInput"
+                  id="categoryName"
                   placeholder="Enter new category name"
                   autoComplete="on"
                   {...register("name", {
@@ -124,7 +133,7 @@ export default function AddCategory({ changeCategory, closeModal }) {
                   </div>
                 )}
 
-                {created && (
+                {/* {created && (
                   <div className="container mx-auto mt-3">
                     <div
                       className="alert alert-success"
@@ -133,20 +142,20 @@ export default function AddCategory({ changeCategory, closeModal }) {
                       {createMessage}
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
               <div className="modal-footer">
                 <button
                   type="button"
                   className="btn button-close"
                   data-bs-dismiss="modal"
+                  onClick={clearFields}
                 >
                   Close
                 </button>
                 <button
                   type="submit"
                   className="btn button-add-category"
-                  onClick={closeModal}
                 >
                   Add
                 </button>
