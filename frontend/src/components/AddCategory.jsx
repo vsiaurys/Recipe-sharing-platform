@@ -36,11 +36,15 @@ export default function AddCategory({ changeCategory, closeModal }) {
 
       if (response.ok) {
         changeCategory();
-        setCreateMessage(`New category ${data.name} successfully created`);
+        setCreateMessage(
+          <span>
+            New category <strong>{data.name}</strong> successfully created
+          </span>
+        );
         setTimeout(() => {
           clearFields();
           closeModal();
-        }, 15000);
+        }, 3000);
       }
       if (response.status === 400) {
         const responseData = await response.json();
@@ -77,7 +81,12 @@ export default function AddCategory({ changeCategory, closeModal }) {
             {createMessage && (
               <div className="modal-content">
                 <div className="modal-header">
-                  <h2>{createMessage}</h2>
+                  <h1
+                    className="modal-title fs-5"
+                    id="AddCategoryLabel"
+                  >
+                    Add Category
+                  </h1>
                 </div>
                 <div className="modal-body">
                   <div className="alert alert-success">{createMessage}</div>
