@@ -1,21 +1,16 @@
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 import "./DeleteCategory.css";
-import { useForm } from "react-hook-form";
 
 export default function DeleteCategory({
   categoryId,
   categoryName,
-  showModal,
   closeModal,
   changeCategory,
 }) {
-  const {
-    handleSubmit,
-    formState: { errors },
-    setError,
-  } = useForm();
+  const { handleSubmit, setError } = useForm();
 
-  //const [deleted, setDeleted] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState();
 
   const onSubmit = async () => {
     const url = "http://localhost:8080/";
@@ -35,12 +30,19 @@ export default function DeleteCategory({
       });
 
       if (response.ok) {
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAA");
-        changeCategory();
-        //setDeleted(true);
-        closeModal();
+        setDeleteMessage(
+          <span>
+            Category <strong>{categoryName}</strong> successfully deleted
+          </span>
+        );
+
+        setTimeout(() => {
+          clearMessage();
+          closeModal(`deleteCategoryModal${categoryId}`);
+          changeCategory();
+        }, 3000);
       }
-      if (response.status === 400) {
+      if (response.status === 404 || response.status === 400) {
         const responseData = await response.json();
         setError("name", {
           type: "server",
@@ -52,71 +54,80 @@ export default function DeleteCategory({
     }
   };
 
+  const clearMessage = () => {
+    setDeleteMessage("");
+  };
+
   return (
     <>
-      {showModal && (
-        <div className="position-fixed top-0 left-0 w-100 h-100 bg-dark opacity-75 z-999"></div>
-      )}
       <form
         id={"form-delete-category" + categoryId}
         onSubmit={handleSubmit(onSubmit)}
       >
         <div
-          className={`modal fade ${showModal ? "show" : ""}`}
-          style={{ display: showModal ? "block" : "none" }}
+          className={"modal fade"}
+          id={"deleteCategoryModal" + categoryId}
           tabIndex={-1}
           aria-labelledby={"DeleteCategoryLabel" + categoryId}
           aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1
-                  className="modal-title fs-5"
-                  id={"DeleteCategoryLabel" + categoryId}
-                >
-                  Are you sure you want to delete category?
-                </h1>
-                <button
-                  type="button"
-                  className="btn-close"
-                  //data-bs-dismiss="modal"
-                  aria-label="Close"
-                  onClick={closeModal}
-                />
-              </div>
-
-              <div className="modal-body">{categoryName}</div>
-
-              {/* {deleted && (
-                <div className="container mx-auto mt-3">
-                  <div
-                    className="alert alert-success"
-                    role="alert"
+            {deleteMessage && (
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1
+                    className="modal-title fs-5"
+                    id={"DeleteCategoryLabel" + categoryId}
                   >
-                    Successfully deleted
-                  </div>
+                    Delete Category
+                  </h1>
                 </div>
-              )} */}
-
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn button-close"
-                  data-bs-dismiss="modal"
-                  onClick={closeModal}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="btn button-delete-category"
-                  // onClick={onSubmit}
-                >
-                  Delete
-                </button>
+                <div className="modal-body">
+                  <div className="alert alert-success">{deleteMessage}</div>
+                </div>
               </div>
-            </div>
+            )}
+
+            {!deleteMessage && (
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1
+                    className="modal-title fs-5"
+                    id={"DeleteCategoryLabel" + categoryId}
+                  >
+                    Are you sure you want to delete category?
+                  </h1>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onClick={clearMessage}
+                  />
+                </div>
+
+                <div className="modal-body">
+                  <h1 className="modal-title fs-3">{categoryName}</h1>
+                </div>
+
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn button-close"
+                    data-bs-dismiss="modal"
+                    onClick={clearMessage}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn button-delete-category"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </form>
