@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import AddCategory from "./AddCategory";
 //import UpdateCategory from "./UpdateCategory";
-//import DeleteCategory from "./DeleteCategory";
+import DeleteCategory from "./DeleteCategory";
 //import ToggleCategoryVisibility from "./ToggleCategoryVisibility";
 import "./Categories.css";
 
@@ -49,7 +49,6 @@ export default function Categories() {
     if (modalBackdrop) {
       modalBackdrop.parentNode.removeChild(modalBackdrop); // Remove the modal backdrop
     }
-    window.parent.focus();
   };
 
   return (
@@ -63,9 +62,9 @@ export default function Categories() {
                 return (
                   <tr key={category.id}>
                     <th scope="row">{category.name}</th>
-                    {/*role === "ROLE_ADMIN" && (
+                    {role === "ROLE_ADMIN" && (
                       <td className="d-flex justify-content-end">
-                         <button
+                        {/* <button
                           className="btn button-category mx-1"
                           type="button"
                           data-bs-toggle="modal"
@@ -77,24 +76,22 @@ export default function Categories() {
                           categoryId={category.id}
                           categoryName={category.name}
                           changeCategory={changeCategory}
-                        />
+                        /> */}
                         <button
                           className="btn button-category mx-1"
                           type="button"
                           data-bs-toggle="modal"
                           data-bs-target={"#deleteCategoryModal" + category.id}
-                          onClick={openModal}
                         >
                           Delete
                         </button>
                         <DeleteCategory
                           categoryId={category.id}
                           categoryName={category.name}
-                          showModal={showModal}
                           closeModal={closeModal}
                           changeCategory={changeCategory}
                         />
-                        <button
+                        {/* <button
                           className="btn button-category mx-1"
                           type="button"
                           ata-bs-toggle="modal"
@@ -106,22 +103,23 @@ export default function Categories() {
                           categoryId={category.id}
                           categoryName={category.name}
                           changeCategory={changeCategory}
-                        /> 
+                        /> */}
                       </td>
-                    )*/}
+                    )}
                   </tr>
                 );
               })}
 
               {role === "ROLE_ADMIN" && (
                 <tr>
-                  {/* <th scope="row"></th> */}
+                  <th scope="row"></th>
                   <td className="d-flex justify-content-end">
                     <button
                       className="btn button-category mx-1"
                       type="button"
                       data-bs-toggle="modal"
                       data-bs-target="#addCategoryModal"
+                      id="knopka"
                     >
                       Add category
                     </button>
