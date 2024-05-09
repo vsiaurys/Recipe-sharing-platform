@@ -35,7 +35,6 @@ export default function AddCategory({ changeCategory, closeModal }) {
       });
 
       if (response.ok) {
-        changeCategory();
         setCreateMessage(
           <span>
             New category <strong>{data.name}</strong> successfully created
@@ -43,7 +42,8 @@ export default function AddCategory({ changeCategory, closeModal }) {
         );
         setTimeout(() => {
           clearFields();
-          closeModal();
+          closeModal("addCategoryModal");
+          changeCategory();
         }, 3000);
       }
       if (response.status === 400) {
@@ -117,7 +117,7 @@ export default function AddCategory({ changeCategory, closeModal }) {
                     htmlFor="categoryName"
                     className="form-label fw-normal"
                   >
-                    Category name
+                    Category name:
                   </label>
 
                   <input
