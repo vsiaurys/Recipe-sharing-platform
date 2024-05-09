@@ -40,8 +40,8 @@ export default function Categories() {
     setCategoryChanged(true);
   };
 
-  const closeModal = () => {
-    const modal = document.getElementById("addCategoryModal");
+  const closeModal = (id) => {
+    const modal = document.getElementById(id);
     modal.classList.remove("show");
 
     // Check if modalBackdrop exists before attempting to remove it
@@ -119,7 +119,6 @@ export default function Categories() {
                       type="button"
                       data-bs-toggle="modal"
                       data-bs-target="#addCategoryModal"
-                      id="knopka"
                     >
                       Add category
                     </button>
