@@ -1,29 +1,31 @@
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import BadWords from "./BadWords";
-import "./AddCategory.css";
+//import "./UpdateCategory.css";
 
 export default function UpdateCategory({
   categoryId,
   categoryName,
+  closeModal,
   changeCategory,
 }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
     setError,
+    clearErrors,
   } = useForm();
 
-  const [createMessage, setCreateMessage] = useState();
-  const [created, setCreated] = useState(false);
+  const [updateMessage, setUpdateMessage] = useState();
 
   const onSubmit = async (data) => {
     const url = "http://localhost:8080/";
 
     try {
-      const response = await fetch(`${url}categories`, {
-        method: "POST",
+      const response = await fetch(`${url}categories/${categoryId}`, {
+        method: "PUT",
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
@@ -38,9 +40,16 @@ export default function UpdateCategory({
       });
 
       if (response.ok) {
-        setCreateMessage(`New category ${data.name} successfully created`);
-        changeCategory();
-        setCreated(true);
+        setUpdateMessage(
+          <span>
+            Category <strong>{data.name}</strong> successfully updated
+          </span>
+        );
+        setTimeout(() => {
+          clearFields();
+          closeModal(`updateCategoryModal${categoryId}`);
+          changeCategory();
+        }, 3000);
       }
       if (response.status === 400) {
         const responseData = await response.json();
@@ -50,14 +59,20 @@ export default function UpdateCategory({
         });
       }
     } catch (error) {
-      console.error("Error adding new category: ", error);
+      console.error("Error updating category: ", error);
     }
+  };
+
+  const clearFields = () => {
+    reset();
+    clearErrors();
+    setUpdateMessage("");
   };
 
   return (
     <>
       <form
-        id={"form-add-category" + categoryId}
+        id={"form-update-category" + categoryId}
         onSubmit={handleSubmit(onSubmit)}
       >
         <div
@@ -68,85 +83,103 @@ export default function UpdateCategory({
           aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1
-                  className="modal-title fs-5"
-                  id={"UpdateCategoryLabel" + categoryId}
-                >
-                  Update Category
-                </h1>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                />
+            {updateMessage && (
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1
+                    className="modal-title fs-5"
+                    id={"UpdateCategoryLabel" + categoryId}
+                  >
+                    Update Category
+                  </h1>
+                </div>
+                <div className="modal-body">
+                  <div className="alert alert-success">{updateMessage}</div>
+                </div>
               </div>
+            )}
 
-              <div className="modal-body">
-                <input
-                  type="text"
-                  className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                  id="disabledTextInput"
-                  defaultValue={categoryName}
-                  autoComplete="on"
-                  {...register("name", {
-                    required: "Please enter category name",
-                    pattern: {
-                      value: /^[A-Z][a-zA-Z]*( [a-zA-Z]*)*$/,
-                      message:
-                        "Category name must start from an uppercase letter and can contain only letters and single whitespaces",
-                    },
-                    minLength: {
-                      value: 4,
-                      message:
-                        "Category name must be at least 4 characters long",
-                    },
-                    maxLength: {
-                      value: 20,
-                      message:
-                        "Category name must not be longer than 20 characters",
-                    },
-                    validate: (value) =>
-                      !BadWords.some((word) =>
-                        new RegExp(word, "i").test(value)
-                      ) || "Display name contains offensive words!",
-                  })}
-                />
-                {errors.name && (
-                  <div className="invalid-feedback">
-                    {errors.name ? errors.name.message : ""}
-                  </div>
-                )}
+            {!updateMessage && (
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1
+                    className="modal-title fs-5"
+                    id={"UpdateCategoryLabel" + categoryId}
+                  >
+                    Update Category
+                  </h1>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onClick={clearFields}
+                  />
+                </div>
 
-                {created && (
-                  <div className="container mx-auto mt-3">
-                    <div
-                      className="alert alert-success"
-                      role="alert"
-                    >
-                      {createMessage}
+                <div className="modal-body">
+                  <label
+                    htmlFor="categoryName"
+                    className="form-label fw-normal"
+                  >
+                    Update Category name:
+                  </label>
+
+                  <input
+                    type="text"
+                    className={`form-control ${
+                      errors.name ? "is-invalid" : ""
+                    }`}
+                    id="categoryName"
+                    defaultValue={categoryName}
+                    autoComplete="on"
+                    {...register("name", {
+                      required: "Please enter category name",
+                      pattern: {
+                        value: /^[A-Z][a-zA-Z]*( [a-zA-Z]*)*$/,
+                        message:
+                          "Category name must start from an uppercase letter and can contain only letters and single whitespaces",
+                      },
+                      minLength: {
+                        value: 4,
+                        message:
+                          "Category name must be at least 4 characters long",
+                      },
+                      maxLength: {
+                        value: 20,
+                        message:
+                          "Category name must not be longer than 20 characters",
+                      },
+                      validate: (value) =>
+                        !BadWords.some((word) =>
+                          new RegExp(word, "i").test(value)
+                        ) || "Display name contains offensive words!",
+                    })}
+                  />
+                  {errors.name && (
+                    <div className="invalid-feedback">
+                      {errors.name ? errors.name.message : ""}
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn button-close"
+                    data-bs-dismiss="modal"
+                    onClick={clearFields}
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn button-update-category"
+                  >
+                    Update
+                  </button>
+                </div>
               </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn button-close"
-                  data-bs-dismiss="modal"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="btn button-add-category"
-                >
-                  Update
-                </button>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </form>
