@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import AddCategory from "./AddCategory";
-//import UpdateCategory from "./UpdateCategory";
+import UpdateCategory from "./UpdateCategory";
 import DeleteCategory from "./DeleteCategory";
 //import ToggleCategoryVisibility from "./ToggleCategoryVisibility";
 import "./Categories.css";
@@ -64,7 +64,7 @@ export default function Categories() {
                     <th scope="row">{category.name}</th>
                     {role === "ROLE_ADMIN" && (
                       <td className="d-flex justify-content-end">
-                        {/* <button
+                        <button
                           className="btn button-category mx-1"
                           type="button"
                           data-bs-toggle="modal"
@@ -75,8 +75,9 @@ export default function Categories() {
                         <UpdateCategory
                           categoryId={category.id}
                           categoryName={category.name}
+                          closeModal={closeModal}
                           changeCategory={changeCategory}
-                        /> */}
+                        />
                         <button
                           className="btn button-category mx-1"
                           type="button"
