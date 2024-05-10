@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import BadWords from "./BadWords";
-//import "./UpdateCategory.css";
+import "./UpdateCategory.css";
 
 export default function UpdateCategory({
   categoryId,
@@ -45,6 +45,7 @@ export default function UpdateCategory({
             Category <strong>{data.name}</strong> successfully updated
           </span>
         );
+
         setTimeout(() => {
           clearFields();
           closeModal(`updateCategoryModal${categoryId}`);
