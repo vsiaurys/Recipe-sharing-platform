@@ -43,7 +43,7 @@ function Header({ checkRole, setForceRender }) {
 
           {checkRole() && (
             <div className="text-white">
-              {localStorage.getItem("displayName")}
+              <u>{localStorage.getItem("displayName")}</u>
             </div>
           )}
           <div className="ms-auto">
