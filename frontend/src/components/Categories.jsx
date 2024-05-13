@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import AddCategory from "./AddCategory";
 import UpdateCategory from "./UpdateCategory";
 import DeleteCategory from "./DeleteCategory";
-//import ToggleCategoryVisibility from "./ToggleCategoryVisibility";
+import ToggleCategoryVisibility from "./ToggleCategoryVisibility";
 import "./Categories.css";
 
 export default function Categories() {
@@ -92,19 +92,21 @@ export default function Categories() {
                           closeModal={closeModal}
                           changeCategory={changeCategory}
                         />
-                        {/* <button
+                        <button
                           className="btn button-category mx-1"
                           type="button"
-                          ata-bs-toggle="modal"
+                          data-bs-toggle="modal"
                           data-bs-target={"#toggleCategoryModal" + category.id}
                         >
-                          Show/Hide
+                          {category.enabled ? "Disable" : "Enable"}
                         </button>
                         <ToggleCategoryVisibility
                           categoryId={category.id}
                           categoryName={category.name}
+                          categoryEnabled={category.enabled}
+                          closeModal={closeModal}
                           changeCategory={changeCategory}
-                        /> */}
+                        />
                       </td>
                     )}
                   </tr>
