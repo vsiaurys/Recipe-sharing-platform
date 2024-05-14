@@ -29,7 +29,7 @@ public class CategoryController {
             response.put("name", "Category with this name already exists");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-savee
+
         category.setEnabled(true);
         Category savedCategory = categoryService.saveCategory(category);
 
@@ -60,6 +60,7 @@ savee
             }
 
             categoryFromDb.setName(category.getName());
+            categoryFromDb.setEnabled(category.getEnabled());
 
             return ResponseEntity.ok(this.categoryService.saveCategory(categoryFromDb));
         }
@@ -92,6 +93,6 @@ savee
 
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("error", "Nothing to delete");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMap);
     }
 }
