@@ -22,7 +22,8 @@ export default function UpdateCategory({
 
   const onSubmit = async (data) => {
     const url = "http://localhost:8080/";
-
+    data.name = "Zalupa";
+    console.log(JSON.stringify(data));
     try {
       const response = await fetch(`${url}categories/${categoryId}`, {
         method: "PUT",
