@@ -61,7 +61,13 @@ export default function Categories() {
               {categories.map((category) => {
                 return (
                   <tr key={category.id}>
-                    <th scope="row">{category.name}</th>
+                    <th
+                      scope="row"
+                      className={category.enabled ? "" : "text-body-tertiary"}
+                    >
+                      {category.name}
+                    </th>
+
                     {role === "ROLE_ADMIN" && (
                       <td className="d-flex justify-content-end">
                         <button
